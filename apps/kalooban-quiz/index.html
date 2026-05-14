@@ -531,6 +531,90 @@
 
   .hidden { display: none !important; }
 
+  /* Arrive-first guided breathing + audio */
+  .guide-row {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    margin: 0.7rem 0 0.2rem;
+  }
+  .guide-btn {
+    appearance: none;
+    background: transparent;
+    border: 1px solid var(--gold-deep);
+    color: var(--gold);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-family: var(--serif-body);
+    font-size: 0.95rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+    flex-shrink: 0;
+    padding: 0;
+  }
+  .guide-btn:hover { background: rgba(196, 165, 96, 0.1); border-color: var(--gold); }
+  .guide-btn:focus { outline: none; box-shadow: 0 0 0 2px rgba(196, 165, 96, 0.3); }
+  .guide-btn.active {
+    background: var(--ember);
+    border-color: var(--ember);
+    color: var(--ink-deepest);
+  }
+  .guide-label {
+    flex: 1;
+    font-family: var(--serif-small-caps);
+    font-size: 0.78rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--paper-faded);
+  }
+  .guide-counter {
+    font-family: var(--serif-body);
+    font-size: 0.9rem;
+    color: var(--paper-dim);
+    font-variant-numeric: tabular-nums;
+    min-width: 2.5em;
+    text-align: right;
+  }
+  .breath-visual {
+    display: none;
+    text-align: center;
+    margin: 0.6rem 0 0.2rem;
+    height: 170px;
+  }
+  .breath-visual.on { display: block; }
+  .breath-circle {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    margin: 0.2rem auto 0.6rem;
+    background: radial-gradient(circle at 50% 45%, var(--ember-bright), var(--ember-deep) 65%, transparent 100%);
+    opacity: 0.35;
+    transform: scale(0.45);
+    transition: transform 4s ease-in-out, opacity 4s ease-in-out;
+  }
+  .breath-circle.inhale {
+    transform: scale(1.0);
+    opacity: 0.9;
+    transition-duration: 4s;
+  }
+  .breath-circle.exhale {
+    transform: scale(0.45);
+    opacity: 0.35;
+    transition-duration: 6s;
+  }
+  .breath-cue {
+    font-family: var(--serif-small-caps);
+    font-size: 0.85rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--ember-bright);
+    min-height: 1.4em;
+  }
+
   @media (max-width: 640px) {
     body { font-size: 16px; }
     header.topbar { padding: 0.9rem 1.2rem; font-size: 0.7rem; }
@@ -890,7 +974,24 @@ function renderPrepare() {
 
     <p>Take three slow breaths. In through the nose. Out through the mouth. Let your shoulders drop. Let your jaw soften. Notice the weight of your body in the chair, the temperature of the air on your skin, the sound of the room.</p>
 
+    <div class="guide-row">
+      <button class="guide-btn" id="breath-btn" onclick="toggleBreathing()" aria-label="Start guided breathing"><span class="icon">▶</span></button>
+      <span class="guide-label">Guided breathing &nbsp;·&nbsp; three cycles</span>
+      <span class="guide-counter" id="breath-counter"></span>
+    </div>
+    <div class="breath-visual" id="breath-visual">
+      <div class="breath-circle" id="breath-circle"></div>
+      <div class="breath-cue" id="breath-cue">Ready</div>
+    </div>
+
     <p>Close your eyes for a moment. Bring to mind the part of you that already knows what is true. The deeper self. The one who sees clearly when you stop hiding from yourself. Imagine sitting down with that part of you, the way you would sit down with a trusted elder. Let them speak.</p>
+
+    <div class="guide-row">
+      <button class="guide-btn" id="ocean-btn" onclick="toggleOcean()" aria-label="Play ocean sounds for one minute"><span class="icon">▶</span></button>
+      <span class="guide-label">Ocean sounds &nbsp;·&nbsp; one minute</span>
+      <span class="guide-counter" id="ocean-counter">1:00</span>
+    </div>
+    <audio id="ocean-audio" src="audio/waves-60s.mp3" preload="none"></audio>
 
     <p>When you are ready, open your eyes. The cards will come one at a time. Read each one slowly. Notice your <em>first</em> response. Trust it, even when it surprises you. Especially when it surprises you.</p>
 
@@ -905,10 +1006,137 @@ function renderPrepare() {
 }
 
 function goToSwipe() {
+  stopBreathing();
+  stopOcean();
   state.view = 'swipe';
   state.currentIdx = 0;
   saveState();
   render();
+}
+
+/* ============================================================
+   Arrive-first guided breathing
+   Three cycles: 4s inhale, 6s exhale. ~30 seconds total.
+   ============================================================ */
+let breathTimer = null;
+let breathStep = 0;
+const BREATH_CYCLES = 3;
+
+function toggleBreathing() {
+  if (breathTimer) {
+    stopBreathing();
+  } else {
+    startBreathing();
+  }
+}
+
+function startBreathing() {
+  const btn = document.getElementById('breath-btn');
+  const visual = document.getElementById('breath-visual');
+  if (!btn || !visual) return;
+  btn.classList.add('active');
+  btn.querySelector('.icon').textContent = '■';
+  visual.classList.add('on');
+  breathStep = 0;
+  breathTick();
+}
+
+function breathTick() {
+  const circle = document.getElementById('breath-circle');
+  const cue = document.getElementById('breath-cue');
+  const counter = document.getElementById('breath-counter');
+  if (!circle || !cue) { stopBreathing(); return; }
+
+  const cycle = Math.floor(breathStep / 2);
+  if (cycle >= BREATH_CYCLES) {
+    cue.textContent = 'Settled';
+    if (counter) counter.textContent = '';
+    breathTimer = setTimeout(() => {
+      stopBreathing();
+    }, 1500);
+    return;
+  }
+
+  const isInhale = breathStep % 2 === 0;
+  if (counter) counter.textContent = `${cycle + 1} of ${BREATH_CYCLES}`;
+  if (isInhale) {
+    circle.classList.remove('exhale');
+    circle.classList.add('inhale');
+    cue.textContent = 'Inhale';
+    breathTimer = setTimeout(() => { breathStep++; breathTick(); }, 4000);
+  } else {
+    circle.classList.remove('inhale');
+    circle.classList.add('exhale');
+    cue.textContent = 'Exhale';
+    breathTimer = setTimeout(() => { breathStep++; breathTick(); }, 6000);
+  }
+}
+
+function stopBreathing() {
+  if (breathTimer) { clearTimeout(breathTimer); breathTimer = null; }
+  breathStep = 0;
+  const btn = document.getElementById('breath-btn');
+  const visual = document.getElementById('breath-visual');
+  const circle = document.getElementById('breath-circle');
+  const cue = document.getElementById('breath-cue');
+  const counter = document.getElementById('breath-counter');
+  if (btn) { btn.classList.remove('active'); const i = btn.querySelector('.icon'); if (i) i.textContent = '▶'; }
+  if (visual) visual.classList.remove('on');
+  if (circle) circle.classList.remove('inhale', 'exhale');
+  if (cue) cue.textContent = 'Ready';
+  if (counter) counter.textContent = '';
+}
+
+/* ============================================================
+   Arrive-first ocean sounds
+   60 seconds of waves. Bell-tone fade at end via the audio file's
+   built-in fade. Countdown lets you know when to open your eyes.
+   ============================================================ */
+let oceanTimer = null;
+
+function toggleOcean() {
+  const audio = document.getElementById('ocean-audio');
+  if (!audio) return;
+  if (oceanTimer) {
+    stopOcean();
+  } else {
+    startOcean();
+  }
+}
+
+function startOcean() {
+  const audio = document.getElementById('ocean-audio');
+  const btn = document.getElementById('ocean-btn');
+  const counter = document.getElementById('ocean-counter');
+  if (!audio || !btn) return;
+  audio.currentTime = 0;
+  const playPromise = audio.play();
+  if (playPromise && playPromise.catch) {
+    playPromise.catch(() => { stopOcean(); });
+  }
+  btn.classList.add('active');
+  btn.querySelector('.icon').textContent = '■';
+  const updateCounter = () => {
+    if (!oceanTimer) return;
+    const remaining = Math.max(0, 60 - Math.floor(audio.currentTime));
+    if (counter) counter.textContent = `0:${String(remaining).padStart(2, '0')}`;
+    if (remaining <= 0 || audio.ended) {
+      stopOcean();
+      return;
+    }
+    oceanTimer = setTimeout(updateCounter, 250);
+  };
+  oceanTimer = setTimeout(updateCounter, 50);
+}
+
+function stopOcean() {
+  const audio = document.getElementById('ocean-audio');
+  const btn = document.getElementById('ocean-btn');
+  const counter = document.getElementById('ocean-counter');
+  if (oceanTimer) { clearTimeout(oceanTimer); oceanTimer = null; }
+  if (audio) { try { audio.pause(); audio.currentTime = 0; } catch (e) {} }
+  if (btn) { btn.classList.remove('active'); const i = btn.querySelector('.icon'); if (i) i.textContent = '▶'; }
+  if (counter) counter.textContent = '1:00';
 }
 
 let dragStart = null;
@@ -1288,6 +1516,8 @@ window.selectShare = selectShare;
 window.submitShare = submitShare;
 window.resetState = resetState;
 window.render = render;
+window.toggleBreathing = toggleBreathing;
+window.toggleOcean = toggleOcean;
 
 render();
 </script>
