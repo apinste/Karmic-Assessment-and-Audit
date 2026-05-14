@@ -935,12 +935,14 @@ function renderDone() {
 
     <p style="text-align: center;">You have completed <strong>${completedCount}</strong> of seven domains. ${remaining > 0 ? `${remaining} remain available if you want to audit another.` : 'You have completed all seven.'}</p>
 
-    <p style="text-align: center;">There is no requirement to do more. What you just wrote is enough on its own. The workbook at the retreat will hold space for the rest, in your own time.</p>
+    <p style="text-align: center;">There is no requirement to do more. What you just wrote is enough on its own. The workbook at the retreat will carry the rest, in your own time.</p>
 
     <div class="btn-row">
       ${remaining > 0 ? '<button class="btn" onclick="goToSelect()">Audit another domain</button>' : ''}
       <button class="btn btn-secondary" onclick="goToWelcome()">Close</button>
     </div>
+
+    <p class="companion-link">If you have not done the swipe inventory yet, it takes about ten minutes and the result goes to the facilitators so we can prepare. <a href="../kalooban-quiz/">Open the inventory</a>.</p>
 
     <p class="privacy-note">If you close this tab, your writing stays in your browser. You can return anytime to print or save it again.</p>
   `;
