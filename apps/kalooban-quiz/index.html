@@ -545,6 +545,23 @@
   }
   .privacy-note strong { color: var(--paper); font-weight: 500; font-style: normal; }
 
+  .companion-link {
+    margin: 1.6rem auto 0.4rem;
+    text-align: center;
+    font-size: 0.95rem;
+    color: var(--paper-dim);
+    max-width: 540px;
+  }
+  .companion-link a {
+    color: var(--ember);
+    text-decoration: none;
+    border-bottom: 1px solid var(--ember-deep);
+    padding-bottom: 1px;
+    font-weight: 500;
+    transition: color 0.25s ease, border-color 0.25s ease;
+  }
+  .companion-link a:hover { color: var(--ember-bright); border-color: var(--ember-bright); }
+
   /* Arrive-first guided breathing + audio */
   .guide-row {
     display: flex;
@@ -917,6 +934,8 @@ function renderWelcome() {
     <div class="btn-row">
       ${buttonHtml}
     </div>
+
+    <p class="companion-link">Looking for the private audit instead? <a href="../karmic-audit/">Open it here</a>.</p>
   `;
   stage.appendChild(view);
 }
