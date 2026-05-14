@@ -297,8 +297,7 @@
     font-size: 1.2rem;
     color: var(--paper);
     margin-bottom: 0.8rem;
-    font-style: italic;
-    line-height: 1.4;
+    line-height: 1.45;
   }
 
   .answer-input {
@@ -422,7 +421,6 @@
     .question-text {
       color: black !important;
       font-size: 12pt !important;
-      font-style: italic;
       margin-bottom: 0.15in !important;
     }
     .answer-input {
@@ -453,6 +451,25 @@
     .no-print { display: none !important; }
   }
   .print-only { display: none; }
+
+  .print-busy {
+    position: fixed;
+    bottom: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--ink-medium, #1b1b24);
+    border: 1px solid var(--ember, #d4884a);
+    color: var(--paper, #e8e2d5);
+    padding: 0.7rem 1.4rem;
+    font-family: var(--serif-small-caps);
+    font-size: 0.85rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    z-index: 1000;
+    border-radius: 3px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+    pointer-events: none;
+  }
 </style>
 </head>
 <body>
@@ -977,14 +994,44 @@ function goToSelect() {
 }
 
 function goToPrint() {
+  showPrintBusy('Preparing print...');
   state.view = 'print';
   saveState();
   render();
-  // Trigger print dialog after a moment so the view renders first
-  setTimeout(() => {
-    window.print();
-  }, 400);
+  triggerPrintNextFrame();
 }
+
+function showPrintBusy(label) {
+  document.body.style.cursor = 'wait';
+  let el = document.getElementById('print-busy');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'print-busy';
+    el.className = 'print-busy no-print';
+    document.body.appendChild(el);
+  }
+  el.textContent = label || 'Opening printer dialog...';
+}
+
+function hidePrintBusy() {
+  document.body.style.cursor = '';
+  const el = document.getElementById('print-busy');
+  if (el && el.parentNode) el.parentNode.removeChild(el);
+}
+
+function triggerPrintNextFrame() {
+  // Two animation frames: one for layout, one for paint, then print.
+  // Faster than the old 400ms timeout but still gives the browser
+  // time to render the printable DOM before opening the dialog.
+  requestAnimationFrame(() => {
+    showPrintBusy('Opening printer dialog...');
+    requestAnimationFrame(() => {
+      window.print();
+    });
+  });
+}
+
+window.addEventListener('afterprint', hidePrintBusy);
 
 function startDomain(domainId) {
   // Already completed. Let them re-audit if they want.
@@ -1078,13 +1125,12 @@ function printFilledDomain(domainId) {
   const completed = state.completed[domainId];
   if (!domain || !completed) return;
 
+  showPrintBusy('Preparing print...');
   state.current = { domainId, answers: completed.answers || {} };
   state.view = 'review';
   saveState();
   render();
-  setTimeout(() => {
-    window.print();
-  }, 400);
+  triggerPrintNextFrame();
 }
 
 function downloadFilledDomain(domainId) {
