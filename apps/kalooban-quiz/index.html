@@ -6,7 +6,7 @@
 <title>Pag-aayos ng Kalooban</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Cormorant+SC:wght@500;600&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Marcellus+SC&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
 <style>
   :root {
     --ink-deepest: #0a0a0c;
@@ -25,7 +25,7 @@
     --gold: #c9a661;
     --gold-deep: #9a7a40;
     --serif-display: 'Cormorant Garamond', 'Garamond', serif;
-    --serif-small-caps: 'Cormorant SC', serif;
+    --serif-small-caps: 'Marcellus SC', 'Cormorant SC', serif;
     --serif-body: 'Lora', 'Garamond', serif;
   }
 
@@ -76,10 +76,10 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-family: var(--serif-small-caps); font-weight: 600;
-    font-size: 0.8rem;
-    letter-spacing: 0.18em;
-    color: var(--paper-faded);
+    font-family: var(--serif-small-caps);
+    font-size: 0.92rem;
+    letter-spacing: 0.14em;
+    color: var(--paper);
     text-transform: uppercase;
   }
 
@@ -107,7 +107,7 @@
 
   .welcome { text-align: center; }
   .welcome-eyebrow {
-    font-family: var(--serif-small-caps); font-weight: 600;
+    font-family: var(--serif-small-caps);
     font-size: 0.75rem;
     letter-spacing: 0.4em;
     color: var(--ember);
@@ -137,7 +137,7 @@
   }
   .welcome p em { color: var(--ember-bright); font-style: italic; }
   .welcome-meta {
-    font-family: var(--serif-small-caps); font-weight: 600;
+    font-family: var(--serif-small-caps);
     font-size: 0.8rem;
     letter-spacing: 0.25em;
     color: var(--paper-faded);
@@ -159,7 +159,7 @@
   .form-block .field { margin-bottom: 1.4rem; }
   .form-block label {
     display: block;
-    font-family: var(--serif-small-caps); font-weight: 600;
+    font-family: var(--serif-small-caps);
     font-size: 0.72rem;
     letter-spacing: 0.25em;
     color: var(--gold);
@@ -182,7 +182,7 @@
     background: transparent;
     border: 1px solid var(--ember);
     color: var(--ember-bright);
-    font-family: var(--serif-small-caps); font-weight: 600;
+    font-family: var(--serif-small-caps);
     font-weight: 500;
     font-size: 0.82rem;
     letter-spacing: 0.3em;
@@ -225,7 +225,7 @@
   .swipe-progress {
     text-align: center;
     margin-bottom: 1.2rem;
-    font-family: var(--serif-small-caps); font-weight: 600;
+    font-family: var(--serif-small-caps);
     font-size: 0.75rem;
     letter-spacing: 0.3em;
     color: var(--paper-faded);
@@ -283,7 +283,7 @@
   .card-header {
     display: flex;
     justify-content: space-between;
-    font-family: var(--serif-small-caps); font-weight: 600;
+    font-family: var(--serif-small-caps);
     font-size: 0.7rem;
     letter-spacing: 0.3em;
     color: var(--paper-faded);
@@ -304,7 +304,7 @@
   }
   .card-footer {
     text-align: center;
-    font-family: var(--serif-small-caps); font-weight: 600;
+    font-family: var(--serif-small-caps);
     font-size: 0.65rem;
     letter-spacing: 0.4em;
     color: var(--gold-deep);
@@ -326,7 +326,7 @@
     text-align: center;
     cursor: pointer;
     transition: all 0.25s ease;
-    font-family: var(--serif-small-caps); font-weight: 600;
+    font-family: var(--serif-small-caps);
     color: var(--paper-soft);
     -webkit-tap-highlight-color: transparent;
   }
@@ -358,7 +358,7 @@
     background: transparent;
     border: none;
     color: var(--paper-faded);
-    font-family: var(--serif-small-caps); font-weight: 600;
+    font-family: var(--serif-small-caps);
     font-size: 0.7rem;
     letter-spacing: 0.25em;
     cursor: pointer;
@@ -391,7 +391,7 @@
   .reveal { max-width: 600px; }
   .reveal-eyebrow {
     text-align: center;
-    font-family: var(--serif-small-caps); font-weight: 600;
+    font-family: var(--serif-small-caps);
     font-size: 0.75rem;
     letter-spacing: 0.4em;
     color: var(--gold);
@@ -422,7 +422,7 @@
     background: rgba(154, 122, 64, 0.05);
   }
   .reveal-callout-label {
-    font-family: var(--serif-small-caps); font-weight: 600;
+    font-family: var(--serif-small-caps);
     font-size: 0.7rem;
     letter-spacing: 0.3em;
     color: var(--gold);
@@ -522,10 +522,10 @@
     padding: 1.2rem 2rem;
     border-top: 1px solid var(--ink-line);
     text-align: center;
-    font-family: var(--serif-small-caps); font-weight: 600;
-    font-size: 0.7rem;
-    letter-spacing: 0.3em;
-    color: var(--paper-faded);
+    font-family: var(--serif-small-caps);
+    font-size: 0.85rem;
+    letter-spacing: 0.18em;
+    color: var(--paper-dim);
     text-transform: uppercase;
   }
 
@@ -565,7 +565,7 @@
   }
   .guide-label {
     flex: 1;
-    font-family: var(--serif-small-caps); font-weight: 600;
+    font-family: var(--serif-small-caps);
     font-size: 0.78rem;
     letter-spacing: 0.2em;
     text-transform: uppercase;
@@ -607,7 +607,7 @@
     transition-duration: 6s;
   }
   .breath-cue {
-    font-family: var(--serif-small-caps); font-weight: 600;
+    font-family: var(--serif-small-caps);
     font-size: 0.85rem;
     letter-spacing: 0.28em;
     text-transform: uppercase;
@@ -1406,7 +1406,7 @@ function renderReveal() {
       </div>
     </div>
 
-    <h3 style="font-family: var(--serif-small-caps); font-weight: 600; font-size: 0.75rem; letter-spacing: 0.3em; color: var(--gold); margin-top: 1.8rem;">Preview</h3>
+    <h3 style="font-family: var(--serif-small-caps); font-size: 0.75rem; letter-spacing: 0.3em; color: var(--gold); margin-top: 1.8rem;">Preview</h3>
     <div class="summary-box" id="summary-preview">${buildSummary(results, state.shareMode)}</div>
 
     <div class="btn-row">
@@ -1415,7 +1415,7 @@ function renderReveal() {
     </div>
 
     <div class="ornament">◇</div>
-    <p style="text-align: center; font-family: var(--serif-small-caps); font-weight: 600; letter-spacing: 0.25em; color: var(--paper-faded); font-size: 0.78rem;">Salamat. We will see you in September.</p>
+    <p style="text-align: center; font-family: var(--serif-small-caps); letter-spacing: 0.25em; color: var(--paper-faded); font-size: 0.78rem;">Salamat. We will see you in September.</p>
   `;
   stage.appendChild(view);
 }

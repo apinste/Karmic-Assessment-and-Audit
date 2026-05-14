@@ -20,10 +20,10 @@
     --ink: #1a1a20;
     --serif-display: 'Cormorant Garamond', 'Garamond', 'Times New Roman', serif;
     --serif-body: 'Garamond', 'Times New Roman', serif;
-    --serif-small-caps: 'Cormorant SC', 'Trajan Pro', 'Times New Roman', serif;
+    --serif-small-caps: 'Marcellus SC', 'Cormorant SC', 'Trajan Pro', 'Times New Roman', serif;
   }
 
-  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Cormorant+SC:wght@500;600&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Marcellus+SC&display=swap');
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -48,10 +48,10 @@
     align-items: center;
     padding: 1rem 1.5rem;
     border-bottom: 1px solid rgba(196, 165, 96, 0.15);
-    font-family: var(--serif-small-caps); font-weight: 600;
-    letter-spacing: 0.2em;
-    font-size: 0.78rem;
-    color: var(--paper-dim);
+    font-family: var(--serif-small-caps);
+    letter-spacing: 0.14em;
+    font-size: 0.92rem;
+    color: var(--paper);
     text-transform: uppercase;
   }
 
@@ -73,7 +73,7 @@
 
   .eyebrow {
     text-align: center;
-    font-family: var(--serif-small-caps); font-weight: 600;
+    font-family: var(--serif-small-caps);
     font-size: 0.78rem;
     letter-spacing: 0.3em;
     color: var(--ember);
@@ -118,7 +118,7 @@
 
   .meta {
     text-align: center;
-    font-family: var(--serif-small-caps); font-weight: 600;
+    font-family: var(--serif-small-caps);
     letter-spacing: 0.25em;
     color: var(--paper-faded);
     font-size: 0.85rem;
@@ -139,7 +139,7 @@
     color: var(--ember);
     border: 1px solid var(--ember);
     padding: 0.95rem 2.5rem;
-    font-family: var(--serif-small-caps); font-weight: 600;
+    font-family: var(--serif-small-caps);
     font-size: 0.92rem;
     letter-spacing: 0.25em;
     text-transform: uppercase;
@@ -181,7 +181,7 @@
   }
   .field label {
     display: block;
-    font-family: var(--serif-small-caps); font-weight: 600;
+    font-family: var(--serif-small-caps);
     font-size: 0.78rem;
     letter-spacing: 0.25em;
     color: var(--ember);
@@ -238,7 +238,7 @@
   }
 
   .domain-card .domain-number {
-    font-family: var(--serif-small-caps); font-weight: 600;
+    font-family: var(--serif-small-caps);
     font-size: 0.7rem;
     letter-spacing: 0.3em;
     color: var(--ember);
@@ -264,7 +264,7 @@
     position: absolute;
     top: 0.8rem;
     right: 1rem;
-    font-family: var(--serif-small-caps); font-weight: 600;
+    font-family: var(--serif-small-caps);
     font-size: 0.65rem;
     letter-spacing: 0.2em;
     color: var(--gold);
@@ -284,7 +284,7 @@
   }
 
   .question-number {
-    font-family: var(--serif-small-caps); font-weight: 600;
+    font-family: var(--serif-small-caps);
     font-size: 0.7rem;
     letter-spacing: 0.3em;
     color: var(--ember);
@@ -322,7 +322,7 @@
 
   .save-status {
     text-align: center;
-    font-family: var(--serif-small-caps); font-weight: 600;
+    font-family: var(--serif-small-caps);
     font-size: 0.7rem;
     letter-spacing: 0.25em;
     color: var(--paper-faded);
@@ -347,10 +347,10 @@
     border-top: 1px solid rgba(196, 165, 96, 0.15);
     padding: 1.2rem 1.5rem;
     text-align: center;
-    font-family: var(--serif-small-caps); font-weight: 600;
-    font-size: 0.72rem;
-    letter-spacing: 0.3em;
-    color: var(--paper-faded);
+    font-family: var(--serif-small-caps);
+    font-size: 0.85rem;
+    letter-spacing: 0.18em;
+    color: var(--paper-dim);
     text-transform: uppercase;
   }
 
@@ -360,7 +360,7 @@
     margin-bottom: 1rem;
     color: var(--paper-dim);
     cursor: pointer;
-    font-family: var(--serif-small-caps); font-weight: 600;
+    font-family: var(--serif-small-caps);
     font-size: 0.78rem;
     letter-spacing: 0.25em;
     text-transform: uppercase;
@@ -941,7 +941,7 @@ function renderPrint() {
     <a class="back-link no-print" onclick="goToWelcome()">← Back</a>
 
     <div class="no-print" style="background: rgba(196, 165, 96, 0.08); border: 1px solid rgba(196, 165, 96, 0.3); padding: 1.2rem 1.5rem; border-radius: 3px; margin-bottom: 2rem;">
-      <p style="font-family: var(--serif-small-caps); font-weight: 600; font-size: 0.75rem; letter-spacing: 0.25em; color: var(--ember); margin-bottom: 0.5rem; text-transform: uppercase;">Printable version</p>
+      <p style="font-family: var(--serif-small-caps); font-size: 0.75rem; letter-spacing: 0.25em; color: var(--ember); margin-bottom: 0.5rem; text-transform: uppercase;">Printable version</p>
       <p style="margin-bottom: 0.8rem;">Your printer dialog should have opened. If it did not, click the button below.</p>
       <div class="btn-row" style="margin: 0.5rem 0 0;">
         <button class="btn" onclick="window.print()">Open print dialog</button>
@@ -949,7 +949,7 @@ function renderPrint() {
     </div>
 
     <div class="print-only" style="text-align: center; margin-bottom: 0.4in;">
-      <div style="font-family: var(--serif-small-caps); font-weight: 600; font-size: 10pt; letter-spacing: 0.3em; color: #666; text-transform: uppercase;">Tranquil Edge Retreat</div>
+      <div style="font-family: var(--serif-small-caps); font-size: 10pt; letter-spacing: 0.3em; color: #666; text-transform: uppercase;">Tranquil Edge Retreat</div>
       <h1 class="title" style="font-size: 28pt; margin: 0.2in 0 0.1in;">The Karmic Audit</h1>
       <p style="font-style: italic; color: #555; font-size: 11pt;">A reflection worksheet. For your eyes only.</p>
       <p style="font-size: 10pt; color: #666; margin-top: 0.3in;">Filipino Martial Arts Retreat · September 10-13, 2026</p>
