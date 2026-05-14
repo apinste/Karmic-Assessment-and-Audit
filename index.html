@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Tranquil Edge Retreat</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Cormorant+SC:wght@500;600&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink-deepest: #0a0a0c;
+    --ink-deep: #14141a;
+    --ink-medium: #1f1f28;
+    --ink-line: #3a3a47;
+    --paper: #e8e2d5;
+    --paper-dim: #a8a294;
+    --paper-faded: #6d6859;
+    --ember: #c4773a;
+    --ember-bright: #d4884a;
+    --gold: #c4a560;
+    --gold-deep: #9a7a40;
+    --serif-display: 'Cormorant Garamond', 'Garamond', serif;
+    --serif-small-caps: 'Cormorant SC', serif;
+    --serif-body: 'Lora', 'Garamond', serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: var(--ink-deepest);
+    color: var(--paper);
+    font-family: var(--serif-body);
+    font-size: 17px;
+    line-height: 1.7;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
+    pointer-events: none;
+    opacity: 0.06;
+    z-index: 1;
+    mix-blend-mode: overlay;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(ellipse at center, transparent 40%, var(--ink-deepest) 100%);
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.7;
+  }
+
+  .page {
+    position: relative;
+    z-index: 2;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  header.topbar {
+    padding: 1.2rem 2rem;
+    border-bottom: 1px solid var(--ink-line);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--serif-small-caps);
+    font-size: 0.8rem;
+    letter-spacing: 0.18em;
+    color: var(--paper-faded);
+    text-transform: uppercase;
+  }
+
+  header.topbar .mark { color: var(--ember); }
+
+  main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 1.5rem;
+  }
+
+  .stage {
+    width: 100%;
+    max-width: 720px;
+    text-align: center;
+  }
+
+  .ornament {
+    color: var(--ember);
+    font-size: 1.2rem;
+    letter-spacing: 0.4em;
+    margin-bottom: 2rem;
+    opacity: 0.85;
+  }
+
+  h1 {
+    font-family: var(--serif-display);
+    font-weight: 500;
+    font-size: clamp(2.4rem, 5vw, 3.4rem);
+    line-height: 1.15;
+    letter-spacing: 0.01em;
+    color: var(--paper);
+    margin-bottom: 0.6rem;
+  }
+
+  .subtitle {
+    font-family: var(--serif-small-caps);
+    font-size: 0.85rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 2.5rem;
+  }
+
+  .intro {
+    font-family: var(--serif-body);
+    font-style: italic;
+    font-size: 1.05rem;
+    color: var(--paper-dim);
+    max-width: 540px;
+    margin: 0 auto 3.5rem;
+  }
+
+  .cards {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+    margin-bottom: 3rem;
+  }
+
+  @media (min-width: 720px) {
+    .cards { grid-template-columns: 1fr 1fr; }
+  }
+
+  .card {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    padding: 2rem 1.75rem;
+    background: var(--ink-deep);
+    border: 1px solid var(--ink-line);
+    border-radius: 4px;
+    transition: border-color 0.3s ease, transform 0.3s ease, background 0.3s ease;
+    text-align: left;
+  }
+
+  .card:hover {
+    border-color: var(--ember);
+    transform: translateY(-2px);
+    background: var(--ink-medium);
+  }
+
+  .card .label {
+    font-family: var(--serif-small-caps);
+    font-size: 0.75rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--ember);
+    margin-bottom: 0.6rem;
+  }
+
+  .card h2 {
+    font-family: var(--serif-display);
+    font-weight: 500;
+    font-size: 1.6rem;
+    color: var(--paper);
+    margin-bottom: 0.7rem;
+    line-height: 1.2;
+  }
+
+  .card p {
+    font-family: var(--serif-body);
+    font-size: 0.98rem;
+    color: var(--paper-dim);
+    line-height: 1.6;
+  }
+
+  .card .open {
+    display: inline-block;
+    margin-top: 1.2rem;
+    font-family: var(--serif-small-caps);
+    font-size: 0.78rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  .meta {
+    border-top: 1px solid var(--ink-line);
+    padding-top: 2rem;
+    margin-top: 1rem;
+    font-family: var(--serif-body);
+    font-size: 0.92rem;
+    color: var(--paper-faded);
+    text-align: center;
+  }
+
+  .meta .dates {
+    display: inline-block;
+    margin: 0 0.8rem;
+  }
+
+  footer {
+    padding: 1.5rem 2rem;
+    border-top: 1px solid var(--ink-line);
+    text-align: center;
+    font-family: var(--serif-small-caps);
+    font-size: 0.72rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--paper-faded);
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="topbar">
+    <span><span class="mark">◆</span> Tranquil Edge</span>
+    <span>Pre-Retreat</span>
+  </header>
+
+  <main>
+    <div class="stage">
+      <div class="ornament">◆ ◆ ◆</div>
+      <h1>Tranquil Edge Retreat</h1>
+      <div class="subtitle">Pre-Retreat Reflection</div>
+
+      <p class="intro">
+        Two reflections to sit with before we gather. One is brief and shared with the facilitators. The other is private and stays with you. Take them in your own time.
+      </p>
+
+      <div class="cards">
+        <a class="card" href="apps/kalooban-quiz/">
+          <div class="label">Inventory</div>
+          <h2>Pre-Retreat Reflection</h2>
+          <p>A short swipe-style reflection. Fifty-six recognition statements across seven domains. Sent to the facilitators when you finish so we can prepare.</p>
+          <span class="open">Open ◆</span>
+        </a>
+
+        <a class="card" href="apps/karmic-audit/">
+          <div class="label">Audit</div>
+          <h2>Private Audit</h2>
+          <p>Eight open questions per domain. Nothing is submitted. Use the web version or print it blank to fill by hand. Yours to keep.</p>
+          <span class="open">Open ◆</span>
+        </a>
+      </div>
+
+      <div class="meta">
+        <span class="dates">Opens June 1, 2026</span>
+        <span class="dates">Retreat September 10, 2026</span>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    River Mountain, PA ◆ September 10 to 13, 2026
+  </footer>
+</div>
+</body>
+</html>

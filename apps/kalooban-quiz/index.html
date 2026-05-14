@@ -1,0 +1,1295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pag-aayos ng Kalooban</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Cormorant+SC:wght@500;600&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink-deepest: #0a0a0c;
+    --ink-deep: #14141a;
+    --ink-medium: #1f1f28;
+    --ink-soft: #2a2a35;
+    --ink-line: #3a3a47;
+    --paper: #f4ede0;
+    --paper-soft: #ebe2d2;
+    --paper-dim: #c8bfae;
+    --paper-faded: #8a8273;
+    --ember: #c4773a;
+    --ember-deep: #9a5a26;
+    --ember-bright: #d99554;
+    --rust: #8b3a1f;
+    --gold: #c9a661;
+    --gold-deep: #9a7a40;
+    --serif-display: 'Cormorant Garamond', 'Garamond', serif;
+    --serif-small-caps: 'Cormorant SC', serif;
+    --serif-body: 'Lora', 'Garamond', serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: var(--ink-deepest);
+    color: var(--paper);
+    font-family: var(--serif-body);
+    font-size: 17px;
+    line-height: 1.7;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
+    pointer-events: none;
+    opacity: 0.06;
+    z-index: 1;
+    mix-blend-mode: overlay;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(ellipse at center, transparent 40%, var(--ink-deepest) 100%);
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.7;
+  }
+
+  .app {
+    position: relative;
+    z-index: 2;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  header.topbar {
+    padding: 1.2rem 2rem;
+    border-bottom: 1px solid var(--ink-line);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--serif-small-caps);
+    font-size: 0.8rem;
+    letter-spacing: 0.18em;
+    color: var(--paper-faded);
+    text-transform: uppercase;
+  }
+
+  header.topbar .mark { color: var(--ember); }
+
+  main.stage {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem 1.5rem;
+  }
+
+  .view {
+    width: 100%;
+    max-width: 640px;
+    animation: fadeUp 0.6s ease forwards;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .welcome { text-align: center; }
+  .welcome-eyebrow {
+    font-family: var(--serif-small-caps);
+    font-size: 0.75rem;
+    letter-spacing: 0.4em;
+    color: var(--ember);
+    margin-bottom: 1.5rem;
+  }
+  .welcome-title {
+    font-family: var(--serif-display);
+    font-weight: 500;
+    font-size: clamp(2.4rem, 6vw, 4rem);
+    line-height: 1.05;
+    margin-bottom: 0.4rem;
+  }
+  .welcome-subtitle {
+    font-family: var(--serif-display);
+    font-style: italic;
+    font-size: clamp(1.05rem, 2.4vw, 1.4rem);
+    color: var(--paper-dim);
+    margin-bottom: 2.6rem;
+  }
+  .welcome p {
+    font-family: var(--serif-body);
+    font-size: 1.02rem;
+    line-height: 1.85;
+    color: var(--paper-soft);
+    max-width: 520px;
+    margin: 0 auto 1.3rem;
+  }
+  .welcome p em { color: var(--ember-bright); font-style: italic; }
+  .welcome-meta {
+    font-family: var(--serif-small-caps);
+    font-size: 0.8rem;
+    letter-spacing: 0.25em;
+    color: var(--paper-faded);
+    margin: 2.5rem 0 1.5rem;
+  }
+  .welcome-footnote {
+    font-family: var(--serif-body);
+    font-style: italic;
+    font-size: 0.85rem;
+    color: var(--paper-faded);
+    margin-top: 1.5rem;
+  }
+
+  .form-block {
+    text-align: left;
+    margin: 1rem auto;
+    max-width: 480px;
+  }
+  .form-block .field { margin-bottom: 1.4rem; }
+  .form-block label {
+    display: block;
+    font-family: var(--serif-small-caps);
+    font-size: 0.72rem;
+    letter-spacing: 0.25em;
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+  }
+  .form-block input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--ink-line);
+    color: var(--paper);
+    font-family: var(--serif-body);
+    font-size: 1.02rem;
+    padding: 0.6rem 0.2rem;
+  }
+  .form-block input:focus { outline: none; border-bottom-color: var(--ember); }
+
+  .btn {
+    display: inline-block;
+    background: transparent;
+    border: 1px solid var(--ember);
+    color: var(--ember-bright);
+    font-family: var(--serif-small-caps);
+    font-weight: 500;
+    font-size: 0.82rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    padding: 1rem 2.4rem;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+  }
+  .btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--ember);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+    z-index: -1;
+  }
+  .btn:hover::before { transform: scaleX(1); }
+  .btn:hover { color: var(--ink-deepest); }
+  .btn-secondary {
+    border-color: var(--ink-line);
+    color: var(--paper-faded);
+  }
+  .btn-secondary::before { background: var(--ink-soft); }
+  .btn-secondary:hover { color: var(--paper); border-color: var(--paper-faded); }
+  .btn[disabled] { opacity: 0.3; cursor: not-allowed; }
+
+  .btn-row {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 1.8rem;
+  }
+
+  .swipe-progress {
+    text-align: center;
+    margin-bottom: 1.2rem;
+    font-family: var(--serif-small-caps);
+    font-size: 0.75rem;
+    letter-spacing: 0.3em;
+    color: var(--paper-faded);
+  }
+  .swipe-progress-bar {
+    height: 1px;
+    background: var(--ink-line);
+    max-width: 360px;
+    margin: 0.6rem auto 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .swipe-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--ember-deep), var(--gold));
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+
+  .card-deck {
+    position: relative;
+    width: 100%;
+    max-width: 460px;
+    margin: 0 auto;
+    height: 340px;
+  }
+
+  .card {
+    position: absolute;
+    inset: 0;
+    background: var(--ink-deep);
+    border: 1px solid var(--ink-line);
+    padding: 2.5rem 2.2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.45s cubic-bezier(.22,.9,.32,1.14), opacity 0.45s ease;
+    will-change: transform, opacity;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .card.behind {
+    transform: translateY(8px) scale(0.97);
+    opacity: 0.55;
+    z-index: 1;
+  }
+  .card.front { z-index: 2; cursor: grab; }
+  .card.front:active { cursor: grabbing; }
+
+  .card.swipe-right { transform: translateX(140%) rotate(20deg); opacity: 0; }
+  .card.swipe-left { transform: translateX(-140%) rotate(-20deg); opacity: 0; }
+  .card.swipe-up { transform: translateY(-140%) scale(0.95); opacity: 0; }
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--serif-small-caps);
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    color: var(--paper-faded);
+  }
+  .card-num { color: var(--gold-deep); }
+  .card-text {
+    font-family: var(--serif-display);
+    font-weight: 400;
+    font-size: clamp(1.4rem, 3.6vw, 1.85rem);
+    line-height: 1.35;
+    color: var(--paper);
+    text-align: center;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem 0;
+  }
+  .card-footer {
+    text-align: center;
+    font-family: var(--serif-small-caps);
+    font-size: 0.65rem;
+    letter-spacing: 0.4em;
+    color: var(--gold-deep);
+  }
+
+  .swipe-actions {
+    margin-top: 2rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 0.6rem;
+    max-width: 540px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .action {
+    background: var(--ink-medium);
+    border: 1px solid var(--ink-line);
+    padding: 0.95rem 0.4rem 0.85rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    font-family: var(--serif-small-caps);
+    color: var(--paper-soft);
+    -webkit-tap-highlight-color: transparent;
+  }
+  .action:active { transform: scale(0.97); }
+  .action-arrow {
+    font-size: 1.2rem;
+    line-height: 1;
+    margin-bottom: 0.4rem;
+    display: block;
+    color: var(--paper-dim);
+  }
+  .action-label { font-size: 0.66rem; letter-spacing: 0.22em; }
+  .action-no .action-arrow { color: var(--paper-faded); }
+  .action-sometimes .action-arrow { color: var(--gold); }
+  .action-yes .action-arrow { color: var(--ember-bright); }
+  .action-idk .action-arrow { color: var(--paper-faded); }
+  .action-no:hover { border-color: var(--paper-faded); }
+  .action-sometimes:hover { border-color: var(--gold); }
+  .action-yes:hover { border-color: var(--ember); }
+  .action-idk:hover { border-color: var(--paper-faded); }
+
+  .swipe-back-row {
+    max-width: 540px;
+    margin: 0 auto 0.8rem;
+    display: flex;
+    justify-content: flex-start;
+  }
+  .swipe-back-btn {
+    background: transparent;
+    border: none;
+    color: var(--paper-faded);
+    font-family: var(--serif-small-caps);
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    cursor: pointer;
+    padding: 0.4rem 0.2rem;
+    transition: color 0.3s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .swipe-back-btn:hover:not([disabled]) { color: var(--ember-bright); }
+  .swipe-back-btn:hover:not([disabled]) .back-arrow-icon { transform: translateX(-3px); }
+  .swipe-back-btn[disabled] { opacity: 0.3; cursor: not-allowed; }
+  .back-arrow-icon {
+    margin-right: 0.4rem;
+    transition: transform 0.3s ease;
+    display: inline-block;
+  }
+
+  .swipe-hint {
+    text-align: center;
+    font-family: var(--serif-body);
+    font-style: italic;
+    font-size: 0.85rem;
+    color: var(--paper-faded);
+    margin-top: 1.2rem;
+    max-width: 460px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.5;
+  }
+
+  .reveal { max-width: 600px; }
+  .reveal-eyebrow {
+    text-align: center;
+    font-family: var(--serif-small-caps);
+    font-size: 0.75rem;
+    letter-spacing: 0.4em;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+  }
+  .reveal h2 {
+    font-family: var(--serif-display);
+    font-weight: 500;
+    font-size: 1.8rem;
+    line-height: 1.25;
+    color: var(--paper);
+    margin: 2rem 0 1rem;
+  }
+  .reveal h2:first-of-type { margin-top: 0; }
+  .reveal p {
+    font-family: var(--serif-body);
+    font-size: 1rem;
+    line-height: 1.85;
+    color: var(--paper-soft);
+    margin-bottom: 1.2rem;
+  }
+  .reveal p em { color: var(--ember-bright); font-style: italic; }
+  .reveal p strong { color: var(--paper); font-weight: 500; }
+  .reveal-callout {
+    border: 1px solid var(--gold-deep);
+    padding: 1.4rem 1.6rem;
+    margin: 2rem 0;
+    background: rgba(154, 122, 64, 0.05);
+  }
+  .reveal-callout-label {
+    font-family: var(--serif-small-caps);
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+  }
+  .reveal-result-line {
+    font-family: var(--serif-display);
+    font-style: italic;
+    font-size: 1.25rem;
+    color: var(--paper);
+    line-height: 1.5;
+  }
+  .reveal-result-line strong {
+    color: var(--ember-bright);
+    font-weight: 500;
+    font-style: normal;
+  }
+
+  .ornament {
+    text-align: center;
+    color: var(--gold-deep);
+    font-size: 1rem;
+    letter-spacing: 0.6em;
+    margin: 2rem 0;
+    padding-left: 0.6em;
+  }
+
+  .share-options {
+    margin: 1.5rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+  .share-opt {
+    display: flex;
+    gap: 1rem;
+    padding: 1.1rem 1.3rem;
+    border: 1px solid var(--ink-line);
+    cursor: pointer;
+    transition: all 0.25s ease;
+    background: rgba(20, 20, 26, 0.4);
+  }
+  .share-opt:hover { border-color: var(--paper-faded); }
+  .share-opt.selected {
+    border-color: var(--ember);
+    background: rgba(196, 119, 58, 0.06);
+  }
+  .share-radio {
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    border: 1px solid var(--paper-faded);
+    border-radius: 50%;
+    margin-top: 5px;
+    position: relative;
+  }
+  .share-opt.selected .share-radio { border-color: var(--ember); }
+  .share-opt.selected .share-radio::after {
+    content: '';
+    position: absolute;
+    inset: 3px;
+    background: var(--ember);
+    border-radius: 50%;
+  }
+  .share-content { flex: 1; }
+  .share-title {
+    font-family: var(--serif-display);
+    font-size: 1.1rem;
+    color: var(--paper);
+    margin-bottom: 0.3rem;
+    font-weight: 500;
+  }
+  .share-opt.selected .share-title { color: var(--ember-bright); }
+  .share-desc {
+    font-family: var(--serif-body);
+    font-size: 0.9rem;
+    line-height: 1.55;
+    color: var(--paper-dim);
+  }
+
+  .summary-box {
+    background: var(--ink-medium);
+    border: 1px solid var(--ink-line);
+    padding: 1.3rem;
+    margin: 1.4rem 0;
+    font-family: 'Courier New', monospace;
+    font-size: 0.82rem;
+    line-height: 1.65;
+    color: var(--paper-dim);
+    white-space: pre-wrap;
+    overflow-x: auto;
+    max-height: 280px;
+    overflow-y: auto;
+  }
+
+  footer.bottombar {
+    padding: 1.2rem 2rem;
+    border-top: 1px solid var(--ink-line);
+    text-align: center;
+    font-family: var(--serif-small-caps);
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    color: var(--paper-faded);
+    text-transform: uppercase;
+  }
+
+  .hidden { display: none !important; }
+
+  @media (max-width: 640px) {
+    body { font-size: 16px; }
+    header.topbar { padding: 0.9rem 1.2rem; font-size: 0.7rem; }
+    main.stage { padding: 1.5rem 1rem; }
+    .card-deck { height: 320px; }
+    .card { padding: 2rem 1.6rem; }
+    .btn-row { flex-direction: column; align-items: stretch; }
+    .btn { width: 100%; text-align: center; }
+    .swipe-actions { gap: 0.45rem; }
+    .action { padding: 0.85rem 0.3rem 0.75rem; }
+    .action-label { font-size: 0.58rem; letter-spacing: 0.15em; }
+    .action-arrow { font-size: 1.05rem; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+<header class="topbar">
+  <span><span class="mark">◆</span> Tranquil Edge Retreat</span>
+  <span class="progress-indicator">Pre-Retreat Reflection</span>
+</header>
+
+<main class="stage" id="stage"></main>
+
+<footer class="bottombar">
+  Filipino Martial Arts Retreat &nbsp;·&nbsp; September 10–13, 2026 &nbsp;·&nbsp; River Mountain, PA
+</footer>
+
+</div>
+
+<script>
+/* ============================================================
+   CONFIGURATION
+   Edit these values before deploying.
+   ============================================================ */
+
+// The email address where participant results will be sent.
+// Edit this to your real facilitator email.
+const FACILITATOR_EMAIL = 'facilitator@example.com';
+
+// When the reflection opens to participants. Before this date,
+// the Begin button is disabled and the welcome shows a coming-soon message.
+const RELEASE_DATE = new Date('2026-06-01T00:00:00');
+
+// When the reflection should be completed by. After this date,
+// the welcome notes that the window has passed but still allows submission.
+const DUE_DATE = new Date('2026-08-31T23:59:59');
+
+// The start of the retreat itself. Used in the closing message.
+const RETREAT_DATE = new Date('2026-09-10T00:00:00');
+
+// localStorage key used to save participant progress so they can resume.
+// Bump the version number if you want existing participants to start fresh.
+const STORAGE_KEY = 'tranquil-edge-reflection-v1';
+
+// Seven domains drawn from the karmic reset framework (Chapter 6 baseline,
+// expanded with Chapter 14-18 domain-specific patterns).
+const DOMAINS = {
+  relationships: { label: 'Relationships' },
+  money:         { label: 'Money & Abundance' },
+  body:          { label: 'Health & Body' },
+  purpose:       { label: 'Purpose & Work' },
+  family:        { label: 'Family & Ancestry' },
+  self:          { label: 'Self & Identity' },
+  spirit:        { label: 'Spirit & Connection' },
+};
+
+// 56 cards, 8 per domain. Categories are not shown to participants on the cards.
+// They are used only for scoring and for the facilitator summary.
+const CARDS = [
+  // Relationships (8)
+  { id: 1,  domain: 'relationships', type: 'personal',  text: 'Looking across my close relationships, the same kind of person keeps appearing.' },
+  { id: 2,  domain: 'relationships', type: 'personal',  text: 'The same conflict, or the same arc, keeps repeating in my closeness with people.' },
+  { id: 3,  domain: 'relationships', type: 'personal',  text: 'I give more than I receive in most of my close relationships.' },
+  { id: 4,  domain: 'relationships', type: 'personal',  text: 'I cannot set a boundary in my close relationships without feeling guilty.' },
+  { id: 5,  domain: 'relationships', type: 'personal',  text: 'I have stayed too long in something that was no longer right for me.' },
+  { id: 6,  domain: 'relationships', type: 'personal',  text: 'I have been close to people who could not fully show up for me.' },
+  { id: 7,  domain: 'relationships', type: 'ancestral', text: 'I am living out a relationship pattern from the family that raised me.' },
+  { id: 8,  domain: 'relationships', type: 'personal',  text: 'I leave hard conversations early, before they get real.' },
+
+  // Money & Abundance (8)
+  { id: 9,  domain: 'money', type: 'personal',  text: 'I have a hard time earning or keeping money no matter what I try.' },
+  { id: 10, domain: 'money', type: 'personal',  text: 'I feel guilty or unworthy when I receive money or success.' },
+  { id: 11, domain: 'money', type: 'personal',  text: 'I sabotage myself right before a financial breakthrough.' },
+  { id: 12, domain: 'money', type: 'collective', text: 'Deep down I believe money is corrupting, or that wealth is not spiritual.' },
+  { id: 13, domain: 'money', type: 'ancestral', text: 'My money struggles match my parents\u2019 or grandparents\u2019 struggles.' },
+  { id: 14, domain: 'money', type: 'personal',  text: 'My income hits the same number, year after year, no matter what I do.' },
+  { id: 15, domain: 'money', type: 'personal',  text: 'Money comes in and flows back out before I can hold it.' },
+  { id: 16, domain: 'money', type: 'ancestral', text: 'I feel guilty having more than the people I came from.' },
+
+  // Health & Body (8)
+  { id: 17, domain: 'body', type: 'personal',  text: 'I have a chronic health issue that does not respond to medical treatment.' },
+  { id: 18, domain: 'body', type: 'personal',  text: 'I carry pain in places connected to emotional weight. My back, my throat, my chest.' },
+  { id: 19, domain: 'body', type: 'personal',  text: 'I struggle with my body. I do not feel at home in it.' },
+  { id: 20, domain: 'body', type: 'personal',  text: 'I use my body to punish myself or to numb what I feel.' },
+  { id: 21, domain: 'body', type: 'personal',  text: 'I ignore my body\u2019s signals until they become emergencies.' },
+  { id: 22, domain: 'body', type: 'personal',  text: 'I get sick, or my pain flares, right before things that matter.' },
+  { id: 23, domain: 'body', type: 'ancestral', text: 'I have an illness or condition that runs in my family. I have it now.' },
+  { id: 24, domain: 'body', type: 'personal',  text: 'My body holds something that words cannot reach.' },
+
+  // Purpose & Work (8)
+  { id: 25, domain: 'purpose', type: 'personal',  text: 'I feel blocked from my calling, even when I know what it is.' },
+  { id: 26, domain: 'purpose', type: 'personal',  text: 'I sabotage myself when I get close to success.' },
+  { id: 27, domain: 'purpose', type: 'personal',  text: 'I stay in work that drains me because I do not believe I deserve better.' },
+  { id: 28, domain: 'purpose', type: 'personal',  text: 'I feel guilty about wanting more impact, more income, or more recognition.' },
+  { id: 29, domain: 'purpose', type: 'personal',  text: 'I compare myself to others and feel behind.' },
+  { id: 30, domain: 'purpose', type: 'personal',  text: 'I have stopped doing something I love because it did not pay or please anyone.' },
+  { id: 31, domain: 'purpose', type: 'personal',  text: 'I am afraid to be fully seen for the work I do.' },
+  { id: 32, domain: 'purpose', type: 'ancestral', text: 'I cannot finish what I start, especially when it is mine.' },
+
+  // Family & Ancestry (8)
+  { id: 33, domain: 'family', type: 'ancestral', text: 'I see patterns in my life that match the people who raised me, or the family I came from.' },
+  { id: 34, domain: 'family', type: 'ancestral', text: 'I feel guilt, obligation, or resentment toward family that I cannot shake.' },
+  { id: 35, domain: 'family', type: 'ancestral', text: 'I feel responsible for fixing or saving the people in my family.' },
+  { id: 36, domain: 'family', type: 'ancestral', text: 'I am repeating a family pattern I swore I would never repeat.' },
+  { id: 37, domain: 'family', type: 'ancestral', text: 'I feel trapped by family expectations I never consciously agreed to.' },
+  { id: 38, domain: 'family', type: 'ancestral', text: 'I carry something from a line behind me. I can feel it, even if I cannot name it.' },
+  { id: 39, domain: 'family', type: 'ancestral', text: 'There are silences in my family about something. I do not know the full story.' },
+  { id: 40, domain: 'family', type: 'ancestral', text: 'I am loyal to my family\u2019s struggle in ways that block my own life.' },
+
+  // Self & Identity (8)
+  { id: 41, domain: 'self', type: 'personal',   text: 'I struggle with feeling that I am not enough.' },
+  { id: 42, domain: 'self', type: 'personal',   text: 'I abandon myself to keep others comfortable.' },
+  { id: 43, domain: 'self', type: 'personal',   text: 'I struggle to trust my own decisions without outside opinions.' },
+  { id: 44, domain: 'self', type: 'personal',   text: 'I hide parts of myself because I fear rejection.' },
+  { id: 45, domain: 'self', type: 'collective', text: 'I am a different person with different people. I am not sure which is real.' },
+  { id: 46, domain: 'self', type: 'collective', text: 'I have built a life that looks right and does not feel like mine.' },
+  { id: 47, domain: 'self', type: 'personal',   text: 'My inner critic is louder than my own voice.' },
+  { id: 48, domain: 'self', type: 'personal',   text: 'If I told the full truth of who I am, some people in my life would leave.' },
+
+  // Spirit & Connection (8)
+  { id: 49, domain: 'spirit', type: 'personal',   text: 'I struggle to trust the universe, or whatever I call the divine.' },
+  { id: 50, domain: 'spirit', type: 'personal',   text: 'I use spiritual practices to avoid hard emotions.' },
+  { id: 51, domain: 'spirit', type: 'personal',   text: 'I feel disconnected from my own knowing.' },
+  { id: 52, domain: 'spirit', type: 'personal',   text: 'I have felt abandoned or punished by the divine.' },
+  { id: 53, domain: 'spirit', type: 'personal',   text: 'I have used spirituality to avoid accountability.' },
+  { id: 54, domain: 'spirit', type: 'collective', text: 'I carry a wound from religion that I have not healed.' },
+  { id: 55, domain: 'spirit', type: 'personal',   text: 'I have a practice that makes me feel better in the moment but nothing in my life actually changes.' },
+  { id: 56, domain: 'spirit', type: 'personal',   text: 'I perform spirituality more than I practice it.' },
+];
+
+// Shuffled order so cards appear random and ungrouped
+function shuffleArray(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+// State is persisted to localStorage so participants can leave and return.
+const DEFAULT_STATE = {
+  view: 'welcome',
+  name: '',
+  email: '',
+  answers: {},
+  currentIdx: 0,
+  startedAt: null,
+  completedAt: null,
+  shareMode: 'summary',
+  cardOrder: null,
+};
+
+function loadState() {
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      // Make sure cardOrder exists in case storage is older
+      if (!parsed.cardOrder) parsed.cardOrder = shuffleArray(CARDS.map(c => c.id));
+      return parsed;
+    }
+  } catch (e) {
+    console.warn('Could not load saved state:', e);
+  }
+  return {
+    ...DEFAULT_STATE,
+    cardOrder: shuffleArray(CARDS.map(c => c.id)),
+  };
+}
+
+function saveState() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  } catch (e) {
+    console.warn('Could not save state:', e);
+  }
+}
+
+let state = loadState();
+
+function resetState() {
+  if (confirm('Start over? Your answers will be cleared.')) {
+    try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+    state = {
+      ...DEFAULT_STATE,
+      cardOrder: shuffleArray(CARDS.map(c => c.id)),
+    };
+    render();
+  }
+}
+
+function shortDate(d) {
+  return d.toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
+}
+
+function formatDate(iso) {
+  if (!iso) return '(date not set)';
+  return new Date(iso).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+}
+
+const stage = document.getElementById('stage');
+
+function setIndicator(text) {
+  const el = document.querySelector('.progress-indicator');
+  if (el) el.textContent = text;
+}
+
+function render() {
+  stage.innerHTML = '';
+  if (state.view === 'welcome') {
+    renderWelcome();
+    setIndicator('Pre-Retreat Reflection');
+  } else if (state.view === 'identity') {
+    renderIdentity();
+    setIndicator('Pre-Retreat Reflection');
+  } else if (state.view === 'prepare') {
+    renderPrepare();
+    setIndicator('Prepare');
+  } else if (state.view === 'swipe') {
+    renderSwipe();
+    setIndicator(`Card ${state.currentIdx + 1} of ${CARDS.length}`);
+  } else if (state.view === 'reveal') {
+    renderReveal();
+    setIndicator('Complete');
+  }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function renderWelcome() {
+  const view = document.createElement('div');
+  view.className = 'view welcome';
+
+  const now = new Date();
+  const beforeRelease = now < RELEASE_DATE;
+  const afterDue = now > DUE_DATE;
+  const hasProgress = state.startedAt && !state.completedAt && state.currentIdx > 0;
+
+  let metaLine, buttonHtml;
+  if (beforeRelease) {
+    metaLine = `Opens ${shortDate(RELEASE_DATE)}`;
+    buttonHtml = `<button class="btn" disabled>Opens ${shortDate(RELEASE_DATE)}</button>`;
+  } else if (afterDue) {
+    metaLine = `The window closed on ${shortDate(DUE_DATE)}, but you can still complete this if you would like.`;
+    buttonHtml = hasProgress
+      ? `<button class="btn" onclick="goToSwipe()">Continue</button>
+         <button class="btn btn-secondary" onclick="resetState()">Start over</button>`
+      : `<button class="btn" onclick="goToIdentity()">Begin</button>`;
+  } else {
+    metaLine = `Open through ${shortDate(DUE_DATE)}`;
+    buttonHtml = hasProgress
+      ? `<button class="btn" onclick="goToSwipe()">Continue</button>
+         <button class="btn btn-secondary" onclick="resetState()">Start over</button>`
+      : `<button class="btn" onclick="goToIdentity()">Begin</button>`;
+  }
+
+  view.innerHTML = `
+    <div class="welcome-eyebrow">Before the Retreat</div>
+    <h1 class="welcome-title">Pag-aayos<br>ng Kalooban</h1>
+    <p class="welcome-subtitle">Setting the inner self in order.</p>
+
+    <p>You will move through fifty-six cards across seven domains of life. Each one is a recognition statement. Read it. Answer honestly. <em>Yes</em>, <em>sometimes</em>, <em>not me</em>, or <em>I don\u2019t know yet</em>. Move on.</p>
+
+    <p>This is preparation. The retreat itself is four days of Filipino martial arts, breath, food, sound, and rest. That is the heart of it.</p>
+
+    <p>This year we are also inviting you into a short, honest conversation with yourself before you arrive. To get to the warrior side of you, it helps to unravel a little of what is in the way first. Three nights cannot reset a life. There is no shortcut. But honest reflection is a place to start, and that is what these cards are for.</p>
+
+    <div class="welcome-meta">${metaLine}</div>
+
+    <div class="btn-row">
+      ${buttonHtml}
+    </div>
+  `;
+  stage.appendChild(view);
+}
+
+function goToIdentity() {
+  state.view = 'identity';
+  saveState();
+  render();
+}
+
+function renderIdentity() {
+  const view = document.createElement('div');
+  view.className = 'view welcome';
+  view.innerHTML = `
+    <div class="welcome-eyebrow">Before You Begin</div>
+    <h1 class="welcome-title" style="font-size: clamp(1.6rem, 4vw, 2.4rem); margin-bottom: 1.2rem;">Tell us who you are.</h1>
+    <p style="margin-bottom: 2rem;">So we know whose answers we are looking at when you send them.</p>
+
+    <div class="form-block">
+      <div class="field">
+        <label>Your name</label>
+        <input type="text" id="name-input" value="${state.name || ''}">
+      </div>
+      <div class="field">
+        <label>Your email</label>
+        <input type="email" id="email-input" value="${state.email || ''}">
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="goBackToWelcome()">Back</button>
+      <button class="btn" onclick="confirmIdentity()">Continue</button>
+    </div>
+  `;
+  stage.innerHTML = '';
+  stage.appendChild(view);
+  setTimeout(() => {
+    const ni = document.getElementById('name-input');
+    if (ni) ni.focus();
+  }, 100);
+}
+
+function goBackToWelcome() {
+  state.view = 'welcome';
+  render();
+}
+
+function confirmIdentity() {
+  const name = document.getElementById('name-input').value.trim();
+  const email = document.getElementById('email-input').value.trim();
+  if (!name || !email) {
+    alert('Please share your name and email.');
+    return;
+  }
+  state.name = name;
+  state.email = email;
+  state.startedAt = new Date().toISOString();
+  state.view = 'prepare';
+  saveState();
+  render();
+}
+
+function renderPrepare() {
+  const view = document.createElement('div');
+  view.className = 'view welcome';
+  view.innerHTML = `
+    <div class="welcome-eyebrow">Before the Cards</div>
+    <h1 class="welcome-title" style="font-size: clamp(1.8rem, 4.5vw, 2.6rem); margin-bottom: 1.5rem;">Arrive first.</h1>
+
+    <p style="font-style: italic; color: var(--paper-dim); font-family: var(--serif-display); font-size: 1.15rem;">The cards work best when you do.</p>
+
+    <p>Find a quiet place where no one will interrupt you for the next ten minutes. Sit comfortably. Put your phone face down somewhere it will not pull at you, then pick it up again only for this.</p>
+
+    <p>Take three slow breaths. In through the nose. Out through the mouth. Let your shoulders drop. Let your jaw soften. Notice the weight of your body in the chair, the temperature of the air on your skin, the sound of the room.</p>
+
+    <p>Close your eyes for a moment. Bring to mind the part of you that already knows what is true. The deeper self. The one who sees clearly when you stop hiding from yourself. Imagine sitting down with that part of you, the way you would sit down with a trusted elder. Let them speak.</p>
+
+    <p>When you are ready, open your eyes. The cards will come one at a time. Read each one slowly. Notice your <em>first</em> response. Trust it, even when it surprises you. Especially when it surprises you.</p>
+
+    <p style="font-family: var(--serif-display); font-style: italic; color: var(--ember-bright); font-size: 1.15rem; text-align: center; margin-top: 2.5rem;">The work begins with honesty.</p>
+
+    <div class="btn-row">
+      <button class="btn" onclick="goToSwipe()">I am ready</button>
+    </div>
+  `;
+  stage.innerHTML = '';
+  stage.appendChild(view);
+}
+
+function goToSwipe() {
+  state.view = 'swipe';
+  state.currentIdx = 0;
+  saveState();
+  render();
+}
+
+let dragStart = null;
+let dragCurrent = null;
+
+function renderSwipe() {
+  const view = document.createElement('div');
+  view.className = 'view swipe-view';
+
+  const idx = state.currentIdx;
+  const cardId = state.cardOrder[idx];
+  const card = CARDS.find(c => c.id === cardId);
+  const nextCardId = idx + 1 < state.cardOrder.length ? state.cardOrder[idx + 1] : null;
+  const nextCard = nextCardId ? CARDS.find(c => c.id === nextCardId) : null;
+  const progress = ((idx) / CARDS.length) * 100;
+
+  view.innerHTML = `
+    <div class="swipe-back-row">
+      <button class="swipe-back-btn" onclick="goBackOneCard()" ${idx === 0 ? 'disabled' : ''}>
+        <span class="back-arrow-icon">←</span> Back
+      </button>
+    </div>
+
+    <div class="swipe-progress">
+      <span>Card ${idx + 1} of ${CARDS.length}</span>
+      <div class="swipe-progress-bar">
+        <div class="swipe-progress-fill" style="width: ${progress}%"></div>
+      </div>
+    </div>
+
+    <div class="card-deck" id="card-deck">
+      ${nextCard ? `
+        <div class="card behind" data-id="${nextCard.id}">
+          <div class="card-header">
+            <span class="card-num">${String(idx + 2).padStart(2, '0')}</span>
+            <span class="card-cat"></span>
+          </div>
+          <div class="card-text">${nextCard.text}</div>
+          <div class="card-footer">Pag-aayos ng Kalooban</div>
+        </div>
+      ` : ''}
+      <div class="card front" id="active-card" data-id="${card.id}">
+        <div class="card-header">
+          <span class="card-num">${String(idx + 1).padStart(2, '0')}</span>
+          <span class="card-cat"></span>
+        </div>
+        <div class="card-text">${card.text}</div>
+        <div class="card-footer">Pag-aayos ng Kalooban</div>
+      </div>
+    </div>
+
+    <div class="swipe-actions">
+      <div class="action action-idk" onclick="answerCard('idk')">
+        <span class="action-arrow">?</span>
+        <span class="action-label">Don\u2019t Know</span>
+      </div>
+      <div class="action action-no" onclick="answerCard('no')">
+        <span class="action-arrow">←</span>
+        <span class="action-label">Not Me</span>
+      </div>
+      <div class="action action-sometimes" onclick="answerCard('sometimes')">
+        <span class="action-arrow">↑</span>
+        <span class="action-label">Sometimes</span>
+      </div>
+      <div class="action action-yes" onclick="answerCard('yes')">
+        <span class="action-arrow">→</span>
+        <span class="action-label">Yes</span>
+      </div>
+    </div>
+
+    <p class="swipe-hint">Swipe the card or tap a button. Your first response is usually the truer one.</p>
+  `;
+
+  stage.appendChild(view);
+
+  const activeCard = document.getElementById('active-card');
+  if (activeCard) {
+    activeCard.addEventListener('pointerdown', startDrag);
+    activeCard.addEventListener('pointermove', moveDrag);
+    activeCard.addEventListener('pointerup', endDrag);
+    activeCard.addEventListener('pointercancel', endDrag);
+  }
+}
+
+function startDrag(e) {
+  const card = e.currentTarget;
+  card.setPointerCapture(e.pointerId);
+  dragStart = { x: e.clientX, y: e.clientY };
+  dragCurrent = { x: 0, y: 0 };
+  card.style.transition = 'none';
+}
+
+function moveDrag(e) {
+  if (!dragStart) return;
+  const card = e.currentTarget;
+  dragCurrent = { x: e.clientX - dragStart.x, y: e.clientY - dragStart.y };
+  const rotation = dragCurrent.x * 0.05;
+  card.style.transform = `translate(${dragCurrent.x}px, ${dragCurrent.y}px) rotate(${rotation}deg)`;
+}
+
+function endDrag(e) {
+  if (!dragStart) return;
+  const card = e.currentTarget;
+  card.style.transition = '';
+
+  const threshold = 100;
+  let answer = null;
+
+  if (Math.abs(dragCurrent.x) > Math.abs(dragCurrent.y)) {
+    if (dragCurrent.x > threshold) answer = 'yes';
+    else if (dragCurrent.x < -threshold) answer = 'no';
+  } else if (dragCurrent.y < -threshold) {
+    answer = 'sometimes';
+  }
+
+  if (answer) {
+    answerCard(answer);
+  } else {
+    card.style.transform = '';
+  }
+
+  dragStart = null;
+  dragCurrent = null;
+}
+
+function answerCard(answer) {
+  const card = document.getElementById('active-card');
+  if (!card) return;
+
+  const cardId = parseInt(card.dataset.id);
+  state.answers[cardId] = answer;
+  saveState();
+
+  // 'idk' uses up animation (no specific direction); others use directional animations
+  const animClass = answer === 'yes' ? 'swipe-right'
+    : answer === 'no' ? 'swipe-left'
+    : 'swipe-up';
+  card.classList.add(animClass);
+
+  setTimeout(() => {
+    state.currentIdx++;
+    if (state.currentIdx >= state.cardOrder.length) {
+      state.completedAt = new Date().toISOString();
+      state.view = 'reveal';
+    }
+    saveState();
+    render();
+  }, 350);
+}
+
+function goBackOneCard() {
+  if (state.currentIdx === 0) return;
+  state.currentIdx--;
+  // Clear the answer for the card we're going back to so they can re-answer
+  const cardId = state.cardOrder[state.currentIdx];
+  delete state.answers[cardId];
+  saveState();
+  render();
+}
+
+function computeResults() {
+  const domainScores = {};
+  const typeScores = { personal: 0, ancestral: 0, collective: 0 };
+  Object.keys(DOMAINS).forEach(d => domainScores[d] = 0);
+
+  Object.entries(state.answers).forEach(([cardId, answer]) => {
+    const card = CARDS.find(c => c.id === parseInt(cardId));
+    if (!card) return;
+    // 'idk' contributes zero weight to scoring (it's tracked separately)
+    const weight = answer === 'yes' ? 1 : answer === 'sometimes' ? 0.5 : 0;
+    domainScores[card.domain] += weight;
+    typeScores[card.type] += weight;
+  });
+
+  let topDomain = null, topDomainScore = -1;
+  Object.entries(domainScores).forEach(([k, v]) => {
+    if (v > topDomainScore) { topDomainScore = v; topDomain = k; }
+  });
+
+  let topType = null, topTypeScore = -1;
+  Object.entries(typeScores).forEach(([k, v]) => {
+    if (v > topTypeScore) { topTypeScore = v; topType = k; }
+  });
+
+  const yesCount = Object.values(state.answers).filter(a => a === 'yes').length;
+  const sometimesCount = Object.values(state.answers).filter(a => a === 'sometimes').length;
+  const noCount = Object.values(state.answers).filter(a => a === 'no').length;
+  const idkCount = Object.values(state.answers).filter(a => a === 'idk').length;
+
+  return { domainScores, typeScores, topDomain, topType, yesCount, sometimesCount, noCount, idkCount };
+}
+
+const TYPE_LABELS = {
+  personal: 'Personal',
+  ancestral: 'Ancestral',
+  collective: 'Collective',
+};
+
+function renderReveal() {
+  const view = document.createElement('div');
+  view.className = 'view reveal';
+
+  const results = computeResults();
+  state.shareMode = state.shareMode || 'summary';
+
+  // Build the IDK acknowledgment line, only shown if they used "I don't know yet" at all
+  const idkLine = results.idkCount > 0
+    ? `<p style="font-style: italic; color: var(--paper-dim);">You marked <em>I don\u2019t know yet</em> on ${results.idkCount} card${results.idkCount === 1 ? '' : 's'}. That is its own kind of honesty. Some recognition takes time. We are not in a rush.</p>`
+    : '';
+
+  view.innerHTML = `
+    <div class="reveal-eyebrow">A few words before we close</div>
+
+    <h2>What we mean when we say karma</h2>
+    <p>Karma is a Sanskrit word that has traveled. Many traditions, including the ones we work from, have their own names for what it points to. We use the word here because most people know it. We mean by it the energy of unfinished business in a person\u2019s life. The actions that were never completed. The words that were not said. The wounds that were never tended. These do not stay still. They show up again in different shapes until they are met.</p>
+    <p>Most of what people are taught about karma in popular culture, the cosmic-revenge version, is a thin reading. The traditions we work from take it more seriously and treat it as something workable, not something to fear.</p>
+
+    <h2>The three places it lives</h2>
+    <p>The patterns we are talking about live in three places at once. <strong>Personal</strong> is the choices you have made in your own life that left things open or unfinished. <strong>Ancestral</strong> is what came down through your family line. The fears, the loyalties, the silences your parents and their parents carried that you absorbed before you had a say. <strong>Collective</strong> is what your culture, religion, or community installed in you. The shapes you took on without knowing.</p>
+    <p>Most people are working with more than one at the same time. None is better or worse than the others. They each ask for different kinds of attention.</p>
+
+    <h2>Where your answers landed</h2>
+    <p>This is where your responses fell. We share this not as a verdict. It is just the data, looked at neutrally.</p>
+
+    <div class="reveal-callout">
+      <div class="reveal-callout-label">From your answers</div>
+      <div class="reveal-result-line">
+        Your responses lean toward <strong>${TYPE_LABELS[results.topType]}</strong>.<br>
+        The domain that came up loudest was <strong>${DOMAINS[results.topDomain].label}</strong>.
+      </div>
+    </div>
+
+    <p>You marked <em>yes</em> on ${results.yesCount} card${results.yesCount === 1 ? '' : 's'} and <em>sometimes</em> on ${results.sometimesCount}. Bring this to the retreat or do not. It is yours.</p>
+
+    ${idkLine}
+
+    <h2>The seven domains</h2>
+    <p>The patterns we look at concentrate in seven domains of life. Some will be quiet for you. Others will be louder. Most people are working with two or three at a time, often connected to one another.</p>
+    <p><strong>Relationships.</strong> Your closeness with people. Romantic, family, friendship. The patterns of who you let in, how you stay, how you leave.</p>
+    <p><strong>Money & Earning.</strong> Your relationship with money, whether you are salaried or self-employed. What you let yourself earn, hold, or want.</p>
+    <p><strong>Health & Body.</strong> What your body holds that words have not yet finished. Pain, illness, exhaustion, symptoms with timing you cannot quite explain.</p>
+    <p><strong>Purpose & Work.</strong> The work you do, the work you wish you did, the work you stopped doing because it did not pay or please anyone.</p>
+    <p><strong>Family & Ancestry.</strong> What came down the line. The struggles your parents had, what their parents carried, the silences you inherited, what you carry from a line you may not fully know.</p>
+    <p><strong>Self & Identity.</strong> Your relationship with yourself. Worth, trust, the parts you let people see and the parts you keep hidden.</p>
+    <p><strong>Spirit & Connection.</strong> Your sense of connection to something larger than yourself, however you name it. Faith, trust, the practices you keep, the wounds religion may have left.</p>
+
+    <div class="ornament">◆ ◇ ◆</div>
+
+    <h2>Sharing your result</h2>
+    <p>We will use what you share to prepare the sessions. The summary tells us where the group as a whole is sitting. The full result helps us prepare more specifically for you. You choose how detailed to be.</p>
+    <p style="font-size: 0.95rem; color: var(--paper-dim);"><em>Whatever you send is seen only by your retreat facilitators. It is not posted, not stored publicly, not shared with anyone else, and not used for anything beyond preparing your time at the retreat.</em></p>
+
+    <div class="share-options">
+      <div class="share-opt ${state.shareMode === 'summary' ? 'selected' : ''}" id="share-summary" onclick="selectShare('summary')">
+        <div class="share-radio"></div>
+        <div class="share-content">
+          <div class="share-title">Share summary only</div>
+          <div class="share-desc">Send only your top type, top domain, and overall counts. Your card-by-card answers stay with you.</div>
+        </div>
+      </div>
+      <div class="share-opt ${state.shareMode === 'full' ? 'selected' : ''}" id="share-full" onclick="selectShare('full')">
+        <div class="share-radio"></div>
+        <div class="share-content">
+          <div class="share-title">Share full result</div>
+          <div class="share-desc">Send everything, including your answer to each card. Helps us prepare for you specifically.</div>
+        </div>
+      </div>
+    </div>
+
+    <h3 style="font-family: var(--serif-small-caps); font-size: 0.75rem; letter-spacing: 0.3em; color: var(--gold); margin-top: 1.8rem;">Preview</h3>
+    <div class="summary-box" id="summary-preview">${buildSummary(results, state.shareMode)}</div>
+
+    <div class="btn-row">
+      <button class="btn" onclick="submitShare()" id="send-btn">Send to Facilitators</button>
+      <button class="btn btn-secondary" onclick="resetState()">Try again with new answers</button>
+    </div>
+
+    <div class="ornament">◇</div>
+    <p style="text-align: center; font-family: var(--serif-small-caps); letter-spacing: 0.25em; color: var(--paper-faded); font-size: 0.78rem;">Salamat. We will see you in September.</p>
+  `;
+  stage.appendChild(view);
+}
+
+function selectShare(mode) {
+  state.shareMode = mode;
+  saveState();
+  document.querySelectorAll('.share-opt').forEach(o => o.classList.remove('selected'));
+  const target = document.getElementById('share-' + mode);
+  if (target) target.classList.add('selected');
+  const results = computeResults();
+  document.getElementById('summary-preview').textContent = buildSummary(results, mode);
+}
+
+function buildSummary(results, mode) {
+  const lines = [];
+  lines.push('Tranquil Edge Retreat');
+  lines.push('Pre-Retreat Reflection Result');
+  lines.push('═══════════════════════════════════');
+  lines.push('');
+  lines.push(`Name: ${state.name}`);
+  lines.push(`Email: ${state.email}`);
+  lines.push(`Completed: ${formatDate(state.completedAt)}`);
+  lines.push(`Detail level: ${mode === 'full' ? 'Full result' : 'Summary only'}`);
+  lines.push('');
+  lines.push('───────────────────────────────────');
+  lines.push('Result');
+  lines.push('───────────────────────────────────');
+  lines.push(`Top type: ${TYPE_LABELS[results.topType]}`);
+  lines.push(`Top domain: ${DOMAINS[results.topDomain].label}`);
+  lines.push('');
+  lines.push(`Yes responses: ${results.yesCount}`);
+  lines.push(`Sometimes responses: ${results.sometimesCount}`);
+  lines.push(`Not me responses: ${results.noCount}`);
+  lines.push(`I don\u2019t know yet: ${results.idkCount}`);
+  lines.push('');
+  lines.push('Type breakdown (weighted):');
+  Object.entries(results.typeScores).forEach(([k, v]) => {
+    lines.push(`  ${TYPE_LABELS[k]}: ${v.toFixed(1)}`);
+  });
+  lines.push('');
+  lines.push('Domain breakdown (weighted, out of 8):');
+  Object.entries(results.domainScores).forEach(([k, v]) => {
+    lines.push(`  ${DOMAINS[k].label}: ${v.toFixed(1)}`);
+  });
+
+  if (mode === 'full') {
+    lines.push('');
+    lines.push('───────────────────────────────────');
+    lines.push('Card-by-card answers');
+    lines.push('───────────────────────────────────');
+    // List each card that was answered, with its answer
+    state.cardOrder.forEach(cardId => {
+      const card = CARDS.find(c => c.id === cardId);
+      const answer = state.answers[cardId];
+      if (!card || !answer) return;
+      const answerLabel = answer === 'yes' ? 'Yes'
+        : answer === 'sometimes' ? 'Sometimes'
+        : answer === 'no' ? 'Not Me'
+        : 'I don\u2019t know yet';
+      lines.push(`[${answerLabel}] ${card.text}`);
+    });
+  } else {
+    lines.push('');
+    lines.push('Individual card responses kept private.');
+  }
+
+  lines.push('');
+  lines.push('═══════════════════════════════════');
+  lines.push('For Tranquil Edge Retreat facilitators only.');
+  return lines.join('\n');
+}
+
+function submitShare() {
+  const results = computeResults();
+  const body = buildSummary(results, state.shareMode);
+  const subject = encodeURIComponent(`Pre-Retreat Reflection: ${state.name}`);
+  const mailto = `mailto:${FACILITATOR_EMAIL}?subject=${subject}&body=${encodeURIComponent(body)}`;
+  window.location.href = mailto;
+
+  // Give the email client a moment to open, then mark the button as sent.
+  setTimeout(() => {
+    const btn = document.getElementById('send-btn');
+    if (btn) {
+      btn.textContent = 'Sent';
+      btn.disabled = true;
+    }
+  }, 600);
+}
+
+window.goToIdentity = goToIdentity;
+window.goBackToWelcome = goBackToWelcome;
+window.confirmIdentity = confirmIdentity;
+window.goToSwipe = goToSwipe;
+window.answerCard = answerCard;
+window.goBackOneCard = goBackOneCard;
+window.selectShare = selectShare;
+window.submitShare = submitShare;
+window.resetState = resetState;
+window.render = render;
+
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Karmic Audit · Tranquil Edge Retreat</title>
+<style>
+  :root {
+    --paper-bg: #0a0a0c;
+    --paper-bg-soft: #14141a;
+    --paper-card: #1b1b24;
+    --paper: #e8e2d5;
+    --paper-dim: #a8a294;
+    --paper-faded: #6d6859;
+    --ember: #d4884a;
+    --ember-bright: #e89952;
+    --ember-deep: #b25f1f;
+    --gold: #c4a560;
+    --gold-soft: #9a7a40;
+    --ink: #1a1a20;
+    --serif-display: 'Cormorant Garamond', 'Garamond', 'Times New Roman', serif;
+    --serif-body: 'Garamond', 'Times New Roman', serif;
+    --serif-small-caps: 'Cormorant SC', 'Trajan Pro', 'Times New Roman', serif;
+  }
+
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Cormorant+SC:wght@400;500&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: var(--paper-bg);
+    color: var(--paper);
+    font-family: var(--serif-body);
+    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  .topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid rgba(196, 165, 96, 0.15);
+    font-family: var(--serif-small-caps);
+    letter-spacing: 0.2em;
+    font-size: 0.78rem;
+    color: var(--paper-dim);
+    text-transform: uppercase;
+  }
+
+  .topbar .mark { color: var(--ember); }
+
+  .stage {
+    flex: 1;
+    width: 100%;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  .view { animation: fadeIn 0.4s ease-out; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .eyebrow {
+    text-align: center;
+    font-family: var(--serif-small-caps);
+    font-size: 0.78rem;
+    letter-spacing: 0.3em;
+    color: var(--ember);
+    text-transform: uppercase;
+    margin-bottom: 0.8rem;
+  }
+
+  h1.title {
+    font-family: var(--serif-display);
+    font-size: clamp(2rem, 6vw, 3.2rem);
+    text-align: center;
+    line-height: 1.1;
+    margin-bottom: 0.8rem;
+    color: var(--paper);
+    font-weight: 500;
+  }
+
+  .subtitle {
+    text-align: center;
+    font-style: italic;
+    color: var(--gold);
+    font-family: var(--serif-display);
+    font-size: clamp(1.05rem, 2.5vw, 1.3rem);
+    margin-bottom: 2.4rem;
+  }
+
+  p {
+    margin-bottom: 1.2rem;
+    font-size: 1.08rem;
+    color: var(--paper);
+  }
+
+  p em { color: var(--ember-bright); font-style: italic; }
+
+  .ornament {
+    text-align: center;
+    color: var(--gold-soft);
+    letter-spacing: 0.4em;
+    margin: 2rem 0;
+    font-size: 0.9rem;
+  }
+
+  .meta {
+    text-align: center;
+    font-family: var(--serif-small-caps);
+    letter-spacing: 0.25em;
+    color: var(--paper-faded);
+    font-size: 0.85rem;
+    margin: 1.5rem 0;
+  }
+
+  .btn-row {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+    margin: 2rem 0;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    background: transparent;
+    color: var(--ember);
+    border: 1px solid var(--ember);
+    padding: 0.95rem 2.5rem;
+    font-family: var(--serif-small-caps);
+    font-size: 0.92rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-radius: 2px;
+  }
+
+  .btn:hover:not(:disabled) {
+    background: rgba(212, 136, 74, 0.1);
+    color: var(--ember-bright);
+  }
+
+  .btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    border-color: var(--paper-faded);
+    color: var(--paper-faded);
+  }
+
+  .btn-secondary {
+    color: var(--paper-dim);
+    border-color: var(--paper-faded);
+  }
+
+  .btn-secondary:hover:not(:disabled) {
+    color: var(--paper);
+    border-color: var(--paper-dim);
+    background: rgba(168, 162, 148, 0.05);
+  }
+
+  /* Identity form */
+  .form-block {
+    max-width: 460px;
+    margin: 2rem auto;
+  }
+  .field {
+    margin-bottom: 1.4rem;
+  }
+  .field label {
+    display: block;
+    font-family: var(--serif-small-caps);
+    font-size: 0.78rem;
+    letter-spacing: 0.25em;
+    color: var(--ember);
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+  .field input {
+    width: 100%;
+    background: var(--paper-bg-soft);
+    border: 1px solid rgba(196, 165, 96, 0.25);
+    color: var(--paper);
+    padding: 0.85rem 1rem;
+    font-family: var(--serif-body);
+    font-size: 1.05rem;
+    border-radius: 2px;
+  }
+  .field input:focus {
+    outline: none;
+    border-color: var(--ember);
+  }
+
+  /* Domain selection */
+  .domain-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.9rem;
+    margin: 2rem 0;
+  }
+
+  @media (min-width: 600px) {
+    .domain-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .domain-card {
+    background: var(--paper-card);
+    border: 1px solid rgba(196, 165, 96, 0.2);
+    padding: 1.4rem 1.5rem;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: all 0.2s ease;
+    position: relative;
+  }
+
+  .domain-card:hover {
+    border-color: var(--ember);
+    transform: translateY(-1px);
+  }
+
+  .domain-card.completed {
+    border-color: var(--gold-soft);
+    background: rgba(154, 122, 64, 0.08);
+  }
+
+  .domain-card .domain-number {
+    font-family: var(--serif-small-caps);
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    color: var(--ember);
+    text-transform: uppercase;
+    margin-bottom: 0.3rem;
+  }
+
+  .domain-card .domain-name {
+    font-family: var(--serif-display);
+    font-size: 1.4rem;
+    color: var(--paper);
+    margin-bottom: 0.4rem;
+    font-weight: 500;
+  }
+
+  .domain-card .domain-desc {
+    font-size: 0.92rem;
+    color: var(--paper-dim);
+    line-height: 1.5;
+  }
+
+  .domain-card .completed-badge {
+    position: absolute;
+    top: 0.8rem;
+    right: 1rem;
+    font-family: var(--serif-small-caps);
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    text-transform: uppercase;
+  }
+
+  /* Audit page */
+  .audit-domain-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(196, 165, 96, 0.15);
+  }
+
+  .question {
+    margin-bottom: 1.5rem;
+  }
+
+  .question-number {
+    font-family: var(--serif-small-caps);
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    color: var(--ember);
+    text-transform: uppercase;
+    margin-bottom: 0.3rem;
+  }
+
+  .question-text {
+    font-family: var(--serif-display);
+    font-size: 1.2rem;
+    color: var(--paper);
+    margin-bottom: 0.8rem;
+    font-style: italic;
+    line-height: 1.4;
+  }
+
+  .answer-input {
+    width: 100%;
+    background: var(--paper-bg-soft);
+    border: 1px solid rgba(196, 165, 96, 0.2);
+    color: var(--paper);
+    padding: 0.85rem 1rem;
+    font-family: var(--serif-body);
+    font-size: 1.02rem;
+    line-height: 1.5;
+    border-radius: 2px;
+    resize: vertical;
+    min-height: 100px;
+  }
+
+  .answer-input:focus {
+    outline: none;
+    border-color: var(--ember);
+  }
+
+  .save-status {
+    text-align: center;
+    font-family: var(--serif-small-caps);
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    color: var(--paper-faded);
+    margin: 1rem 0;
+    text-transform: uppercase;
+    height: 1rem;
+    transition: opacity 0.3s ease;
+  }
+
+  .save-status.visible { color: var(--gold-soft); }
+
+  /* Privacy line */
+  .privacy-note {
+    font-size: 0.92rem;
+    color: var(--paper-dim);
+    font-style: italic;
+    text-align: center;
+    margin: 1.5rem 0;
+  }
+
+  .footer-strip {
+    border-top: 1px solid rgba(196, 165, 96, 0.15);
+    padding: 1.2rem 1.5rem;
+    text-align: center;
+    font-family: var(--serif-small-caps);
+    font-size: 0.72rem;
+    letter-spacing: 0.3em;
+    color: var(--paper-faded);
+    text-transform: uppercase;
+  }
+
+  /* Back link */
+  .back-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    color: var(--paper-dim);
+    cursor: pointer;
+    font-family: var(--serif-small-caps);
+    font-size: 0.78rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+  .back-link:hover { color: var(--ember); }
+
+  /* Print stylesheet */
+  @media print {
+    @page { margin: 0.75in; }
+
+    body, html {
+      background: white !important;
+      color: black !important;
+      font-size: 11pt;
+    }
+    .topbar, .footer-strip, .btn-row, .back-link, .save-status, .privacy-note,
+    .domain-grid, .meta, .ornament {
+      display: none !important;
+    }
+    .stage {
+      max-width: 100% !important;
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+    .view { animation: none !important; }
+    .title {
+      font-size: 22pt !important;
+      color: black !important;
+      margin-bottom: 0.3in !important;
+      page-break-after: avoid;
+    }
+    .subtitle {
+      color: #555 !important;
+      font-size: 11pt !important;
+      margin-bottom: 0.4in !important;
+      page-break-after: avoid;
+    }
+    .eyebrow {
+      color: #888 !important;
+      font-size: 8pt !important;
+      letter-spacing: 0.25em;
+      margin-bottom: 0.1in !important;
+    }
+    p {
+      color: black !important;
+      font-size: 11pt !important;
+      margin-bottom: 0.12in !important;
+    }
+    .question {
+      page-break-inside: avoid;
+      margin-bottom: 0.3in !important;
+    }
+    .question-number {
+      color: #999 !important;
+      font-size: 9pt !important;
+    }
+    .question-text {
+      color: black !important;
+      font-size: 12pt !important;
+      font-style: italic;
+      margin-bottom: 0.15in !important;
+    }
+    .answer-input {
+      border: none !important;
+      border-bottom: 1px solid #999 !important;
+      background: white !important;
+      color: black !important;
+      min-height: 1.2in !important;
+      padding: 0 !important;
+      font-size: 11pt !important;
+    }
+    /* For the print-blank view: writing lines instead of textareas */
+    .print-writing-lines {
+      margin-top: 0.1in;
+      margin-bottom: 0.3in;
+    }
+    .print-writing-lines .line {
+      border-bottom: 1px solid #aaa;
+      height: 0.32in;
+    }
+    .print-domain-section {
+      page-break-before: always;
+    }
+    .print-domain-section:first-of-type {
+      page-break-before: avoid;
+    }
+    .print-only { display: block !important; }
+    .no-print { display: none !important; }
+  }
+  .print-only { display: none; }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <span><span class="mark">◆</span> Tranquil Edge Retreat</span>
+  <span>Karmic Audit</span>
+</header>
+
+<div class="stage" id="stage"></div>
+
+<footer class="footer-strip">
+  Filipino Martial Arts Retreat · September 10–13, 2026 · River Mountain, PA
+</footer>
+
+<script>
+/* ============================================================
+   CONFIGURATION. Edit before deploying.
+   ============================================================ */
+
+// Date when the audit opens. Before this, the welcome screen
+// shows "Opens [date]" and the Begin button is disabled.
+const RELEASE_DATE = new Date('2026-06-01T00:00:00');
+
+// When the audit should be completed by. After this, the welcome
+// notes the window has passed but still allows access.
+const DUE_DATE = new Date('2026-08-31T23:59:59');
+
+// Start of the retreat.
+const RETREAT_DATE = new Date('2026-09-10T00:00:00');
+
+// localStorage key for save and resume. Bump version to reset.
+const STORAGE_KEY = 'tranquil-edge-audit-v1';
+
+/* ============================================================
+   DOMAINS AND QUESTIONS
+   ============================================================ */
+
+const DOMAINS = [
+  {
+    id: 'relationships',
+    label: 'Relationships',
+    desc: 'Romantic, family, close friendships. The patterns of closeness.',
+    questions: [
+      'Looking across your closest relationships, past and present, what kind of person have you been drawn to again and again? What makes them feel familiar?',
+      'When closeness with someone gets harder, what do you tend to do? Pull away, push them away, get pulled away from, freeze, fight, shrink, perform, leave, or stay too long?',
+      'What pattern, conflict, or arc keeps repeating in your close relationships? Look across people, or within one long relationship.',
+      'What did the people who raised you teach you about love, by what they said and by what they did?',
+      'What are you most afraid of in close relationships? Be specific.',
+      'In your closest relationships, are you usually the one who shows up more, or less, than the other person? What does that say about what you are protecting?',
+      'What do you believe about love deep down, the belief you would not say out loud?',
+      'If a pattern in your relationships is also offering you something, even a hard kind of teaching, what is it?',
+    ],
+  },
+  {
+    id: 'money',
+    label: 'Money and Earning',
+    desc: 'Earning, keeping, spending, deserving. What you carry about money.',
+    questions: [
+      'What is your honest relationship with money right now, in your own words?',
+      'Is there a specific income, salary, or savings number you keep returning to, or that you cannot seem to pass?',
+      'What did the people who raised you teach you about money, by what they said and by what they did?',
+      'Do you believe you deserve to live with financial ease? Why or why not?',
+      'What would happen, in your relationships and your life, if you earned more than your parents ever did?',
+      'What pattern do you repeat with earning, spending, asking for more, or losing money?',
+      'What belief about money is quietly running your life right now?',
+      'What would real financial ease feel like in your body, not just in your bank account?',
+    ],
+  },
+  {
+    id: 'body',
+    label: 'Health and Body',
+    desc: 'Your physical body. What it holds. What it has been trying to tell you.',
+    questions: [
+      'What chronic or recurring health issues do you have right now?',
+      'Do any of your patterns of pain, illness, or struggle mirror your parents\u2019 or grandparents\u2019 health struggles?',
+      'When do you tend to get sick or flare up? Is there a pattern in timing, season, or trigger?',
+      'What emotions do you tend to suppress or push past, and where do they live in your body?',
+      'Where in your body do you hold tension, pain, numbness, or armor?',
+      'If your body could speak directly to you right now, what would it say?',
+      'What would real healing require you to face that you have been avoiding?',
+      'What would full vitality and ease in your body actually feel like?',
+    ],
+  },
+  {
+    id: 'purpose',
+    label: 'Purpose and Work',
+    desc: 'The work you do, the work you wish you were doing, what you let yourself try.',
+    questions: [
+      'What work are you doing now, and how does it actually fit who you are?',
+      'What did you want to be or do when you were a child?',
+      'What gifts do you have that you are not using?',
+      'What stops you from pursuing the work you actually want?',
+      'What career, salary, or visibility ceiling did the people who raised you have? Are you allowed, in your own internal sense, to surpass it?',
+      'Do you make moves that cost you right before a raise, promotion, or breakthrough?',
+      'What would you do if you knew you could not fail and no one would judge you?',
+      'What do you want to create or contribute with your one life?',
+    ],
+  },
+  {
+    id: 'family',
+    label: 'Family and Ancestry',
+    desc: 'The family that shaped you and the line behind them. What came down to you.',
+    questions: [
+      'What unresolved feelings do you have toward the person, or people, who mothered you? If more than one woman raised you, or none did, name what is true for you.',
+      'What unresolved feelings do you have toward the person, or people, who fathered you? If more than one man raised you, or none did, name what is true for you.',
+      'What role did you take on in the family that raised you? The caretaker, the hero, the scapegoat, the invisible one, the peacemaker, the one who held it together?',
+      'What pattern from the family that raised you, or from a family line you came from, are you living out now even when you can see it?',
+      'What silences, secrets, or unspoken rules shaped the family that raised you? What was never said out loud?',
+      'What weight do you carry from the family that raised you, or from a line you came from, that did not start with you?',
+      'Are you the one in your family whose work seems to be ending the cycle? What does that role cost you?',
+      'What would your life look like, in concrete detail, if no one in your family could see, comment on, or judge it?',
+    ],
+  },
+  {
+    id: 'self',
+    label: 'Self and Identity',
+    desc: 'Your relationship with yourself. Your worth. The parts you hide and the parts you show.',
+    questions: [
+      'Do you believe, in your body and not just your mind, that you are worthy of love, success, and happiness?',
+      'What did you learn about your worth as a child, by what was said and by what was not?',
+      'Can you say no, set a limit, or take up space without guilt?',
+      'What parts of yourself have you rejected, hidden, or made small in order to be loved?',
+      'How do you treat yourself when you are alone, when no one is watching?',
+      'Do you punish yourself for mistakes or perceived failures? In what specific ways?',
+      'What wound from when you were young is still active in your life now?',
+      'If you truly believed you mattered, what specifically would change in your week starting tomorrow?',
+    ],
+  },
+  {
+    id: 'spirit',
+    label: 'Spirit and Connection',
+    desc: 'Your sense of connection to something larger. Faith, meaning, practice, wounds.',
+    questions: [
+      'Do you feel connected to something larger than yourself, however you name it?',
+      'What spiritual or religious beliefs did you inherit from your family or culture?',
+      'What spiritual or religious wound do you carry that has not been tended?',
+      'Do you use spiritual practice to avoid hard emotions or accountability?',
+      'When did you lose your sense of connection, if you have lost it? What happened?',
+      'What does faith mean to you now, separate from what you were taught?',
+      'What is your relationship with prayer, meditation, ritual, or quiet?',
+      'What would deep spiritual alignment feel like in your daily life?',
+    ],
+  },
+];
+
+/* ============================================================
+   STATE
+   ============================================================ */
+
+const DEFAULT_STATE = {
+  view: 'welcome',
+  // completed[domainId] = { completedAt: iso, answerCount: n }
+  completed: {},
+  // current draft (auto-saved)
+  current: null, // { domainId, answers: {0:'...'} }
+};
+
+function loadState() {
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) return { ...DEFAULT_STATE, ...JSON.parse(stored) };
+  } catch (e) { console.warn('load failed:', e); }
+  return { ...DEFAULT_STATE };
+}
+
+function saveState() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  } catch (e) { console.warn('save failed:', e); }
+}
+
+function resetAll() {
+  if (confirm('Clear everything you have written and start over? This cannot be undone.')) {
+    try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+    state = { ...DEFAULT_STATE };
+    render();
+  }
+}
+
+let state = loadState();
+
+/* ============================================================
+   UTILS
+   ============================================================ */
+
+function shortDate(d) {
+  return d.toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
+}
+
+function getDomain(id) {
+  return DOMAINS.find(d => d.id === id);
+}
+
+/* ============================================================
+   RENDERING
+   ============================================================ */
+
+const stage = document.getElementById('stage');
+
+function render() {
+  stage.innerHTML = '';
+  if (state.view === 'welcome') renderWelcome();
+  else if (state.view === 'select') renderDomainSelect();
+  else if (state.view === 'audit') renderAudit();
+  else if (state.view === 'review') renderReview();
+  else if (state.view === 'print') renderPrint();
+  else if (state.view === 'done') renderDone();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function renderWelcome() {
+  const view = document.createElement('div');
+  view.className = 'view';
+
+  const now = new Date();
+  const beforeRelease = now < RELEASE_DATE;
+  const completedCount = Object.keys(state.completed).length;
+  const hasDraft = state.current && state.current.domainId;
+
+  let metaLine;
+  if (beforeRelease) {
+    metaLine = `Opens ${shortDate(RELEASE_DATE)}`;
+  } else if (now > DUE_DATE) {
+    metaLine = `Open since ${shortDate(RELEASE_DATE)}. Use it whenever you are ready.`;
+  } else {
+    metaLine = `Available through the retreat`;
+  }
+
+  let buttonRowHtml;
+  if (beforeRelease) {
+    buttonRowHtml = `<button class="btn" disabled>Opens ${shortDate(RELEASE_DATE)}</button>`;
+  } else if (hasDraft) {
+    buttonRowHtml = `
+      <button class="btn" onclick="continueDraft()">Continue ${getDomain(state.current.domainId).label}</button>
+      <button class="btn btn-secondary" onclick="goToSelect()">Pick a different domain</button>
+    `;
+  } else if (completedCount > 0) {
+    buttonRowHtml = `
+      <button class="btn" onclick="goToSelect()">Audit another domain</button>
+      <button class="btn btn-secondary" onclick="goToPrint()">Print blank to fill by hand</button>
+      <button class="btn btn-secondary" onclick="resetAll()">Start over</button>
+    `;
+  } else {
+    buttonRowHtml = `
+      <button class="btn" onclick="goToSelect()">Use this app</button>
+      <button class="btn btn-secondary" onclick="goToPrint()">Print blank to fill by hand</button>
+    `;
+  }
+
+  view.innerHTML = `
+    <div class="eyebrow">Before the Retreat</div>
+    <h1 class="title">The Karmic Audit</h1>
+    <p class="subtitle">For your eyes only.</p>
+
+    <p>This audit is private. Your facilitators will not see what you write here. It is not submitted, not stored on a server, not shared with anyone. It is for you.</p>
+
+    <p>You have two ways to do this. Use this web app, or print the audit and fill it in by hand. Both work. Pick whichever feels safer to you.</p>
+
+    <p><strong>If you use the app:</strong> You will pick one domain at a time and write through eight questions about it. The app saves your writing to your own browser so you can leave and return. When you finish a domain, you can print what you wrote or just close the tab. Your writing stays with you.</p>
+
+    <p><strong>If you print and fill by hand:</strong> The audit comes out as a clean printable document, all seven domains, ready to write in. Bring it to the retreat or keep it at home. Up to you.</p>
+
+    <div class="meta">${metaLine}</div>
+
+    <div class="btn-row">
+      ${buttonRowHtml}
+    </div>
+
+    <p class="privacy-note">Nothing you write here is sent to your facilitators. The audit is yours.</p>
+  `;
+  stage.appendChild(view);
+}
+
+function renderDomainSelect() {
+  const view = document.createElement('div');
+  view.className = 'view';
+
+  const cards = DOMAINS.map((d, idx) => {
+    const isCompleted = state.completed[d.id];
+    const isDraft = state.current && state.current.domainId === d.id;
+    const cls = isCompleted ? 'domain-card completed' : 'domain-card';
+    const badge = isCompleted ? '<div class="completed-badge">Complete</div>' : (isDraft ? '<div class="completed-badge">In progress</div>' : '');
+    return `
+      <div class="${cls}" onclick="startDomain('${d.id}')">
+        ${badge}
+        <div class="domain-number">Domain ${idx + 1}</div>
+        <div class="domain-name">${d.label}</div>
+        <div class="domain-desc">${d.desc}</div>
+      </div>
+    `;
+  }).join('');
+
+  const completedCount = Object.keys(state.completed).length;
+  const remaining = DOMAINS.length - completedCount;
+
+  view.innerHTML = `
+    <a class="back-link" onclick="goToWelcome()">← Back</a>
+    <div class="eyebrow">Pick a domain</div>
+    <h1 class="title" style="font-size: clamp(1.8rem, 4.5vw, 2.6rem);">Which one is loudest?</h1>
+    <p class="subtitle">You can come back for the others. There is no requirement to do them all.</p>
+
+    <p style="text-align: center;">Choose the domain you are most ready to look at right now. ${completedCount > 0 ? `You have completed ${completedCount} so far. ${remaining} remain available.` : ''}</p>
+
+    <div class="domain-grid">
+      ${cards}
+    </div>
+
+    <p class="privacy-note">Pick the one that is calling to you. Trust that. The others wait.</p>
+  `;
+  stage.appendChild(view);
+}
+
+function renderAudit() {
+  const view = document.createElement('div');
+  view.className = 'view';
+
+  const domain = getDomain(state.current.domainId);
+  const answers = state.current.answers || {};
+
+  const questionsHtml = domain.questions.map((q, idx) => `
+    <div class="question">
+      <div class="question-number">Question ${idx + 1} of ${domain.questions.length}</div>
+      <div class="question-text">${q}</div>
+      <textarea
+        class="answer-input"
+        data-question-idx="${idx}"
+        oninput="updateAnswer(${idx}, this.value)"
+        placeholder="Write what is true. Not what sounds good."
+      >${escapeHtml(answers[idx] || '')}</textarea>
+    </div>
+  `).join('');
+
+  view.innerHTML = `
+    <a class="back-link" onclick="confirmLeave()">← Back to domains</a>
+    <div class="audit-domain-header">
+      <div class="eyebrow">Auditing</div>
+      <h1 class="title">${domain.label}</h1>
+      <p class="subtitle">${domain.desc}</p>
+    </div>
+
+    <p style="text-align: center; font-style: italic; color: var(--paper-dim);">There is no length to aim for. A sentence is enough. A paragraph is enough. Whatever is true.</p>
+
+    <div class="ornament">◆ ◇ ◆</div>
+
+    <div id="questions-container">
+      ${questionsHtml}
+    </div>
+
+    <div class="save-status" id="save-status">&nbsp;</div>
+
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="confirmLeave()">Save and leave</button>
+      <button class="btn" onclick="goToReview()">Review what you wrote</button>
+    </div>
+
+    <p class="privacy-note">Your writing is saved on this device automatically. You can leave and return anytime.</p>
+  `;
+  stage.appendChild(view);
+}
+
+function renderReview() {
+  const view = document.createElement('div');
+  view.className = 'view';
+
+  const domain = getDomain(state.current.domainId);
+  const answers = state.current.answers || {};
+
+  const answeredCount = domain.questions.filter((_, idx) => (answers[idx] || '').trim().length > 0).length;
+
+  const questionsHtml = domain.questions.map((q, idx) => {
+    const ans = (answers[idx] || '').trim();
+    const displayAns = ans ? escapeHtml(ans).replace(/\n/g, '<br>') : '<span style="color: var(--paper-faded); font-style: italic;">(left blank)</span>';
+    return `
+      <div class="question">
+        <div class="question-number">Question ${idx + 1}</div>
+        <div class="question-text" style="font-size: 1.05rem;">${q}</div>
+        <div style="background: var(--paper-bg-soft); padding: 1rem; border-left: 2px solid var(--gold-soft); margin-top: 0.5rem; white-space: pre-wrap;">${displayAns}</div>
+      </div>
+    `;
+  }).join('');
+
+  view.innerHTML = `
+    <a class="back-link" onclick="backToAudit()">← Back to edit</a>
+    <div class="eyebrow">Review what you wrote</div>
+    <h1 class="title">${domain.label}</h1>
+    <p class="subtitle">Read it over. Mark it complete when you are ready.</p>
+
+    <p style="text-align: center;">You wrote answers to <strong>${answeredCount} of ${domain.questions.length}</strong> questions. Leaving questions blank is fine if that is what is true.</p>
+
+    <div class="ornament">◆ ◇ ◆</div>
+
+    ${questionsHtml}
+
+    <div class="ornament">◆ ◇ ◆</div>
+
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="backToAudit()">Keep editing</button>
+      <button class="btn" onclick="finishDomain()" id="finish-btn">Mark this domain complete</button>
+    </div>
+
+    <p class="privacy-note">Your writing stays on this device. Nothing is sent. You can print or save it after marking it complete.</p>
+    <p class="privacy-note no-print"><button class="btn btn-secondary" onclick="window.print()" style="font-size: 0.78rem;">Print what you wrote now</button></p>
+  `;
+  stage.appendChild(view);
+}
+
+function renderDone() {
+  const view = document.createElement('div');
+  view.className = 'view';
+
+  const completedCount = Object.keys(state.completed).length;
+  const remaining = DOMAINS.length - completedCount;
+
+  const justFinished = state.justFinished ? getDomain(state.justFinished) : null;
+  const justFinishedId = state.justFinished;
+  delete state.justFinished;
+  saveState();
+
+  const finishedTitle = justFinished
+    ? `Your ${justFinished.label.toLowerCase()} audit is complete.`
+    : 'Your audit is complete.';
+
+  const printSaveButtons = justFinishedId ? `
+    <div class="btn-row">
+      <button class="btn" onclick="printFilledDomain('${justFinishedId}')">Print what you wrote</button>
+      <button class="btn btn-secondary" onclick="downloadFilledDomain('${justFinishedId}')">Save as text file</button>
+    </div>
+  ` : '';
+
+  view.innerHTML = `
+    <div class="eyebrow">Saved</div>
+    <h1 class="title">Salamat.</h1>
+    <p class="subtitle">${finishedTitle}</p>
+
+    <p style="text-align: center;">Your writing is saved on this device. Nothing has been sent to anyone. What you write stays with you.</p>
+
+    ${printSaveButtons}
+
+    <div class="ornament">◆ ◇ ◆</div>
+
+    <p style="text-align: center;">You have completed <strong>${completedCount}</strong> of seven domains. ${remaining > 0 ? `${remaining} remain available if you want to audit another.` : 'You have completed all seven.'}</p>
+
+    <p style="text-align: center;">There is no requirement to do more. What you just wrote is enough on its own. The workbook at the retreat will hold space for the rest, in your own time.</p>
+
+    <div class="btn-row">
+      ${remaining > 0 ? '<button class="btn" onclick="goToSelect()">Audit another domain</button>' : ''}
+      <button class="btn btn-secondary" onclick="goToWelcome()">Close</button>
+    </div>
+
+    <p class="privacy-note">If you close this tab, your writing stays in your browser. You can return anytime to print or save it again.</p>
+  `;
+  stage.appendChild(view);
+}
+
+function renderPrint() {
+  const view = document.createElement('div');
+  view.className = 'view';
+
+  const domainsHtml = DOMAINS.map((d, idx) => {
+    const questionsHtml = d.questions.map((q, qIdx) => `
+      <div class="question">
+        <div class="question-number">Question ${qIdx + 1} of ${d.questions.length}</div>
+        <div class="question-text">${q}</div>
+        <div class="print-writing-lines">
+          <div class="line"></div>
+          <div class="line"></div>
+          <div class="line"></div>
+          <div class="line"></div>
+          <div class="line"></div>
+        </div>
+      </div>
+    `).join('');
+
+    return `
+      <div class="print-domain-section">
+        <div class="eyebrow">Domain ${idx + 1}</div>
+        <h1 class="title" style="font-size: clamp(1.8rem, 4vw, 2.6rem);">${d.label}</h1>
+        <p class="subtitle">${d.desc}</p>
+        ${questionsHtml}
+      </div>
+    `;
+  }).join('');
+
+  view.innerHTML = `
+    <a class="back-link no-print" onclick="goToWelcome()">← Back</a>
+
+    <div class="no-print" style="background: rgba(196, 165, 96, 0.08); border: 1px solid rgba(196, 165, 96, 0.3); padding: 1.2rem 1.5rem; border-radius: 3px; margin-bottom: 2rem;">
+      <p style="font-family: var(--serif-small-caps); font-size: 0.75rem; letter-spacing: 0.25em; color: var(--ember); margin-bottom: 0.5rem; text-transform: uppercase;">Printable version</p>
+      <p style="margin-bottom: 0.8rem;">Your printer dialog should have opened. If it did not, click the button below.</p>
+      <div class="btn-row" style="margin: 0.5rem 0 0;">
+        <button class="btn" onclick="window.print()">Open print dialog</button>
+      </div>
+    </div>
+
+    <div class="print-only" style="text-align: center; margin-bottom: 0.4in;">
+      <div style="font-family: var(--serif-small-caps); font-size: 10pt; letter-spacing: 0.3em; color: #666; text-transform: uppercase;">Tranquil Edge Retreat</div>
+      <h1 class="title" style="font-size: 28pt; margin: 0.2in 0 0.1in;">The Karmic Audit</h1>
+      <p style="font-style: italic; color: #555; font-size: 11pt;">A reflection worksheet. For your eyes only.</p>
+      <p style="font-size: 10pt; color: #666; margin-top: 0.3in;">Filipino Martial Arts Retreat · September 10-13, 2026</p>
+    </div>
+
+    ${domainsHtml}
+  `;
+  stage.appendChild(view);
+}
+
+/* ============================================================
+   ACTIONS
+   ============================================================ */
+
+function goToWelcome() {
+  state.view = 'welcome';
+  saveState();
+  render();
+}
+
+function goToSelect() {
+  state.view = 'select';
+  saveState();
+  render();
+}
+
+function goToPrint() {
+  state.view = 'print';
+  saveState();
+  render();
+  // Trigger print dialog after a moment so the view renders first
+  setTimeout(() => {
+    window.print();
+  }, 400);
+}
+
+function startDomain(domainId) {
+  // Already completed. Let them re-audit if they want.
+  if (state.completed[domainId]) {
+    if (!confirm('You have already completed this domain. Audit it again? Your previous writing will be replaced.')) {
+      return;
+    }
+  }
+  state.current = {
+    domainId,
+    answers: (state.current && state.current.domainId === domainId) ? state.current.answers : {},
+  };
+  state.view = 'audit';
+  saveState();
+  render();
+}
+
+function continueDraft() {
+  if (!state.current) return;
+  state.view = 'audit';
+  saveState();
+  render();
+}
+
+let saveTimer = null;
+function updateAnswer(idx, value) {
+  if (!state.current) return;
+  state.current.answers[idx] = value;
+  showSaveStatus('Saving...');
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(() => {
+    saveState();
+    showSaveStatus('Saved');
+    setTimeout(() => showSaveStatus(''), 1500);
+  }, 400);
+}
+
+function showSaveStatus(text) {
+  const el = document.getElementById('save-status');
+  if (!el) return;
+  el.textContent = text || '\u00A0';
+  el.classList.toggle('visible', !!text);
+}
+
+function confirmLeave() {
+  if (confirm('Save your writing and return to the domain list? You can come back to this anytime.')) {
+    saveState();
+    state.view = 'select';
+    saveState();
+    render();
+  }
+}
+
+function backToAudit() {
+  state.view = 'audit';
+  saveState();
+  render();
+}
+
+function goToReview() {
+  state.view = 'review';
+  saveState();
+  render();
+}
+
+function finishDomain() {
+  if (!state.current) return;
+  const domain = getDomain(state.current.domainId);
+  const answers = state.current.answers || {};
+
+  // Mark domain as completed (locally only - this stays private)
+  state.completed[state.current.domainId] = {
+    completedAt: new Date().toISOString(),
+    answerCount: domain.questions.filter((_, idx) => (answers[idx] || '').trim().length > 0).length,
+    // Keep the answers in completed state so they can re-print later if they want
+    answers: { ...answers },
+  };
+  state.justFinished = state.current.domainId;
+  state.current = null;
+  saveState();
+
+  state.view = 'done';
+  saveState();
+  render();
+}
+
+function printFilledDomain(domainId) {
+  // Temporarily set up the view as a "review" of the completed domain
+  // so the print stylesheet renders the answers
+  const domain = getDomain(domainId);
+  const completed = state.completed[domainId];
+  if (!domain || !completed) return;
+
+  state.current = { domainId, answers: completed.answers || {} };
+  state.view = 'review';
+  saveState();
+  render();
+  setTimeout(() => {
+    window.print();
+  }, 400);
+}
+
+function downloadFilledDomain(domainId) {
+  const domain = getDomain(domainId);
+  const completed = state.completed[domainId];
+  if (!domain || !completed) return;
+
+  const answers = completed.answers || {};
+  const lines = [];
+  lines.push('Tranquil Edge Retreat');
+  lines.push('Karmic Audit');
+  lines.push(`Domain: ${domain.label}`);
+  lines.push(`Completed: ${new Date(completed.completedAt).toLocaleString('en-US', { dateStyle: 'long', timeStyle: 'short' })}`);
+  lines.push('');
+  lines.push('═══════════════════════════════════');
+  lines.push('');
+
+  domain.questions.forEach((q, idx) => {
+    const ans = (answers[idx] || '').trim();
+    lines.push(`Q${idx + 1}: ${q}`);
+    lines.push('');
+    lines.push(ans || '(left blank)');
+    lines.push('');
+    lines.push('---');
+    lines.push('');
+  });
+
+  const blob = new Blob([lines.join('\n')], { type: 'text/plain;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `karmic-audit-${domain.id}.txt`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 100);
+}
+
+function escapeHtml(str) {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+// Initial render
+render();
+</script>
+
+</body>
+</html>
