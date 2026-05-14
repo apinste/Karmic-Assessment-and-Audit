@@ -531,6 +531,20 @@
 
   .hidden { display: none !important; }
 
+  .privacy-note {
+    font-size: 0.95rem;
+    font-style: italic;
+    color: var(--paper-dim);
+    text-align: center;
+    line-height: 1.55;
+    margin: 1.6rem auto 1.2rem;
+    padding: 1rem 1.2rem;
+    border-top: 1px solid var(--ink-line);
+    border-bottom: 1px solid var(--ink-line);
+    max-width: 540px;
+  }
+  .privacy-note strong { color: var(--paper); font-weight: 500; font-style: normal; }
+
   /* Arrive-first guided breathing + audio */
   .guide-row {
     display: flex;
@@ -895,6 +909,10 @@ function renderWelcome() {
     <p>This year we are also inviting you into a short, honest conversation with yourself before you arrive. To get to the warrior side of you, it helps to unravel a little of what is in the way first. Three nights cannot reset a life. There is no shortcut. But honest reflection is a place to start, and that is what these cards are for.</p>
 
     <div class="welcome-meta">${metaLine}</div>
+
+    <p class="privacy-note">
+      <strong>About your privacy.</strong> Your answers save to your own browser, not a server. When you finish, you choose what to share with the facilitators, and the email goes from your own device when you send it. There is no analytics, no tracking, and no third party in between.
+    </p>
 
     <div class="btn-row">
       ${buttonHtml}
