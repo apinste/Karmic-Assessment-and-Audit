@@ -219,69 +219,98 @@
   }
   .companion-link a:hover { color: var(--ember-bright); border-color: var(--ember-bright); }
 
-  /* Field-based form */
-  .name-block {
-    margin-bottom: 2.2rem;
-    padding-bottom: 1.6rem;
-    border-bottom: 1px solid var(--ink-line);
-  }
-  .name-input {
-    width: 100%;
+  /* The letter template: greeting, prose lead-ins, fill-in blanks, signoff. */
+  .letter-paper {
     background: var(--ink-deep);
     border: 1px solid var(--ink-line);
-    color: var(--paper);
-    font-family: var(--serif-display);
-    font-size: 1.35rem;
-    padding: 0.85rem 1rem;
+    padding: 2.4rem 2rem;
+    margin: 1.6rem 0;
     border-radius: 2px;
+    position: relative;
+  }
+  .letter-paper::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at top, rgba(196, 119, 58, 0.05), transparent 65%);
+    pointer-events: none;
+  }
+  .letter-greeting {
+    font-family: var(--serif-display);
+    font-size: 1.4rem;
+    color: var(--paper);
+    margin-bottom: 1.6rem;
+    display: flex;
+    align-items: baseline;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+  }
+  .letter-greeting .name-input {
+    flex: 1;
+    min-width: 10rem;
+    font-family: var(--serif-display);
+    font-size: 1.4rem;
+    background: transparent;
+    border: none;
+    border-bottom: 1px dashed var(--gold-deep);
+    color: var(--paper);
+    padding: 0.15rem 0.4rem;
+    font-style: italic;
     transition: border-color 0.2s ease, background 0.2s ease;
   }
-  .name-input:focus {
+  .letter-greeting .name-input:focus {
     outline: none;
-    border-color: var(--ember);
-    background: var(--ink-medium);
+    border-bottom-color: var(--ember);
+    background: rgba(196, 119, 58, 0.05);
   }
-  .name-input::placeholder { color: var(--paper-faded); font-style: italic; }
+  .letter-greeting .name-input::placeholder { color: var(--paper-faded); font-style: italic; }
 
-  .field-block {
-    margin-bottom: 1.6rem;
+  .letter-block {
+    margin-bottom: 1.4rem;
   }
-  .field-label {
-    font-family: var(--serif-display);
-    font-weight: 500;
-    font-size: 1.18rem;
-    color: var(--paper);
-    margin-bottom: 0.3rem;
-    line-height: 1.3;
-  }
-  .field-hint {
-    font-family: var(--serif-body);
-    font-size: 0.9rem;
-    color: var(--paper-dim);
-    margin-bottom: 0.5rem;
-    line-height: 1.5;
-  }
-  .field-area {
-    width: 100%;
-    background: var(--ink-deep);
-    border: 1px solid var(--ink-line);
-    color: var(--paper);
+  .letter-prompt {
     font-family: var(--serif-body);
     font-size: 1rem;
+    color: var(--paper-dim);
+    margin-bottom: 0.4rem;
+    font-style: italic;
+    line-height: 1.55;
+  }
+  .letter-blank {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px dashed var(--ink-line);
+    color: var(--paper);
+    font-family: var(--serif-body);
+    font-size: 1.02rem;
     line-height: 1.7;
-    padding: 0.85rem 1rem;
+    padding: 0.5rem 0.4rem;
     resize: vertical;
-    border-radius: 2px;
-    min-height: 4.5em;
+    min-height: 3.5em;
     transition: border-color 0.2s ease, background 0.2s ease;
   }
-  .field-area:focus {
+  .letter-blank:focus {
     outline: none;
-    border-color: var(--ember);
-    background: var(--ink-medium);
+    border-bottom-color: var(--ember);
+    background: rgba(196, 119, 58, 0.04);
   }
-  .field-area.large { min-height: 8em; }
-  .field-area::placeholder { color: var(--paper-faded); font-style: italic; }
+  .letter-blank.large { min-height: 7em; }
+  .letter-blank::placeholder { color: var(--paper-faded); font-style: italic; }
+
+  .letter-signoff {
+    margin-top: 1.8rem;
+    font-family: var(--serif-display);
+    font-style: italic;
+    font-size: 1.25rem;
+    color: var(--paper);
+  }
+
+  @media (max-width: 640px) {
+    .letter-paper { padding: 1.6rem 1.2rem; }
+    .letter-greeting { font-size: 1.2rem; }
+    .letter-greeting .name-input { font-size: 1.2rem; }
+  }
 
   .save-status {
     margin-top: 0.6rem;
@@ -446,7 +475,7 @@
     body::before, body::after { display: none !important; }
     .topbar, .bottombar, .btn-row, .back-link, .save-status,
     .privacy-note, .companion-link, .guide-row, .breath-visual,
-    .meta, .ornament, .field-block, .no-print,
+    .meta, .ornament, .letter-paper, .no-print,
     .view > p, .view > .eyebrow, .view > .title, .view > .subtitle {
       display: none !important;
     }
@@ -836,16 +865,15 @@ function renderWrite() {
     saveState();
   }
 
-  const fieldsHtml = FIELDS.map(f => `
-    <div class="field-block">
-      <div class="field-label">${escapeHtml(f.label)}</div>
-      <div class="field-hint">${escapeHtml(f.hint)}</div>
+  const blocksHtml = FIELDS.map(field => `
+    <div class="letter-block">
+      <div class="letter-prompt">${escapeHtml(LETTER_INTROS[field.key] || field.label)}</div>
       <textarea
-        class="field-area${f.large ? ' large' : ''}"
-        data-field="${f.key}"
-        placeholder="${escapeHtml(f.placeholder || '')}"
-        oninput="onFieldInput('${f.key}', this.value)"
-      >${escapeHtml(state.fields[f.key] || '')}</textarea>
+        class="letter-blank${field.large ? ' large' : ''}"
+        data-field="${field.key}"
+        placeholder="${escapeHtml(field.placeholder || field.hint || '')}"
+        oninput="onFieldInput('${field.key}', this.value)"
+      >${escapeHtml(state.fields[field.key] || '')}</textarea>
     </div>
   `).join('');
 
@@ -855,21 +883,25 @@ function renderWrite() {
     <h1 class="title">Fill in what is true.</h1>
     <p class="subtitle">No one else will read this.</p>
 
-    <p style="text-align: center; color: var(--paper-dim);">Answer one prompt at a time. Skip any that do not fit. Each box saves as you type. Take as long as you want.</p>
+    <p style="text-align: center; color: var(--paper-dim);">A letter to yourself. Type into each blank. Each one saves as you type. Skip any that do not fit.</p>
 
-    <div class="name-block">
-      <div class="field-label">Your name (or what you call yourself)</div>
-      <div class="field-hint">This is how the letter greets you: &ldquo;Dear ___,&rdquo;</div>
-      <input
-        type="text"
-        class="name-input"
-        placeholder="Type your name"
-        value="${escapeHtml(state.name || '')}"
-        oninput="onNameInput(this.value)"
-      >
+    <div class="letter-paper">
+      <div class="letter-greeting">
+        <span>Dear</span>
+        <input
+          type="text"
+          class="name-input"
+          placeholder="(your name)"
+          value="${escapeHtml(state.name || '')}"
+          oninput="onNameInput(this.value)"
+        >
+        <span>,</span>
+      </div>
+
+      ${blocksHtml}
+
+      <div class="letter-signoff">Me</div>
     </div>
-
-    ${fieldsHtml}
 
     <div class="save-status saved" id="save-status">Saved</div>
 
@@ -879,7 +911,7 @@ function renderWrite() {
     </div>
 
     <p class="privacy-note">
-      <strong>This stays with you.</strong> Each answer saves to your browser as you type. Nothing is sent. You can leave this tab and return later.
+      <strong>This stays with you.</strong> Each blank saves to your browser as you type. Nothing is sent. You can leave this tab and return later.
     </p>
 
     ${composedLetterHtml()}
