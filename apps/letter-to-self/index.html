@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Letter to Self · Tranquil Edge Retreat</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Marcellus+SC&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink-deepest: #0a0a0c;
+    --ink-deep: #14141a;
+    --ink-medium: #1f1f28;
+    --ink-soft: #2a2a35;
+    --ink-line: #3a3a47;
+    --paper: #e8e2d5;
+    --paper-soft: #ebe2d2;
+    --paper-dim: #a8a294;
+    --paper-faded: #c0b6a0;
+    --ember: #c4773a;
+    --ember-deep: #9a5a26;
+    --ember-bright: #d4884a;
+    --rust: #8b3a1f;
+    --gold: #c9a661;
+    --gold-deep: #9a7a40;
+    --serif-display: 'Cormorant Garamond', 'Garamond', serif;
+    --serif-small-caps: 'Marcellus SC', 'Cormorant SC', serif;
+    --serif-body: 'Lora', 'Garamond', serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: var(--ink-deepest);
+    color: var(--paper);
+    font-family: var(--serif-body);
+    font-size: 17px;
+    line-height: 1.7;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
+    pointer-events: none;
+    opacity: 0.06;
+    z-index: 1;
+    mix-blend-mode: overlay;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(ellipse at center, transparent 40%, var(--ink-deepest) 100%);
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.7;
+  }
+
+  .app {
+    position: relative;
+    z-index: 2;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  header.topbar {
+    padding: 1.2rem 2rem;
+    border-bottom: 1px solid var(--ink-line);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--serif-small-caps);
+    font-size: 0.92rem;
+    letter-spacing: 0.14em;
+    color: var(--paper);
+    text-transform: uppercase;
+  }
+  header.topbar .mark { color: var(--ember); }
+
+  main.stage {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2.5rem 1.5rem;
+  }
+
+  .view {
+    width: 100%;
+    max-width: 680px;
+    animation: fadeUp 0.5s ease forwards;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .eyebrow {
+    font-family: var(--serif-small-caps);
+    font-size: 0.78rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--ember);
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+  .title {
+    font-family: var(--serif-display);
+    font-weight: 500;
+    font-size: clamp(2rem, 5vw, 2.8rem);
+    line-height: 1.15;
+    color: var(--paper);
+    text-align: center;
+    margin-bottom: 0.6rem;
+  }
+  .subtitle {
+    font-family: var(--serif-display);
+    font-style: italic;
+    font-size: 1.15rem;
+    color: var(--gold);
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  p {
+    font-family: var(--serif-body);
+    color: var(--paper);
+    margin-bottom: 1.1rem;
+    line-height: 1.7;
+  }
+  p em { color: var(--ember-bright); font-style: italic; }
+  strong { color: var(--paper); font-weight: 500; }
+
+  .ornament {
+    color: var(--ember);
+    text-align: center;
+    letter-spacing: 0.5em;
+    margin: 1.6rem 0;
+    opacity: 0.85;
+  }
+
+  .meta {
+    text-align: center;
+    font-family: var(--serif-small-caps);
+    font-size: 0.82rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin: 1.2rem 0 0.4rem;
+  }
+
+  .btn-row {
+    display: flex;
+    gap: 0.8rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 1.5rem 0 0.5rem;
+  }
+  .btn {
+    appearance: none;
+    background: var(--ember);
+    color: var(--ink-deepest);
+    border: none;
+    padding: 0.95rem 2rem;
+    font-family: var(--serif-small-caps);
+    font-size: 0.92rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.25s ease, transform 0.2s ease;
+  }
+  .btn:hover { background: var(--ember-bright); }
+  .btn:disabled { background: var(--ink-soft); color: var(--paper-faded); cursor: not-allowed; }
+  .btn-secondary {
+    background: transparent;
+    color: var(--paper);
+    border: 1px solid var(--ink-line);
+  }
+  .btn-secondary:hover {
+    background: rgba(196, 119, 58, 0.06);
+    border-color: var(--ember);
+    color: var(--ember-bright);
+  }
+
+  .privacy-note {
+    font-size: 0.95rem;
+    font-style: italic;
+    color: var(--paper-dim);
+    text-align: center;
+    line-height: 1.55;
+    margin: 1.6rem auto 1.2rem;
+    padding: 1rem 1.2rem;
+    border-top: 1px solid var(--ink-line);
+    border-bottom: 1px solid var(--ink-line);
+    max-width: 540px;
+  }
+  .privacy-note strong { color: var(--paper); font-weight: 500; font-style: normal; }
+
+  .companion-link {
+    margin: 1.5rem auto 0.4rem;
+    text-align: center;
+    font-size: 0.95rem;
+    color: var(--paper-dim);
+    max-width: 540px;
+  }
+  .companion-link a {
+    color: var(--ember);
+    text-decoration: none;
+    border-bottom: 1px solid var(--ember-deep);
+    padding-bottom: 1px;
+    font-weight: 500;
+    transition: color 0.25s ease, border-color 0.25s ease;
+  }
+  .companion-link a:hover { color: var(--ember-bright); border-color: var(--ember-bright); }
+
+  /* The five-phase mini-arc on the welcome screen */
+  .arc {
+    margin: 1.8rem 0;
+    border-top: 1px solid var(--ink-line);
+    border-bottom: 1px solid var(--ink-line);
+    padding: 1.2rem 0;
+  }
+  .arc-row {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    padding: 0.4rem 0;
+  }
+  .arc-num {
+    font-family: var(--serif-small-caps);
+    font-size: 0.78rem;
+    letter-spacing: 0.18em;
+    color: var(--gold);
+    min-width: 4rem;
+  }
+  .arc-name {
+    font-family: var(--serif-display);
+    font-weight: 500;
+    font-size: 1.1rem;
+    color: var(--paper);
+    flex: 1;
+  }
+  .arc-row.current .arc-num { color: var(--ember-bright); }
+  .arc-row.current .arc-name { color: var(--ember-bright); font-weight: 600; }
+  .arc-row.current::after {
+    content: '◆';
+    color: var(--ember);
+    font-size: 0.7rem;
+    align-self: center;
+  }
+  .arc-row.done .arc-name { color: var(--paper-faded); }
+
+  /* Arrive-first guided breathing + audio (lifted from inventory) */
+  .guide-row {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    margin: 0.8rem 0 0.2rem;
+  }
+  .guide-btn {
+    appearance: none;
+    background: transparent;
+    border: 1px solid var(--gold-deep);
+    color: var(--gold);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-family: var(--serif-body);
+    font-size: 0.95rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+    flex-shrink: 0;
+    padding: 0;
+  }
+  .guide-btn:hover { background: rgba(196, 165, 96, 0.1); border-color: var(--gold); }
+  .guide-btn:focus { outline: none; box-shadow: 0 0 0 2px rgba(196, 165, 96, 0.3); }
+  .guide-btn.active {
+    background: var(--ember);
+    border-color: var(--ember);
+    color: var(--ink-deepest);
+  }
+  .guide-label {
+    flex: 1;
+    font-family: var(--serif-small-caps);
+    font-size: 0.82rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--paper-dim);
+  }
+  .guide-counter {
+    font-family: var(--serif-body);
+    font-size: 0.9rem;
+    color: var(--paper-dim);
+    font-variant-numeric: tabular-nums;
+    min-width: 2.5em;
+    text-align: right;
+  }
+  .breath-visual {
+    display: none;
+    text-align: center;
+    margin: 0.6rem 0 0.2rem;
+    height: 170px;
+  }
+  .breath-visual.on { display: block; }
+  .breath-circle {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    margin: 0.2rem auto 0.6rem;
+    background: radial-gradient(circle at 50% 45%, var(--ember-bright), var(--ember-deep) 65%, transparent 100%);
+    opacity: 0.35;
+    transform: scale(0.45);
+    transition: transform 4s ease-in-out, opacity 4s ease-in-out;
+  }
+  .breath-circle.inhale {
+    transform: scale(1.0);
+    opacity: 0.9;
+    transition-duration: 4s;
+  }
+  .breath-circle.exhale {
+    transform: scale(0.45);
+    opacity: 0.35;
+    transition-duration: 6s;
+  }
+  .breath-cue {
+    font-family: var(--serif-small-caps);
+    font-size: 0.85rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--ember-bright);
+    min-height: 1.4em;
+  }
+
+  /* Prompts panel */
+  .prompts {
+    background: rgba(196, 165, 96, 0.05);
+    border: 1px solid rgba(196, 165, 96, 0.2);
+    padding: 1.2rem 1.4rem;
+    margin: 1.2rem 0 1.4rem;
+  }
+  .prompts-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    font-family: var(--serif-small-caps);
+    font-size: 0.78rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.6rem;
+  }
+  .prompts-head .toggle { font-size: 1.05rem; transition: transform 0.25s ease; }
+  .prompts.collapsed .toggle { transform: rotate(-90deg); }
+  .prompts-body { display: block; }
+  .prompts.collapsed .prompts-body { display: none; }
+  .prompts ol {
+    padding-left: 1.4rem;
+    color: var(--paper-dim);
+    font-size: 0.97rem;
+    line-height: 1.6;
+  }
+  .prompts li { margin-bottom: 0.55rem; }
+  .prompts li::marker { color: var(--ember); }
+
+  /* Letter writing area */
+  .letter-area {
+    width: 100%;
+    min-height: 22em;
+    background: var(--ink-deep);
+    border: 1px solid var(--ink-line);
+    border-radius: 2px;
+    color: var(--paper);
+    font-family: var(--serif-body);
+    font-size: 1.02rem;
+    line-height: 1.8;
+    padding: 1.2rem 1.4rem;
+    resize: vertical;
+    transition: border-color 0.25s ease;
+  }
+  .letter-area:focus {
+    outline: none;
+    border-color: var(--ember);
+    background: var(--ink-medium);
+  }
+  .letter-area::placeholder { color: var(--paper-faded); font-style: italic; }
+
+  .save-status {
+    margin-top: 0.4rem;
+    text-align: right;
+    font-family: var(--serif-small-caps);
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--paper-faded);
+    min-height: 1.2em;
+  }
+  .save-status.saved { color: var(--gold); }
+  .save-status.dirty { color: var(--ember-bright); }
+
+  .back-link {
+    display: inline-block;
+    margin-bottom: 1.2rem;
+    color: var(--paper-dim);
+    cursor: pointer;
+    font-family: var(--serif-small-caps);
+    font-size: 0.78rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    transition: color 0.25s ease;
+    background: transparent;
+    border: none;
+  }
+  .back-link:hover { color: var(--ember); }
+
+  footer.bottombar {
+    padding: 1.2rem 2rem;
+    border-top: 1px solid var(--ink-line);
+    text-align: center;
+    font-family: var(--serif-small-caps);
+    font-size: 0.85rem;
+    letter-spacing: 0.18em;
+    color: var(--paper-dim);
+    text-transform: uppercase;
+  }
+
+  .print-busy {
+    position: fixed;
+    bottom: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--ink-medium);
+    border: 1px solid var(--ember);
+    color: var(--paper);
+    padding: 0.7rem 1.4rem;
+    font-family: var(--serif-small-caps);
+    font-size: 0.85rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    z-index: 1000;
+    border-radius: 3px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+    pointer-events: none;
+  }
+
+  @media (max-width: 640px) {
+    body { font-size: 16px; }
+    header.topbar { padding: 0.9rem 1.2rem; font-size: 0.82rem; }
+    main.stage { padding: 1.5rem 1rem; }
+    .btn-row { flex-direction: column; }
+    .btn { width: 100%; text-align: center; }
+    .arc-row { flex-wrap: wrap; }
+  }
+
+  /* Print styles for the letter */
+  @media print {
+    @page { margin: 0.85in; }
+    body, html {
+      background: white !important;
+      color: black !important;
+      font-size: 12pt;
+    }
+    body::before, body::after { display: none !important; }
+    .topbar, .bottombar, .btn-row, .back-link, .save-status,
+    .privacy-note, .companion-link, .guide-row, .breath-visual,
+    .prompts, .arc, .meta, .ornament, .no-print { display: none !important; }
+    .stage { padding: 0 !important; max-width: 100% !important; }
+    .view { animation: none !important; max-width: 100% !important; }
+    .eyebrow { color: #888 !important; font-size: 8pt !important; }
+    .title { color: black !important; font-size: 22pt !important; }
+    .subtitle { color: #555 !important; font-size: 11pt !important; }
+    .letter-area {
+      background: white !important;
+      color: black !important;
+      border: none !important;
+      border-top: 1px solid #ccc !important;
+      padding: 0.4in 0 0 0 !important;
+      font-size: 12pt !important;
+      line-height: 1.9 !important;
+      min-height: auto !important;
+      white-space: pre-wrap;
+    }
+    .print-only { display: block !important; }
+  }
+  .print-only { display: none; }
+</style>
+</head>
+<body>
+<div class="app">
+
+<header class="topbar">
+  <span><span class="mark">◆</span> Tranquil Edge Retreat</span>
+  <span>Letter to Self</span>
+</header>
+
+<main class="stage" id="stage"></main>
+
+<footer class="bottombar">
+  Filipino Martial Arts Retreat · September 10 to 13, 2026 · River Mountain, PA
+</footer>
+
+</div>
+
+<script>
+/* ============================================================
+   CONFIGURATION. Edit before deploying.
+   ============================================================ */
+const RELEASE_DATE = new Date('2026-05-14T00:00:00');
+const DUE_DATE = new Date('2026-09-09T23:59:59');
+const RETREAT_DATE = new Date('2026-09-10T00:00:00');
+const STORAGE_KEY = 'tranquil-edge-letter-v1';
+
+/* ============================================================
+   DATA. Letter prompts.
+   Original to this work. Voice-aligned with the audit. They sit
+   alongside the writing area as optional starting points. The
+   participant does not have to use them.
+   ============================================================ */
+const PROMPTS = [
+  "What pattern came up most clearly when you did the audit? Name it directly. One sentence.",
+  "Where in your life is this pattern most active? Be specific: a relationship, a moment, a kind of decision.",
+  "What does this pattern protect you from? It is not random. Something is being kept safe by it.",
+  "What does it cost you? Who else has paid the cost?",
+  "When did this pattern enter your life? Was it yours then, or did you inherit it?",
+  "What part of you is ready for it to end? What part is not?",
+  "What would your life make room for if this pattern stopped running tomorrow?",
+  "What do you want to say to yourself about this, that no one else needs to hear?",
+];
+
+/* ============================================================
+   STATE
+   ============================================================ */
+const initialState = {
+  view: 'welcome',
+  letter: '',
+  startedAt: null,
+  completedAt: null,
+  revisedCount: 0,
+  promptsCollapsed: false,
+};
+let state = loadState();
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return { ...initialState };
+    const parsed = JSON.parse(raw);
+    return { ...initialState, ...parsed };
+  } catch (e) {
+    return { ...initialState };
+  }
+}
+
+function saveState() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
+}
+
+function resetAll() {
+  if (!confirm('Erase your letter and start over? This cannot be undone.')) return;
+  localStorage.removeItem(STORAGE_KEY);
+  state = { ...initialState };
+  render();
+}
+
+/* ============================================================
+   HELPERS
+   ============================================================ */
+const stage = document.getElementById('stage');
+
+function shortDate(d) {
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' })[c]);
+}
+
+/* ============================================================
+   RENDER
+   ============================================================ */
+function render() {
+  if (state.view === 'welcome') renderWelcome();
+  else if (state.view === 'prep') renderPrep();
+  else if (state.view === 'write') renderWrite();
+  else if (state.view === 'done') renderDone();
+  else renderWelcome();
+}
+
+function renderWelcome() {
+  const view = document.createElement('div');
+  view.className = 'view';
+
+  const now = new Date();
+  const beforeRelease = now < RELEASE_DATE;
+  const hasDraft = (state.letter || '').trim().length > 0;
+  const isComplete = !!state.completedAt;
+
+  let metaLine;
+  if (beforeRelease) metaLine = `Opens ${shortDate(RELEASE_DATE)}`;
+  else if (isComplete) metaLine = `Letter saved ${shortDate(new Date(state.completedAt))}. Revise anytime.`;
+  else if (hasDraft) metaLine = `Draft in progress. Continue when ready.`;
+  else metaLine = `Available through the retreat`;
+
+  let buttonRowHtml;
+  if (beforeRelease) {
+    buttonRowHtml = `<button class="btn" disabled>Opens ${shortDate(RELEASE_DATE)}</button>`;
+  } else if (isComplete) {
+    buttonRowHtml = `
+      <button class="btn" onclick="goToWrite()">Read or revise the letter</button>
+      <button class="btn btn-secondary" onclick="goToDone()">Open print and save options</button>
+    `;
+  } else if (hasDraft) {
+    buttonRowHtml = `
+      <button class="btn" onclick="goToWrite()">Continue your draft</button>
+      <button class="btn btn-secondary" onclick="goToPrep()">Sit with it first</button>
+    `;
+  } else {
+    buttonRowHtml = `
+      <button class="btn" onclick="goToPrep()">Begin</button>
+    `;
+  }
+
+  view.innerHTML = `
+    <div class="eyebrow">After the Audit</div>
+    <h1 class="title">A Letter to Yourself</h1>
+    <p class="subtitle">Before the fire.</p>
+
+    <p>The inventory let you see the pattern in shorthand. The audit let you see it in detail. This letter is the next step. You write to yourself, in your own voice, about the one thing you are ready to put down.</p>
+
+    <p>You write it now, before the retreat. You bring it with you. On the third night, you walk to the fire in the woods and burn it when you are ready. The fire stays lit through the night. There is no group clock.</p>
+
+    <p>You can revise this letter as many times as you want before the retreat. You will not show it to anyone. You will not read it aloud. The point is the writing and the burning.</p>
+
+    <div class="arc">
+      <div class="arc-row done">
+        <div class="arc-num">Phase 1</div>
+        <div class="arc-name">Assessment · the inventory and audit you have already done</div>
+      </div>
+      <div class="arc-row done">
+        <div class="arc-num">Phase 2</div>
+        <div class="arc-name">Acknowledgement and clearing · what the audit just did</div>
+      </div>
+      <div class="arc-row current">
+        <div class="arc-num">Phase 3</div>
+        <div class="arc-name">Letting go · the letter you are about to write</div>
+      </div>
+      <div class="arc-row">
+        <div class="arc-num">Phase 4</div>
+        <div class="arc-name">Claiming · the batok session at the retreat</div>
+      </div>
+      <div class="arc-row">
+        <div class="arc-num">Phase 5</div>
+        <div class="arc-name">Integration · the seven domain rituals after</div>
+      </div>
+    </div>
+
+    <div class="meta">${metaLine}</div>
+
+    <p class="privacy-note">
+      <strong>About your privacy.</strong> The letter saves to your own browser, not a server. Nothing is sent to anyone. You can revise it as many times as you want, print it, or save it as a text file. When you are ready, take it to the retreat in your own way.
+    </p>
+
+    <div class="btn-row">
+      ${buttonRowHtml}
+    </div>
+
+    <p class="companion-link">Need to do the audit first? <a href="../karmic-audit/">Open it here</a>. The swipe inventory is <a href="../kalooban-quiz/">here</a>.</p>
+  `;
+  stage.innerHTML = '';
+  stage.appendChild(view);
+}
+
+function renderPrep() {
+  const view = document.createElement('div');
+  view.className = 'view';
+
+  view.innerHTML = `
+    <button class="back-link" onclick="goToWelcome()">← Back</button>
+    <div class="eyebrow">Arrive First</div>
+    <h1 class="title">Sit with what you found.</h1>
+    <p class="subtitle">The cards work best when you do.</p>
+
+    <p>Find a quiet place where no one will interrupt you for the next thirty minutes. Sit comfortably. Put your phone face down somewhere it will not pull at you, then pick it up again only for this.</p>
+
+    <p>Before you write, slow down. The pattern you are about to name has been with you a long time. It deserves a few breaths first. Use the tools below if they help. Skip them if they do not.</p>
+
+    <div class="guide-row">
+      <button class="guide-btn" id="breath-btn" onclick="toggleBreathing()" aria-label="Start guided breathing"><span class="icon">▶</span></button>
+      <span class="guide-label">Guided breathing &nbsp;·&nbsp; three cycles</span>
+      <span class="guide-counter" id="breath-counter"></span>
+    </div>
+    <div class="breath-visual" id="breath-visual">
+      <div class="breath-circle" id="breath-circle"></div>
+      <div class="breath-cue" id="breath-cue">Ready</div>
+    </div>
+
+    <div class="guide-row">
+      <button class="guide-btn" id="ocean-btn" onclick="toggleOcean()" aria-label="Play ocean sounds for one minute"><span class="icon">▶</span></button>
+      <span class="guide-label">Ocean sounds &nbsp;·&nbsp; one minute</span>
+      <span class="guide-counter" id="ocean-counter">1:00</span>
+    </div>
+    <audio id="ocean-audio" src="audio/waves-60s.mp3" preload="none"></audio>
+
+    <p style="margin-top: 2rem;">When you are ready, open your eyes and begin. There is no length the letter has to reach. A page is enough. Two paragraphs are enough. Whatever is true.</p>
+
+    <p>Write to the part of you that already knows the pattern is no longer yours to carry. Write the way you would write to a trusted friend, only the friend is you.</p>
+
+    <div class="ornament">◆ ◇ ◆</div>
+
+    <div class="btn-row">
+      <button class="btn" onclick="goToWrite()">I am ready to write</button>
+    </div>
+  `;
+  stage.innerHTML = '';
+  stage.appendChild(view);
+}
+
+function renderWrite() {
+  const view = document.createElement('div');
+  view.className = 'view';
+
+  if (!state.startedAt) {
+    state.startedAt = new Date().toISOString();
+    saveState();
+  }
+
+  const promptsCls = state.promptsCollapsed ? 'prompts collapsed' : 'prompts';
+
+  view.innerHTML = `
+    <button class="back-link" onclick="goToWelcome()">← Back to welcome</button>
+    <div class="eyebrow">The Letter</div>
+    <h1 class="title">To yourself, about the pattern.</h1>
+    <p class="subtitle">No one else will read this.</p>
+
+    <p style="text-align: center; color: var(--paper-dim);">Write what is true. Not what sounds good. Stop when it stops moving forward. Come back to it later if more arrives.</p>
+
+    <div class="${promptsCls}" id="prompts">
+      <div class="prompts-head" onclick="togglePrompts()">
+        <span>Optional starter prompts</span>
+        <span class="toggle">▾</span>
+      </div>
+      <div class="prompts-body">
+        <ol>
+          ${PROMPTS.map(p => `<li>${escapeHtml(p)}</li>`).join('')}
+        </ol>
+      </div>
+    </div>
+
+    <textarea
+      class="letter-area"
+      id="letter-area"
+      placeholder="Begin here. There is no shape this has to take."
+      oninput="onLetterInput(this.value)"
+    >${escapeHtml(state.letter || '')}</textarea>
+
+    <div class="save-status saved" id="save-status">Saved</div>
+
+    <div class="btn-row">
+      <button class="btn" onclick="markWritten()">Mark it written</button>
+      <button class="btn btn-secondary" onclick="goToWelcome()">Pause and continue later</button>
+    </div>
+
+    <p class="privacy-note">
+      <strong>This stays with you.</strong> The letter saves to your browser as you type. Nothing is sent. You can leave this tab and return later.
+    </p>
+  `;
+  stage.innerHTML = '';
+  stage.appendChild(view);
+  setTimeout(() => { const el = document.getElementById('letter-area'); if (el) el.focus(); }, 30);
+}
+
+function renderDone() {
+  const view = document.createElement('div');
+  view.className = 'view';
+
+  const completedDate = state.completedAt ? shortDate(new Date(state.completedAt)) : '';
+  const wordCount = (state.letter || '').trim().split(/\s+/).filter(Boolean).length;
+
+  view.innerHTML = `
+    <div class="eyebrow">Saved</div>
+    <h1 class="title">Your letter is written.</h1>
+    <p class="subtitle">${completedDate ? `Completed ${completedDate}.` : 'Saved to your browser.'}</p>
+
+    <p style="text-align: center;">${wordCount} word${wordCount === 1 ? '' : 's'}. You can read it again, revise it, print it, or save it as a text file. Whatever helps you carry it to the fire.</p>
+
+    <div class="btn-row">
+      <button class="btn" onclick="goToWrite()">Read or revise</button>
+      <button class="btn btn-secondary" onclick="printLetter()">Print the letter</button>
+      <button class="btn btn-secondary" onclick="downloadLetter()">Save as text file</button>
+    </div>
+
+    <div class="ornament">◆ ◇ ◆</div>
+
+    <p>You walk to the fire on the third night of the retreat. You do not have to read the letter aloud. You do not have to share what is in it. You burn it when you are ready. The fire stays lit through the night.</p>
+
+    <p>What follows the burning is the next phase: claiming. At the fire, after you release, you take up what is yours. The batok workshop on Day 3 evening is for that. Then comes integration: the seven domain rituals you bring home.</p>
+
+    <div class="arc">
+      <div class="arc-row done">
+        <div class="arc-num">Phase 1</div>
+        <div class="arc-name">Assessment</div>
+      </div>
+      <div class="arc-row done">
+        <div class="arc-num">Phase 2</div>
+        <div class="arc-name">Acknowledgement and clearing</div>
+      </div>
+      <div class="arc-row done">
+        <div class="arc-num">Phase 3</div>
+        <div class="arc-name">Letting go · written · burns at the fire on Day 3</div>
+      </div>
+      <div class="arc-row current">
+        <div class="arc-num">Phase 4</div>
+        <div class="arc-name">Claiming · at the retreat</div>
+      </div>
+      <div class="arc-row">
+        <div class="arc-num">Phase 5</div>
+        <div class="arc-name">Integration · after the retreat</div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="goToWelcome()">Close</button>
+      <button class="btn btn-secondary" onclick="resetAll()" style="border-color: var(--rust); color: var(--rust);">Erase and start over</button>
+    </div>
+
+    <p class="privacy-note">If you close this tab, the letter stays in your browser. You can return anytime to read, revise, or print it.</p>
+
+    <p class="companion-link">If you have not done the swipe inventory or the audit yet, <a href="../kalooban-quiz/">open the inventory</a> or <a href="../karmic-audit/">open the audit</a>.</p>
+  `;
+  stage.innerHTML = '';
+  stage.appendChild(view);
+}
+
+/* ============================================================
+   ACTIONS
+   ============================================================ */
+function goToWelcome() {
+  stopBreathing();
+  stopOcean();
+  state.view = 'welcome';
+  saveState();
+  render();
+}
+
+function goToPrep() {
+  state.view = 'prep';
+  saveState();
+  render();
+}
+
+function goToWrite() {
+  stopBreathing();
+  stopOcean();
+  state.view = 'write';
+  saveState();
+  render();
+}
+
+function goToDone() {
+  if (!state.completedAt) state.completedAt = new Date().toISOString();
+  state.view = 'done';
+  saveState();
+  render();
+}
+
+function markWritten() {
+  const text = (state.letter || '').trim();
+  if (!text) {
+    if (!confirm('The letter is empty. Mark it written anyway?')) return;
+  }
+  state.completedAt = new Date().toISOString();
+  state.revisedCount = (state.revisedCount || 0) + 1;
+  state.view = 'done';
+  saveState();
+  render();
+}
+
+let saveTimer = null;
+function onLetterInput(value) {
+  state.letter = value;
+  const status = document.getElementById('save-status');
+  if (status) {
+    status.textContent = 'Saving...';
+    status.classList.remove('saved');
+    status.classList.add('dirty');
+  }
+  if (saveTimer) clearTimeout(saveTimer);
+  saveTimer = setTimeout(() => {
+    saveState();
+    if (status) {
+      status.textContent = 'Saved';
+      status.classList.remove('dirty');
+      status.classList.add('saved');
+    }
+  }, 400);
+}
+
+function togglePrompts() {
+  state.promptsCollapsed = !state.promptsCollapsed;
+  saveState();
+  const el = document.getElementById('prompts');
+  if (el) el.classList.toggle('collapsed', state.promptsCollapsed);
+}
+
+function downloadLetter() {
+  const text = state.letter || '';
+  const stamp = new Date().toISOString().slice(0, 10);
+  const blob = new Blob([
+    `Tranquil Edge Retreat\nLetter to Self\nSaved ${stamp}\n\n`,
+    text,
+    '\n',
+  ], { type: 'text/plain;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `letter-to-self-${stamp}.txt`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+function printLetter() {
+  showPrintBusy('Preparing print...');
+  state.view = 'write';
+  saveState();
+  render();
+  requestAnimationFrame(() => {
+    showPrintBusy('Opening printer dialog...');
+    requestAnimationFrame(() => { window.print(); });
+  });
+}
+
+function showPrintBusy(label) {
+  document.body.style.cursor = 'wait';
+  let el = document.getElementById('print-busy');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'print-busy';
+    el.className = 'print-busy no-print';
+    document.body.appendChild(el);
+  }
+  el.textContent = label || 'Opening printer dialog...';
+}
+
+function hidePrintBusy() {
+  document.body.style.cursor = '';
+  const el = document.getElementById('print-busy');
+  if (el && el.parentNode) el.parentNode.removeChild(el);
+}
+
+window.addEventListener('afterprint', hidePrintBusy);
+
+/* ============================================================
+   Arrive-first guided breathing (lifted from inventory)
+   Three cycles: 4s inhale, 6s exhale. ~30s total.
+   ============================================================ */
+let breathTimer = null;
+let breathStep = 0;
+const BREATH_CYCLES = 3;
+
+function toggleBreathing() {
+  if (breathTimer) stopBreathing();
+  else startBreathing();
+}
+
+function startBreathing() {
+  const btn = document.getElementById('breath-btn');
+  const visual = document.getElementById('breath-visual');
+  if (!btn || !visual) return;
+  btn.classList.add('active');
+  btn.querySelector('.icon').textContent = '■';
+  visual.classList.add('on');
+  breathStep = 0;
+  breathTick();
+}
+
+function breathTick() {
+  const circle = document.getElementById('breath-circle');
+  const cue = document.getElementById('breath-cue');
+  const counter = document.getElementById('breath-counter');
+  if (!circle || !cue) { stopBreathing(); return; }
+  const cycle = Math.floor(breathStep / 2);
+  if (cycle >= BREATH_CYCLES) {
+    cue.textContent = 'Settled';
+    if (counter) counter.textContent = '';
+    breathTimer = setTimeout(stopBreathing, 1500);
+    return;
+  }
+  const isInhale = breathStep % 2 === 0;
+  if (counter) counter.textContent = `${cycle + 1} of ${BREATH_CYCLES}`;
+  if (isInhale) {
+    circle.classList.remove('exhale');
+    circle.classList.add('inhale');
+    cue.textContent = 'Inhale';
+    breathTimer = setTimeout(() => { breathStep++; breathTick(); }, 4000);
+  } else {
+    circle.classList.remove('inhale');
+    circle.classList.add('exhale');
+    cue.textContent = 'Exhale';
+    breathTimer = setTimeout(() => { breathStep++; breathTick(); }, 6000);
+  }
+}
+
+function stopBreathing() {
+  if (breathTimer) { clearTimeout(breathTimer); breathTimer = null; }
+  breathStep = 0;
+  const btn = document.getElementById('breath-btn');
+  const visual = document.getElementById('breath-visual');
+  const circle = document.getElementById('breath-circle');
+  const cue = document.getElementById('breath-cue');
+  const counter = document.getElementById('breath-counter');
+  if (btn) { btn.classList.remove('active'); const i = btn.querySelector('.icon'); if (i) i.textContent = '▶'; }
+  if (visual) visual.classList.remove('on');
+  if (circle) circle.classList.remove('inhale', 'exhale');
+  if (cue) cue.textContent = 'Ready';
+  if (counter) counter.textContent = '';
+}
+
+/* ============================================================
+   Ocean sounds (lifted from inventory)
+   ============================================================ */
+let oceanTimer = null;
+
+function toggleOcean() {
+  const audio = document.getElementById('ocean-audio');
+  if (!audio) return;
+  if (oceanTimer) stopOcean();
+  else startOcean();
+}
+
+function startOcean() {
+  const audio = document.getElementById('ocean-audio');
+  const btn = document.getElementById('ocean-btn');
+  const counter = document.getElementById('ocean-counter');
+  if (!audio || !btn) return;
+  audio.currentTime = 0;
+  const playPromise = audio.play();
+  if (playPromise && playPromise.catch) playPromise.catch(() => stopOcean());
+  btn.classList.add('active');
+  btn.querySelector('.icon').textContent = '■';
+  const updateCounter = () => {
+    if (!oceanTimer) return;
+    const remaining = Math.max(0, 60 - Math.floor(audio.currentTime));
+    if (counter) counter.textContent = `0:${String(remaining).padStart(2, '0')}`;
+    if (remaining <= 0 || audio.ended) { stopOcean(); return; }
+    oceanTimer = setTimeout(updateCounter, 250);
+  };
+  oceanTimer = setTimeout(updateCounter, 50);
+}
+
+function stopOcean() {
+  const audio = document.getElementById('ocean-audio');
+  const btn = document.getElementById('ocean-btn');
+  const counter = document.getElementById('ocean-counter');
+  if (oceanTimer) { clearTimeout(oceanTimer); oceanTimer = null; }
+  if (audio) { try { audio.pause(); audio.currentTime = 0; } catch (e) {} }
+  if (btn) { btn.classList.remove('active'); const i = btn.querySelector('.icon'); if (i) i.textContent = '▶'; }
+  if (counter) counter.textContent = '1:00';
+}
+
+/* ============================================================
+   EXPORTS
+   ============================================================ */
+window.goToWelcome = goToWelcome;
+window.goToPrep = goToPrep;
+window.goToWrite = goToWrite;
+window.goToDone = goToDone;
+window.markWritten = markWritten;
+window.onLetterInput = onLetterInput;
+window.togglePrompts = togglePrompts;
+window.downloadLetter = downloadLetter;
+window.printLetter = printLetter;
+window.toggleBreathing = toggleBreathing;
+window.toggleOcean = toggleOcean;
+window.resetAll = resetAll;
+
+render();
+</script>
+</body>
+</html>
