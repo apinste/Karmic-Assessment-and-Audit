@@ -219,42 +219,59 @@
   }
   .companion-link a:hover { color: var(--ember-bright); border-color: var(--ember-bright); }
 
-  /* The five-phase mini-arc on the welcome screen */
-  .arc {
-    margin: 1.8rem 0;
-    border-top: 1px solid var(--ink-line);
-    border-bottom: 1px solid var(--ink-line);
-    padding: 1.2rem 0;
+  /* Field-based form */
+  .field-block {
+    margin-bottom: 1.6rem;
   }
-  .arc-row {
-    display: flex;
-    align-items: baseline;
-    gap: 1rem;
-    padding: 0.4rem 0;
-  }
-  .arc-num {
-    font-family: var(--serif-small-caps);
-    font-size: 0.78rem;
-    letter-spacing: 0.18em;
-    color: var(--gold);
-    min-width: 4rem;
-  }
-  .arc-name {
+  .field-label {
     font-family: var(--serif-display);
     font-weight: 500;
-    font-size: 1.1rem;
+    font-size: 1.18rem;
     color: var(--paper);
-    flex: 1;
+    margin-bottom: 0.3rem;
+    line-height: 1.3;
   }
-  .arc-row.current .arc-num { color: var(--ember-bright); }
-  .arc-row.current .arc-name { color: var(--ember-bright); font-weight: 600; }
-  .arc-row.current::after {
-    content: '◆';
-    color: var(--ember);
-    font-size: 0.7rem;
-    align-self: center;
+  .field-hint {
+    font-family: var(--serif-body);
+    font-size: 0.9rem;
+    color: var(--paper-dim);
+    margin-bottom: 0.5rem;
+    line-height: 1.5;
   }
-  .arc-row.done .arc-name { color: var(--paper-faded); }
+  .field-area {
+    width: 100%;
+    background: var(--ink-deep);
+    border: 1px solid var(--ink-line);
+    color: var(--paper);
+    font-family: var(--serif-body);
+    font-size: 1rem;
+    line-height: 1.7;
+    padding: 0.85rem 1rem;
+    resize: vertical;
+    border-radius: 2px;
+    min-height: 4.5em;
+    transition: border-color 0.2s ease, background 0.2s ease;
+  }
+  .field-area:focus {
+    outline: none;
+    border-color: var(--ember);
+    background: var(--ink-medium);
+  }
+  .field-area.large { min-height: 8em; }
+  .field-area::placeholder { color: var(--paper-faded); font-style: italic; }
+
+  .save-status {
+    margin-top: 0.6rem;
+    text-align: right;
+    font-family: var(--serif-small-caps);
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--paper-faded);
+    min-height: 1.2em;
+  }
+  .save-status.saved { color: var(--gold); }
+  .save-status.dirty { color: var(--ember-bright); }
 
   /* Arrive-first guided breathing + audio (lifted from inventory) */
   .guide-row {
@@ -340,73 +357,6 @@
     min-height: 1.4em;
   }
 
-  /* Prompts panel */
-  .prompts {
-    background: rgba(196, 165, 96, 0.05);
-    border: 1px solid rgba(196, 165, 96, 0.2);
-    padding: 1.2rem 1.4rem;
-    margin: 1.2rem 0 1.4rem;
-  }
-  .prompts-head {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    cursor: pointer;
-    font-family: var(--serif-small-caps);
-    font-size: 0.78rem;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 0.6rem;
-  }
-  .prompts-head .toggle { font-size: 1.05rem; transition: transform 0.25s ease; }
-  .prompts.collapsed .toggle { transform: rotate(-90deg); }
-  .prompts-body { display: block; }
-  .prompts.collapsed .prompts-body { display: none; }
-  .prompts ol {
-    padding-left: 1.4rem;
-    color: var(--paper-dim);
-    font-size: 0.97rem;
-    line-height: 1.6;
-  }
-  .prompts li { margin-bottom: 0.55rem; }
-  .prompts li::marker { color: var(--ember); }
-
-  /* Letter writing area */
-  .letter-area {
-    width: 100%;
-    min-height: 22em;
-    background: var(--ink-deep);
-    border: 1px solid var(--ink-line);
-    border-radius: 2px;
-    color: var(--paper);
-    font-family: var(--serif-body);
-    font-size: 1.02rem;
-    line-height: 1.8;
-    padding: 1.2rem 1.4rem;
-    resize: vertical;
-    transition: border-color 0.25s ease;
-  }
-  .letter-area:focus {
-    outline: none;
-    border-color: var(--ember);
-    background: var(--ink-medium);
-  }
-  .letter-area::placeholder { color: var(--paper-faded); font-style: italic; }
-
-  .save-status {
-    margin-top: 0.4rem;
-    text-align: right;
-    font-family: var(--serif-small-caps);
-    font-size: 0.72rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--paper-faded);
-    min-height: 1.2em;
-  }
-  .save-status.saved { color: var(--gold); }
-  .save-status.dirty { color: var(--ember-bright); }
-
   .back-link {
     display: inline-block;
     margin-bottom: 1.2rem;
@@ -452,16 +402,17 @@
     pointer-events: none;
   }
 
+  /* Composed letter shown only when printing */
+  .print-letter { display: none; }
+
   @media (max-width: 640px) {
     body { font-size: 16px; }
     header.topbar { padding: 0.9rem 1.2rem; font-size: 0.82rem; }
     main.stage { padding: 1.5rem 1rem; }
     .btn-row { flex-direction: column; }
     .btn { width: 100%; text-align: center; }
-    .arc-row { flex-wrap: wrap; }
   }
 
-  /* Print styles for the letter */
   @media print {
     @page { margin: 0.85in; }
     body, html {
@@ -472,26 +423,67 @@
     body::before, body::after { display: none !important; }
     .topbar, .bottombar, .btn-row, .back-link, .save-status,
     .privacy-note, .companion-link, .guide-row, .breath-visual,
-    .prompts, .arc, .meta, .ornament, .no-print { display: none !important; }
+    .meta, .ornament, .field-block, .no-print,
+    .view > p, .view > .eyebrow, .view > .title, .view > .subtitle {
+      display: none !important;
+    }
     .stage { padding: 0 !important; max-width: 100% !important; }
     .view { animation: none !important; max-width: 100% !important; }
-    .eyebrow { color: #888 !important; font-size: 8pt !important; }
-    .title { color: black !important; font-size: 22pt !important; }
-    .subtitle { color: #555 !important; font-size: 11pt !important; }
-    .letter-area {
-      background: white !important;
+    .print-letter { display: block !important; color: black !important; }
+    .print-letter-header {
+      text-align: center;
+      margin-bottom: 0.4in;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 0.18in;
+    }
+    .print-letter .print-eyebrow {
+      font-family: 'Marcellus SC', serif;
+      font-size: 9pt;
+      color: #777 !important;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      margin-bottom: 0.05in;
+    }
+    .print-letter h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 24pt;
       color: black !important;
-      border: none !important;
-      border-top: 1px solid #ccc !important;
-      padding: 0.4in 0 0 0 !important;
-      font-size: 12pt !important;
-      line-height: 1.9 !important;
-      min-height: auto !important;
+      font-weight: 500;
+      margin-bottom: 0.08in;
+    }
+    .print-letter .print-date {
+      font-style: italic;
+      color: #666 !important;
+      font-size: 10pt;
+    }
+    .print-letter h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 13pt;
+      color: #444 !important;
+      font-weight: 500;
+      margin-top: 0.3in;
+      margin-bottom: 0.08in;
+      page-break-after: avoid;
+    }
+    .print-letter .print-section p {
+      font-family: 'Lora', 'Garamond', serif;
+      font-size: 11pt;
+      color: black !important;
+      margin-bottom: 0.1in;
+      line-height: 1.65;
       white-space: pre-wrap;
     }
-    .print-only { display: block !important; }
+    .print-letter .print-section { page-break-inside: avoid; margin-bottom: 0.18in; }
+    .print-letter .print-footer {
+      margin-top: 0.5in;
+      font-style: italic;
+      color: #777 !important;
+      font-size: 10pt;
+      text-align: center;
+      border-top: 1px solid #ccc;
+      padding-top: 0.18in;
+    }
   }
-  .print-only { display: none; }
 </style>
 </head>
 <body>
@@ -520,43 +512,89 @@ const RETREAT_DATE = new Date('2026-09-10T00:00:00');
 const STORAGE_KEY = 'tranquil-edge-letter-v1';
 
 /* ============================================================
-   DATA. Letter prompts.
-   Original to this work. Voice-aligned with the audit. They sit
-   alongside the writing area as optional starting points. The
-   participant does not have to use them.
+   FIELDS. The seven structured prompts that compose the letter.
+   Each field has a key, label (the prompt itself), hint (smaller
+   guidance text), placeholder (what shows in the empty box), and
+   an optional `large` flag for the longer freeform field at the end.
    ============================================================ */
-const PROMPTS = [
-  "What pattern came up most clearly when you did the audit? Name it directly. One sentence.",
-  "Where in your life is this pattern most active? Be specific: a relationship, a moment, a kind of decision.",
-  "What does this pattern protect you from? It is not random. Something is being kept safe by it.",
-  "What does it cost you? Who else has paid the cost?",
-  "When did this pattern enter your life? Was it yours then, or did you inherit it?",
-  "What part of you is ready for it to end? What part is not?",
-  "What would your life make room for if this pattern stopped running tomorrow?",
-  "What do you want to say to yourself about this, that no one else needs to hear?",
+const FIELDS = [
+  {
+    key: 'pattern',
+    label: 'The pattern I am ready to put down',
+    hint: 'One sentence. Direct. No softeners.',
+    placeholder: 'Example: I keep performing instead of being honest.',
+  },
+  {
+    key: 'where',
+    label: 'Where this pattern shows up most',
+    hint: 'A relationship, a moment, a kind of decision. Be specific.',
+    placeholder: 'It comes alive when...',
+  },
+  {
+    key: 'protects',
+    label: 'What this pattern has protected me from',
+    hint: 'It is not random. Something is being kept safe by it.',
+    placeholder: 'It has kept me from...',
+  },
+  {
+    key: 'costs',
+    label: 'What it has cost me',
+    hint: 'And who else has paid the cost.',
+    placeholder: 'The cost has been...',
+  },
+  {
+    key: 'learned',
+    label: 'Where I think I learned this',
+    hint: 'Mine from the start, or inherited.',
+    placeholder: 'I think I picked this up from...',
+  },
+  {
+    key: 'makeRoom',
+    label: 'What I want to make room for',
+    hint: 'When this pattern stops running, what gets to live there?',
+    placeholder: 'I want to make room for...',
+  },
+  {
+    key: 'toSelf',
+    label: 'What I want to say to myself',
+    hint: 'The part no one else needs to hear. Speak to yourself directly.',
+    placeholder: 'Dear me,',
+    large: true,
+  },
 ];
 
 /* ============================================================
    STATE
    ============================================================ */
+function emptyFields() {
+  const f = {};
+  FIELDS.forEach(field => { f[field.key] = ''; });
+  return f;
+}
+
 const initialState = {
   view: 'welcome',
-  letter: '',
+  fields: emptyFields(),
   startedAt: null,
   completedAt: null,
-  revisedCount: 0,
-  promptsCollapsed: false,
 };
 let state = loadState();
 
 function loadState() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return { ...initialState };
+    if (!raw) return JSON.parse(JSON.stringify(initialState));
     const parsed = JSON.parse(raw);
-    return { ...initialState, ...parsed };
+    const merged = JSON.parse(JSON.stringify(initialState));
+    Object.assign(merged, parsed);
+    merged.fields = { ...emptyFields(), ...(parsed.fields || {}) };
+    // Migrate any earlier draft that used a single `letter` string
+    if (parsed.letter && !merged.fields.toSelf) {
+      merged.fields.toSelf = parsed.letter;
+    }
+    return merged;
   } catch (e) {
-    return { ...initialState };
+    return JSON.parse(JSON.stringify(initialState));
   }
 }
 
@@ -567,8 +605,13 @@ function saveState() {
 function resetAll() {
   if (!confirm('Erase your letter and start over? This cannot be undone.')) return;
   localStorage.removeItem(STORAGE_KEY);
-  state = { ...initialState };
+  state = JSON.parse(JSON.stringify(initialState));
+  state.fields = emptyFields();
   render();
+}
+
+function hasAnyContent() {
+  return FIELDS.some(f => (state.fields[f.key] || '').trim().length > 0);
 }
 
 /* ============================================================
@@ -580,8 +623,54 @@ function shortDate(d) {
   return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 }
 
+function longDate(d) {
+  return d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+}
+
 function escapeHtml(s) {
   return String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' })[c]);
+}
+
+function composedLetterHtml() {
+  const sections = FIELDS.map(f => {
+    const val = (state.fields[f.key] || '').trim();
+    const escaped = val
+      ? escapeHtml(val).replace(/\n/g, '<br>')
+      : '<em style="color: #999;">(left blank)</em>';
+    return `
+      <div class="print-section">
+        <h2>${escapeHtml(f.label)}</h2>
+        <p>${escaped}</p>
+      </div>
+    `;
+  }).join('');
+  return `
+    <div class="print-letter">
+      <div class="print-letter-header">
+        <p class="print-eyebrow">Tranquil Edge Retreat</p>
+        <h1>A Letter to Myself</h1>
+        <p class="print-date">${longDate(new Date())}</p>
+      </div>
+      ${sections}
+      <p class="print-footer">Written before the retreat. For my own use.</p>
+    </div>
+  `;
+}
+
+function composedLetterText() {
+  const lines = [];
+  lines.push('Tranquil Edge Retreat');
+  lines.push('A Letter to Myself');
+  lines.push(longDate(new Date()));
+  lines.push('');
+  FIELDS.forEach(f => {
+    const val = (state.fields[f.key] || '').trim();
+    lines.push(f.label);
+    lines.push(val || '(left blank)');
+    lines.push('');
+  });
+  lines.push('Written before the retreat. For my own use.');
+  return lines.join('\n');
 }
 
 /* ============================================================
@@ -601,7 +690,7 @@ function renderWelcome() {
 
   const now = new Date();
   const beforeRelease = now < RELEASE_DATE;
-  const hasDraft = (state.letter || '').trim().length > 0;
+  const hasDraft = hasAnyContent();
   const isComplete = !!state.completedAt;
 
   let metaLine;
@@ -615,8 +704,8 @@ function renderWelcome() {
     buttonRowHtml = `<button class="btn" disabled>Opens ${shortDate(RELEASE_DATE)}</button>`;
   } else if (isComplete) {
     buttonRowHtml = `
-      <button class="btn" onclick="goToWrite()">Read or revise the letter</button>
-      <button class="btn btn-secondary" onclick="goToDone()">Open print and save options</button>
+      <button class="btn" onclick="goToWrite()">Read or revise</button>
+      <button class="btn btn-secondary" onclick="goToDone()">Print or save</button>
     `;
   } else if (hasDraft) {
     buttonRowHtml = `
@@ -625,55 +714,33 @@ function renderWelcome() {
     `;
   } else {
     buttonRowHtml = `
-      <button class="btn" onclick="goToPrep()">Begin</button>
+      <button class="btn" onclick="goToWrite()">Open the form</button>
+      <button class="btn btn-secondary" onclick="goToPrep()">Sit with it first</button>
     `;
   }
 
   view.innerHTML = `
     <div class="eyebrow">After the Audit</div>
     <h1 class="title">A Letter to Yourself</h1>
-    <p class="subtitle">Before the fire.</p>
+    <p class="subtitle">Short answers. Honest ones.</p>
 
-    <p>The inventory let you see the pattern in shorthand. The audit let you see it in detail. This letter is the next step. You write to yourself, in your own voice, about the one thing you are ready to put down.</p>
+    <p>The inventory let you see the pattern in shorthand. The audit let you see it in detail. This is the next piece. You write to yourself, in your own voice, about the one thing you are ready to put down.</p>
 
-    <p>You write it now, before the retreat. You bring it with you. On the third night, you walk to the fire in the woods and burn it when you are ready. The fire stays lit through the night. There is no group clock.</p>
+    <p>Below is a guided form. Seven short prompts. You answer one at a time. You do not have to fill every box. Each answer saves to your browser as you type, so you can leave and come back.</p>
 
-    <p>You can revise this letter as many times as you want before the retreat. You will not show it to anyone. You will not read it aloud. The point is the writing and the burning.</p>
-
-    <div class="arc">
-      <div class="arc-row done">
-        <div class="arc-num">Phase 1</div>
-        <div class="arc-name">Assessment · the inventory and audit you have already done</div>
-      </div>
-      <div class="arc-row done">
-        <div class="arc-num">Phase 2</div>
-        <div class="arc-name">Acknowledgement and clearing · what the audit just did</div>
-      </div>
-      <div class="arc-row current">
-        <div class="arc-num">Phase 3</div>
-        <div class="arc-name">Letting go · the letter you are about to write</div>
-      </div>
-      <div class="arc-row">
-        <div class="arc-num">Phase 4</div>
-        <div class="arc-name">Claiming · the batok session at the retreat</div>
-      </div>
-      <div class="arc-row">
-        <div class="arc-num">Phase 5</div>
-        <div class="arc-name">Integration · the seven domain rituals after</div>
-      </div>
-    </div>
+    <p>What you write here you will bring with you to the retreat. We will use it there. Until then it stays with you.</p>
 
     <div class="meta">${metaLine}</div>
 
     <p class="privacy-note">
-      <strong>About your privacy.</strong> The letter saves to your own browser, not a server. Nothing is sent to anyone. You can revise it as many times as you want, print it, or save it as a text file. When you are ready, take it to the retreat in your own way.
+      <strong>About your privacy.</strong> The letter saves to your own browser, not a server. Nothing is sent to anyone. You can revise as many times as you want, print it, or save it as a text file.
     </p>
 
     <div class="btn-row">
       ${buttonRowHtml}
     </div>
 
-    <p class="companion-link">Need to do the audit first? <a href="../karmic-audit/">Open it here</a>. The swipe inventory is <a href="../kalooban-quiz/">here</a>.</p>
+    <p class="companion-link">If you have not done the others yet, the <a href="../kalooban-quiz/">swipe inventory</a> takes about ten minutes and the <a href="../karmic-audit/">private audit</a> goes deeper.</p>
   `;
   stage.innerHTML = '';
   stage.appendChild(view);
@@ -687,11 +754,11 @@ function renderPrep() {
     <button class="back-link" onclick="goToWelcome()">← Back</button>
     <div class="eyebrow">Arrive First</div>
     <h1 class="title">Sit with what you found.</h1>
-    <p class="subtitle">The cards work best when you do.</p>
+    <p class="subtitle">Optional. Skip if you are short on time.</p>
 
     <p>Find a quiet place where no one will interrupt you for the next thirty minutes. Sit comfortably. Put your phone face down somewhere it will not pull at you, then pick it up again only for this.</p>
 
-    <p>Before you write, slow down. The pattern you are about to name has been with you a long time. It deserves a few breaths first. Use the tools below if they help. Skip them if they do not.</p>
+    <p>The pattern you are about to name has been with you a long time. It deserves a few breaths first. Use the tools below if they help. Skip them if they do not.</p>
 
     <div class="guide-row">
       <button class="guide-btn" id="breath-btn" onclick="toggleBreathing()" aria-label="Start guided breathing"><span class="icon">▶</span></button>
@@ -710,14 +777,10 @@ function renderPrep() {
     </div>
     <audio id="ocean-audio" src="audio/waves-60s.mp3" preload="none"></audio>
 
-    <p style="margin-top: 2rem;">When you are ready, open your eyes and begin. There is no length the letter has to reach. A page is enough. Two paragraphs are enough. Whatever is true.</p>
-
-    <p>Write to the part of you that already knows the pattern is no longer yours to carry. Write the way you would write to a trusted friend, only the friend is you.</p>
-
     <div class="ornament">◆ ◇ ◆</div>
 
     <div class="btn-row">
-      <button class="btn" onclick="goToWrite()">I am ready to write</button>
+      <button class="btn" onclick="goToWrite()">Open the form</button>
     </div>
   `;
   stage.innerHTML = '';
@@ -733,49 +796,44 @@ function renderWrite() {
     saveState();
   }
 
-  const promptsCls = state.promptsCollapsed ? 'prompts collapsed' : 'prompts';
+  const fieldsHtml = FIELDS.map(f => `
+    <div class="field-block">
+      <div class="field-label">${escapeHtml(f.label)}</div>
+      <div class="field-hint">${escapeHtml(f.hint)}</div>
+      <textarea
+        class="field-area${f.large ? ' large' : ''}"
+        data-field="${f.key}"
+        placeholder="${escapeHtml(f.placeholder || '')}"
+        oninput="onFieldInput('${f.key}', this.value)"
+      >${escapeHtml(state.fields[f.key] || '')}</textarea>
+    </div>
+  `).join('');
 
   view.innerHTML = `
     <button class="back-link" onclick="goToWelcome()">← Back to welcome</button>
     <div class="eyebrow">The Letter</div>
-    <h1 class="title">To yourself, about the pattern.</h1>
+    <h1 class="title">Fill in what is true.</h1>
     <p class="subtitle">No one else will read this.</p>
 
-    <p style="text-align: center; color: var(--paper-dim);">Write what is true. Not what sounds good. Stop when it stops moving forward. Come back to it later if more arrives.</p>
+    <p style="text-align: center; color: var(--paper-dim);">Answer one prompt at a time. Skip any that do not fit. Each box saves as you type. Take as long as you want.</p>
 
-    <div class="${promptsCls}" id="prompts">
-      <div class="prompts-head" onclick="togglePrompts()">
-        <span>Optional starter prompts</span>
-        <span class="toggle">▾</span>
-      </div>
-      <div class="prompts-body">
-        <ol>
-          ${PROMPTS.map(p => `<li>${escapeHtml(p)}</li>`).join('')}
-        </ol>
-      </div>
-    </div>
-
-    <textarea
-      class="letter-area"
-      id="letter-area"
-      placeholder="Begin here. There is no shape this has to take."
-      oninput="onLetterInput(this.value)"
-    >${escapeHtml(state.letter || '')}</textarea>
+    ${fieldsHtml}
 
     <div class="save-status saved" id="save-status">Saved</div>
 
     <div class="btn-row">
-      <button class="btn" onclick="markWritten()">Mark it written</button>
-      <button class="btn btn-secondary" onclick="goToWelcome()">Pause and continue later</button>
+      <button class="btn" onclick="markWritten()">My letter is ready</button>
+      <button class="btn btn-secondary" onclick="goToWelcome()">Pause and come back</button>
     </div>
 
     <p class="privacy-note">
-      <strong>This stays with you.</strong> The letter saves to your browser as you type. Nothing is sent. You can leave this tab and return later.
+      <strong>This stays with you.</strong> Each answer saves to your browser as you type. Nothing is sent. You can leave this tab and return later.
     </p>
+
+    ${composedLetterHtml()}
   `;
   stage.innerHTML = '';
   stage.appendChild(view);
-  setTimeout(() => { const el = document.getElementById('letter-area'); if (el) el.focus(); }, 30);
 }
 
 function renderDone() {
@@ -783,14 +841,14 @@ function renderDone() {
   view.className = 'view';
 
   const completedDate = state.completedAt ? shortDate(new Date(state.completedAt)) : '';
-  const wordCount = (state.letter || '').trim().split(/\s+/).filter(Boolean).length;
+  const filledCount = FIELDS.filter(f => (state.fields[f.key] || '').trim().length > 0).length;
 
   view.innerHTML = `
     <div class="eyebrow">Saved</div>
     <h1 class="title">Your letter is written.</h1>
     <p class="subtitle">${completedDate ? `Completed ${completedDate}.` : 'Saved to your browser.'}</p>
 
-    <p style="text-align: center;">${wordCount} word${wordCount === 1 ? '' : 's'}. You can read it again, revise it, print it, or save it as a text file. Whatever helps you carry it to the fire.</p>
+    <p style="text-align: center;">${filledCount} of ${FIELDS.length} prompts answered. You can read it again, revise it, print it, or save it as a text file.</p>
 
     <div class="btn-row">
       <button class="btn" onclick="goToWrite()">Read or revise</button>
@@ -800,32 +858,7 @@ function renderDone() {
 
     <div class="ornament">◆ ◇ ◆</div>
 
-    <p>You walk to the fire on the third night of the retreat. You do not have to read the letter aloud. You do not have to share what is in it. You burn it when you are ready. The fire stays lit through the night.</p>
-
-    <p>What follows the burning is the next phase: claiming. At the fire, after you release, you take up what is yours. The batok workshop on Day 3 evening is for that. Then comes integration: the seven domain rituals you bring home.</p>
-
-    <div class="arc">
-      <div class="arc-row done">
-        <div class="arc-num">Phase 1</div>
-        <div class="arc-name">Assessment</div>
-      </div>
-      <div class="arc-row done">
-        <div class="arc-num">Phase 2</div>
-        <div class="arc-name">Acknowledgement and clearing</div>
-      </div>
-      <div class="arc-row done">
-        <div class="arc-num">Phase 3</div>
-        <div class="arc-name">Letting go · written · burns at the fire on Day 3</div>
-      </div>
-      <div class="arc-row current">
-        <div class="arc-num">Phase 4</div>
-        <div class="arc-name">Claiming · at the retreat</div>
-      </div>
-      <div class="arc-row">
-        <div class="arc-num">Phase 5</div>
-        <div class="arc-name">Integration · after the retreat</div>
-      </div>
-    </div>
+    <p>You can come back to revise this any time before the retreat. Bring whichever version of it you trust most. We will use what you wrote when you arrive.</p>
 
     <div class="btn-row">
       <button class="btn btn-secondary" onclick="goToWelcome()">Close</button>
@@ -834,7 +867,7 @@ function renderDone() {
 
     <p class="privacy-note">If you close this tab, the letter stays in your browser. You can return anytime to read, revise, or print it.</p>
 
-    <p class="companion-link">If you have not done the swipe inventory or the audit yet, <a href="../kalooban-quiz/">open the inventory</a> or <a href="../karmic-audit/">open the audit</a>.</p>
+    ${composedLetterHtml()}
   `;
   stage.innerHTML = '';
   stage.appendChild(view);
@@ -873,20 +906,18 @@ function goToDone() {
 }
 
 function markWritten() {
-  const text = (state.letter || '').trim();
-  if (!text) {
-    if (!confirm('The letter is empty. Mark it written anyway?')) return;
+  if (!hasAnyContent()) {
+    if (!confirm('You have not filled in any of the prompts yet. Mark the letter ready anyway?')) return;
   }
   state.completedAt = new Date().toISOString();
-  state.revisedCount = (state.revisedCount || 0) + 1;
   state.view = 'done';
   saveState();
   render();
 }
 
 let saveTimer = null;
-function onLetterInput(value) {
-  state.letter = value;
+function onFieldInput(key, value) {
+  state.fields[key] = value;
   const status = document.getElementById('save-status');
   if (status) {
     status.textContent = 'Saving...';
@@ -904,21 +935,10 @@ function onLetterInput(value) {
   }, 400);
 }
 
-function togglePrompts() {
-  state.promptsCollapsed = !state.promptsCollapsed;
-  saveState();
-  const el = document.getElementById('prompts');
-  if (el) el.classList.toggle('collapsed', state.promptsCollapsed);
-}
-
 function downloadLetter() {
-  const text = state.letter || '';
+  const text = composedLetterText();
   const stamp = new Date().toISOString().slice(0, 10);
-  const blob = new Blob([
-    `Tranquil Edge Retreat\nLetter to Self\nSaved ${stamp}\n\n`,
-    text,
-    '\n',
-  ], { type: 'text/plain;charset=utf-8' });
+  const blob = new Blob([text + '\n'], { type: 'text/plain;charset=utf-8' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
@@ -931,9 +951,8 @@ function downloadLetter() {
 
 function printLetter() {
   showPrintBusy('Preparing print...');
-  state.view = 'write';
-  saveState();
-  render();
+  // The composed letter HTML is already in the DOM on both write and done views.
+  // Just trigger the print after one paint.
   requestAnimationFrame(() => {
     showPrintBusy('Opening printer dialog...');
     requestAnimationFrame(() => { window.print(); });
@@ -962,7 +981,6 @@ window.addEventListener('afterprint', hidePrintBusy);
 
 /* ============================================================
    Arrive-first guided breathing (lifted from inventory)
-   Three cycles: 4s inhale, 6s exhale. ~30s total.
    ============================================================ */
 let breathTimer = null;
 let breathStep = 0;
@@ -1076,8 +1094,7 @@ window.goToPrep = goToPrep;
 window.goToWrite = goToWrite;
 window.goToDone = goToDone;
 window.markWritten = markWritten;
-window.onLetterInput = onLetterInput;
-window.togglePrompts = togglePrompts;
+window.onFieldInput = onFieldInput;
 window.downloadLetter = downloadLetter;
 window.printLetter = printLetter;
 window.toggleBreathing = toggleBreathing;
