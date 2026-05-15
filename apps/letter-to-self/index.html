@@ -586,44 +586,37 @@ const FIELDS = [
   {
     key: 'pattern',
     label: 'The pattern I am ready to put down',
-    hint: 'One sentence. Direct. No softeners.',
-    placeholder: 'Example: I keep performing instead of being honest.',
+    placeholder: 'Describe the pattern in one or two sentences. Direct. No softeners.',
   },
   {
     key: 'where',
     label: 'Where this pattern shows up most',
-    hint: 'A relationship, a moment, a kind of decision. Be specific.',
-    placeholder: 'When I am... / Around the people who... / In moments where...',
+    placeholder: 'When, where, and with whom does it come alive? Be specific.',
   },
   {
     key: 'protects',
     label: 'What this pattern has protected me from',
-    hint: 'It is not random. Something is being kept safe by it.',
-    placeholder: 'Being seen as... / Feeling... / Risking...',
+    placeholder: 'From what? Naming it directly takes some of its power.',
   },
   {
     key: 'costs',
     label: 'What it has cost me',
-    hint: 'And who else has paid the cost.',
-    placeholder: 'I have lost... / The people closest to me have...',
+    placeholder: 'What has the cost been? Who else has paid for it?',
   },
   {
     key: 'learned',
-    label: 'Where I think I learned this',
-    hint: 'Mine from the start, or inherited.',
-    placeholder: 'From the way I was raised. / Around the time when... / It was passed down.',
+    label: 'Where I learned this',
+    placeholder: 'Where did I pick this up, and from whom?',
   },
   {
     key: 'makeRoom',
     label: 'What I want to make room for',
-    hint: 'When this pattern stops running, what gets to live there?',
-    placeholder: 'Honesty. Rest. The thing I keep postponing. Someone I shut out.',
+    placeholder: 'What do I want to live in the space this pattern used to fill?',
   },
   {
     key: 'toSelf',
-    label: 'One thing more, for me alone',
-    hint: 'A wish. A vow. An apology. A thank you. Whatever did not fit above.',
-    placeholder: '(Anything that did not fit above.)',
+    label: 'Anything else, for me alone',
+    placeholder: 'Write anything else you want to say to yourself. The part no one else needs to hear but you.',
     large: true,
   },
 ];
@@ -697,17 +690,17 @@ function escapeHtml(s) {
   return String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' })[c]);
 }
 
-/* Compose the seven field answers into actual letter form, with a
-   greeting, prose lead-ins in the writer's voice, the user's words
-   verbatim, and a closing signature. */
+/* The letter prose. Each line above a blank is a complete statement
+   that the participant's answer below fleshes out. Reading top to
+   bottom with all the blanks filled in produces a flowing letter. */
 const LETTER_INTROS = {
-  pattern:  'I am writing this because there is a pattern I am ready to put down. Here it is:',
-  where:    'It comes alive most when:',
-  protects: 'For a long time it has protected me. From:',
-  costs:    'But it has also cost me. The cost has been:',
-  learned:  'I think I picked it up:',
-  makeRoom: 'If I let it go, what I want to make room for is:',
-  toSelf:   'And one thing more, for me alone:',
+  pattern:  'There is a pattern I am ready to put down.',
+  where:    'It shows up in my life most clearly here:',
+  protects: 'I have carried it because it has protected me.',
+  costs:    'But it has also cost me. It has cost the people I love too.',
+  learned:  'I did not invent this pattern. I learned it somewhere.',
+  makeRoom: 'When I let it go, here is what gets to live in its place.',
+  toSelf:   'Finally,',
 };
 
 function composedLetterHtml() {
