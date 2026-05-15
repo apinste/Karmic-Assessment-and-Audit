@@ -490,12 +490,99 @@
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
     pointer-events: none;
   }
+
+  /* In-app modal so the github.io URL never shows in a dialog. */
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.72);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    padding: 1.5rem;
+  }
+  .modal-backdrop.on { display: flex; animation: modalFade 0.18s ease forwards; }
+  @keyframes modalFade { from { opacity: 0; } to { opacity: 1; } }
+  .modal-card {
+    background: var(--paper-card, #1b1b24);
+    border: 1px solid var(--ember);
+    border-radius: 4px;
+    padding: 1.7rem 1.8rem;
+    max-width: 440px;
+    width: 100%;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+    animation: modalRise 0.22s ease forwards;
+  }
+  @keyframes modalRise {
+    from { transform: translateY(8px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+  .modal-title {
+    font-family: var(--serif-small-caps);
+    font-size: 0.82rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ember);
+    margin-bottom: 0.7rem;
+  }
+  .modal-message {
+    font-family: var(--serif-body);
+    color: var(--paper);
+    line-height: 1.6;
+    margin-bottom: 1.4rem;
+  }
+  .modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.7rem;
+    flex-wrap: wrap;
+  }
+  .modal-btn {
+    appearance: none;
+    border: 1px solid rgba(196, 165, 96, 0.25);
+    background: transparent;
+    color: var(--paper);
+    padding: 0.7rem 1.4rem;
+    font-family: var(--serif-small-caps);
+    font-size: 0.78rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  }
+  .modal-btn:hover {
+    background: rgba(196, 119, 58, 0.08);
+    border-color: var(--ember);
+    color: var(--ember-bright);
+  }
+  .modal-btn.primary {
+    background: var(--ember);
+    color: var(--ink);
+    border-color: var(--ember);
+  }
+  .modal-btn.primary:hover { background: var(--ember-bright); border-color: var(--ember-bright); }
+
+  /* Topbar brand as a home link */
+  .topbar .home-link {
+    color: inherit;
+    text-decoration: none;
+    font: inherit;
+    letter-spacing: inherit;
+    text-transform: inherit;
+    transition: color 0.25s ease;
+    cursor: pointer;
+  }
+  .topbar .home-link:hover { color: var(--ember); }
+  .topbar .home-link:hover .mark { color: var(--ember-bright); }
 </style>
 </head>
 <body>
 
 <header class="topbar">
-  <span><span class="mark">◆</span> Tranquil Edge Retreat</span>
+  <a class="home-link" href="../../" title="Back to the welcome page"><span class="mark">◆</span> Tranquil Edge Retreat</a>
   <span>Karmic Audit</span>
 </header>
 
@@ -504,6 +591,14 @@
 <footer class="footer-strip">
   Filipino Martial Arts Retreat · September 10–13, 2026 · River Mountain, PA
 </footer>
+
+<div class="modal-backdrop" id="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div class="modal-card">
+    <div class="modal-title" id="modal-title">Confirm</div>
+    <div class="modal-message" id="modal-message"></div>
+    <div class="modal-actions" id="modal-actions"></div>
+  </div>
+</div>
 
 <script>
 /* ============================================================
@@ -662,12 +757,17 @@ function saveState() {
   } catch (e) { console.warn('save failed:', e); }
 }
 
-function resetAll() {
-  if (confirm('Clear everything you have written and start over? This cannot be undone.')) {
-    try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
-    state = { ...DEFAULT_STATE };
-    render();
-  }
+async function resetAll() {
+  const ok = await showConfirm({
+    title: 'Clear everything?',
+    message: 'This will erase what you have written across all domains. It cannot be undone.',
+    confirmLabel: 'Clear and start over',
+    cancelLabel: 'Keep what I have',
+  });
+  if (!ok) return;
+  try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+  state = { ...DEFAULT_STATE };
+  render();
 }
 
 let state = loadState();
@@ -1060,12 +1160,56 @@ function triggerPrintNextFrame() {
 
 window.addEventListener('afterprint', hidePrintBusy);
 
-function startDomain(domainId) {
+/* ============================================================
+   In-app modal so the github.io URL never appears in a dialog.
+   ============================================================ */
+function showConfirm(opts) {
+  return new Promise(resolve => {
+    const backdrop = document.getElementById('modal-backdrop');
+    const titleEl = document.getElementById('modal-title');
+    const msgEl = document.getElementById('modal-message');
+    const actEl = document.getElementById('modal-actions');
+    titleEl.textContent = opts.title || 'Confirm';
+    msgEl.textContent = opts.message || '';
+    actEl.innerHTML = '';
+    function close(result) {
+      backdrop.classList.remove('on');
+      backdrop.removeEventListener('click', onBackdrop);
+      document.removeEventListener('keydown', onKey);
+      resolve(result);
+    }
+    function onBackdrop(e) { if (e.target === backdrop) close(false); }
+    function onKey(e) {
+      if (e.key === 'Escape') close(false);
+      else if (e.key === 'Enter') close(true);
+    }
+    const cancelBtn = document.createElement('button');
+    cancelBtn.className = 'modal-btn';
+    cancelBtn.textContent = opts.cancelLabel || 'Cancel';
+    cancelBtn.onclick = () => close(false);
+    const okBtn = document.createElement('button');
+    okBtn.className = 'modal-btn primary';
+    okBtn.textContent = opts.confirmLabel || 'Yes';
+    okBtn.onclick = () => close(true);
+    actEl.appendChild(cancelBtn);
+    actEl.appendChild(okBtn);
+    backdrop.classList.add('on');
+    backdrop.addEventListener('click', onBackdrop);
+    document.addEventListener('keydown', onKey);
+    setTimeout(() => okBtn.focus(), 50);
+  });
+}
+
+async function startDomain(domainId) {
   // Already completed. Let them re-audit if they want.
   if (state.completed[domainId]) {
-    if (!confirm('You have already completed this domain. Audit it again? Your previous writing will be replaced.')) {
-      return;
-    }
+    const ok = await showConfirm({
+      title: 'Audit this again?',
+      message: 'You have already completed this domain. Auditing it again will replace your previous writing.',
+      confirmLabel: 'Replace and audit again',
+      cancelLabel: 'Keep what I wrote',
+    });
+    if (!ok) return;
   }
   state.current = {
     domainId,
@@ -1103,13 +1247,18 @@ function showSaveStatus(text) {
   el.classList.toggle('visible', !!text);
 }
 
-function confirmLeave() {
-  if (confirm('Save your writing and return to the domain list? You can come back to this anytime.')) {
-    saveState();
-    state.view = 'select';
-    saveState();
-    render();
-  }
+async function confirmLeave() {
+  const ok = await showConfirm({
+    title: 'Step away for now?',
+    message: 'Your writing is already saved on this device. You can come back to it anytime.',
+    confirmLabel: 'Return to domains',
+    cancelLabel: 'Keep writing',
+  });
+  if (!ok) return;
+  saveState();
+  state.view = 'select';
+  saveState();
+  render();
 }
 
 function backToAudit() {

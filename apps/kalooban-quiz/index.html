@@ -531,6 +531,93 @@
 
   .hidden { display: none !important; }
 
+  /* In-app modal so the github.io URL never shows in a dialog. */
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.72);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    padding: 1.5rem;
+  }
+  .modal-backdrop.on { display: flex; animation: modalFade 0.18s ease forwards; }
+  @keyframes modalFade { from { opacity: 0; } to { opacity: 1; } }
+  .modal-card {
+    background: var(--ink-medium);
+    border: 1px solid var(--ember);
+    border-radius: 4px;
+    padding: 1.7rem 1.8rem;
+    max-width: 440px;
+    width: 100%;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+    animation: modalRise 0.22s ease forwards;
+  }
+  @keyframes modalRise {
+    from { transform: translateY(8px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+  .modal-title {
+    font-family: var(--serif-small-caps);
+    font-size: 0.82rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ember);
+    margin-bottom: 0.7rem;
+  }
+  .modal-message {
+    font-family: var(--serif-body);
+    color: var(--paper);
+    line-height: 1.6;
+    margin-bottom: 1.4rem;
+  }
+  .modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.7rem;
+    flex-wrap: wrap;
+  }
+  .modal-btn {
+    appearance: none;
+    border: 1px solid var(--ink-line);
+    background: transparent;
+    color: var(--paper);
+    padding: 0.7rem 1.4rem;
+    font-family: var(--serif-small-caps);
+    font-size: 0.78rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  }
+  .modal-btn:hover {
+    background: rgba(196, 119, 58, 0.08);
+    border-color: var(--ember);
+    color: var(--ember-bright);
+  }
+  .modal-btn.primary {
+    background: var(--ember);
+    color: var(--ink-deepest);
+    border-color: var(--ember);
+  }
+  .modal-btn.primary:hover { background: var(--ember-bright); border-color: var(--ember-bright); }
+
+  /* Topbar brand as a home link */
+  header.topbar .home-link {
+    color: inherit;
+    text-decoration: none;
+    font: inherit;
+    letter-spacing: inherit;
+    text-transform: inherit;
+    transition: color 0.25s ease;
+    cursor: pointer;
+  }
+  header.topbar .home-link:hover { color: var(--ember); }
+  header.topbar .home-link:hover .mark { color: var(--ember-bright); }
+
   .privacy-note {
     font-size: 0.95rem;
     font-style: italic;
@@ -665,7 +752,7 @@
 <div class="app">
 
 <header class="topbar">
-  <span><span class="mark">◆</span> Tranquil Edge Retreat</span>
+  <a class="home-link" href="../../" title="Back to the welcome page"><span class="mark">◆</span> Tranquil Edge Retreat</a>
   <span class="progress-indicator">Pre-Retreat Reflection</span>
 </header>
 
@@ -674,6 +761,14 @@
 <footer class="bottombar">
   Filipino Martial Arts Retreat &nbsp;·&nbsp; September 10–13, 2026 &nbsp;·&nbsp; River Mountain, PA
 </footer>
+
+<div class="modal-backdrop" id="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div class="modal-card">
+    <div class="modal-title" id="modal-title">Confirm</div>
+    <div class="modal-message" id="modal-message"></div>
+    <div class="modal-actions" id="modal-actions"></div>
+  </div>
+</div>
 
 </div>
 
@@ -839,8 +934,14 @@ function saveState() {
 
 let state = loadState();
 
-function resetState() {
-  if (confirm('Start over? Your answers will be cleared.')) {
+async function resetState() {
+  const ok = await showConfirm({
+    title: 'Start over?',
+    message: 'This will clear every answer you have given so far. It cannot be undone.',
+    confirmLabel: 'Yes, start over',
+    cancelLabel: 'Keep my answers',
+  });
+  if (ok) {
     try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
     state = {
       ...DEFAULT_STATE,
@@ -983,11 +1084,15 @@ function goBackToWelcome() {
   render();
 }
 
-function confirmIdentity() {
+async function confirmIdentity() {
   const name = document.getElementById('name-input').value.trim();
   const email = document.getElementById('email-input').value.trim();
   if (!name || !email) {
-    alert('Please share your name and email.');
+    await showAlert({
+      title: 'Almost there',
+      message: 'Please share your name and email so we know whose reflection we are receiving.',
+      okLabel: 'OK',
+    });
     return;
   }
   state.name = name;
@@ -1558,6 +1663,75 @@ window.resetState = resetState;
 window.render = render;
 window.toggleBreathing = toggleBreathing;
 window.toggleOcean = toggleOcean;
+
+/* ============================================================
+   In-app modal so the github.io URL never appears in a dialog.
+   ============================================================ */
+function showConfirm(opts) {
+  return new Promise(resolve => {
+    const backdrop = document.getElementById('modal-backdrop');
+    const titleEl = document.getElementById('modal-title');
+    const msgEl = document.getElementById('modal-message');
+    const actEl = document.getElementById('modal-actions');
+    titleEl.textContent = opts.title || 'Confirm';
+    msgEl.textContent = opts.message || '';
+    actEl.innerHTML = '';
+    function close(result) {
+      backdrop.classList.remove('on');
+      backdrop.removeEventListener('click', onBackdrop);
+      document.removeEventListener('keydown', onKey);
+      resolve(result);
+    }
+    function onBackdrop(e) { if (e.target === backdrop) close(false); }
+    function onKey(e) {
+      if (e.key === 'Escape') close(false);
+      else if (e.key === 'Enter') close(true);
+    }
+    const cancelBtn = document.createElement('button');
+    cancelBtn.className = 'modal-btn';
+    cancelBtn.textContent = opts.cancelLabel || 'Cancel';
+    cancelBtn.onclick = () => close(false);
+    const okBtn = document.createElement('button');
+    okBtn.className = 'modal-btn primary';
+    okBtn.textContent = opts.confirmLabel || 'Yes';
+    okBtn.onclick = () => close(true);
+    actEl.appendChild(cancelBtn);
+    actEl.appendChild(okBtn);
+    backdrop.classList.add('on');
+    backdrop.addEventListener('click', onBackdrop);
+    document.addEventListener('keydown', onKey);
+    setTimeout(() => okBtn.focus(), 50);
+  });
+}
+
+function showAlert(opts) {
+  return new Promise(resolve => {
+    const backdrop = document.getElementById('modal-backdrop');
+    const titleEl = document.getElementById('modal-title');
+    const msgEl = document.getElementById('modal-message');
+    const actEl = document.getElementById('modal-actions');
+    titleEl.textContent = opts.title || 'Heads up';
+    msgEl.textContent = opts.message || '';
+    actEl.innerHTML = '';
+    function close() {
+      backdrop.classList.remove('on');
+      backdrop.removeEventListener('click', onBackdrop);
+      document.removeEventListener('keydown', onKey);
+      resolve();
+    }
+    function onBackdrop(e) { if (e.target === backdrop) close(); }
+    function onKey(e) { if (e.key === 'Escape' || e.key === 'Enter') close(); }
+    const okBtn = document.createElement('button');
+    okBtn.className = 'modal-btn primary';
+    okBtn.textContent = opts.okLabel || 'OK';
+    okBtn.onclick = close;
+    actEl.appendChild(okBtn);
+    backdrop.classList.add('on');
+    backdrop.addEventListener('click', onBackdrop);
+    document.addEventListener('keydown', onKey);
+    setTimeout(() => okBtn.focus(), 50);
+  });
+}
 
 render();
 </script>
