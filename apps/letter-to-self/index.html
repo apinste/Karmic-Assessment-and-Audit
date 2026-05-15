@@ -299,11 +299,17 @@
   .letter-blank::placeholder { color: var(--paper-faded); font-style: italic; }
 
   .letter-signoff {
-    margin-top: 1.8rem;
+    margin-top: 2rem;
     font-family: var(--serif-display);
-    font-style: italic;
     font-size: 1.25rem;
     color: var(--paper);
+    line-height: 1.5;
+  }
+  .letter-signoff .signoff-name {
+    font-style: italic;
+    color: var(--ember-bright);
+    font-size: 1.45rem;
+    margin-top: 0.2rem;
   }
 
   @media (max-width: 640px) {
@@ -532,11 +538,15 @@
     }
     .print-letter .print-signoff {
       font-family: 'Cormorant Garamond', serif;
-      font-style: italic;
-      font-size: 13pt;
+      font-size: 12pt;
       color: black !important;
       margin-top: 0.5in;
-      margin-left: 0in;
+      line-height: 1.5;
+    }
+    .print-letter .print-signoff-name {
+      font-style: italic;
+      font-size: 14pt;
+      margin-top: 0.05in;
     }
   }
 </style>
@@ -583,37 +593,37 @@ const FIELDS = [
     key: 'where',
     label: 'Where this pattern shows up most',
     hint: 'A relationship, a moment, a kind of decision. Be specific.',
-    placeholder: 'It comes alive when...',
+    placeholder: 'When I am... / Around the people who... / In moments where...',
   },
   {
     key: 'protects',
     label: 'What this pattern has protected me from',
     hint: 'It is not random. Something is being kept safe by it.',
-    placeholder: 'It has kept me from...',
+    placeholder: 'Being seen as... / Feeling... / Risking...',
   },
   {
     key: 'costs',
     label: 'What it has cost me',
     hint: 'And who else has paid the cost.',
-    placeholder: 'The cost has been...',
+    placeholder: 'I have lost... / The people closest to me have...',
   },
   {
     key: 'learned',
     label: 'Where I think I learned this',
     hint: 'Mine from the start, or inherited.',
-    placeholder: 'I think I picked this up from...',
+    placeholder: 'From the way I was raised. / Around the time when... / It was passed down.',
   },
   {
     key: 'makeRoom',
     label: 'What I want to make room for',
     hint: 'When this pattern stops running, what gets to live there?',
-    placeholder: 'I want to make room for...',
+    placeholder: 'Honesty. Rest. The thing I keep postponing. Someone I shut out.',
   },
   {
     key: 'toSelf',
-    label: 'What I want to say to myself',
-    hint: 'The part no one else needs to hear. Speak to yourself directly.',
-    placeholder: 'Dear me,',
+    label: 'One thing more, for me alone',
+    hint: 'A wish. A vow. An apology. A thank you. Whatever did not fit above.',
+    placeholder: '(Anything that did not fit above.)',
     large: true,
   },
 ];
@@ -688,15 +698,16 @@ function escapeHtml(s) {
 }
 
 /* Compose the seven field answers into actual letter form, with a
-   greeting, prose lead-ins, the user's words verbatim, and a signoff. */
+   greeting, prose lead-ins in the writer's voice, the user's words
+   verbatim, and a closing signature. */
 const LETTER_INTROS = {
-  pattern:  'There is a pattern I am ready to put down. It is this:',
-  where:    'It shows up most:',
-  protects: 'What it has protected me from:',
-  costs:    'What it has cost me, and who else has paid the cost:',
-  learned:  'Where I think I picked it up:',
-  makeRoom: 'What I want to make room for when this pattern stops running:',
-  toSelf:   'And what I want to say to myself, the part no one else needs to hear:',
+  pattern:  'I am writing this because there is a pattern I am ready to put down. Here it is:',
+  where:    'It comes alive most when:',
+  protects: 'For a long time it has protected me. From:',
+  costs:    'But it has also cost me. The cost has been:',
+  learned:  'I think I picked it up:',
+  makeRoom: 'If I let it go, what I want to make room for is:',
+  toSelf:   'And one thing more, for me alone:',
 };
 
 function composedLetterHtml() {
@@ -710,6 +721,7 @@ function composedLetterHtml() {
     <p class="print-intro">${escapeHtml(LETTER_INTROS[field.key] || field.label)}</p>
     <p class="print-answer${field.key === 'toSelf' ? ' print-letter-body' : ''}">${fmt(f[field.key])}</p>
   `).join('');
+  const signoffName = (state.name || '').trim() || 'me';
   return `
     <div class="print-letter">
       <div class="print-letter-header">
@@ -718,13 +730,17 @@ function composedLetterHtml() {
       </div>
       <p class="print-greeting">Dear ${escapeHtml(greeting)},</p>
       ${blocks}
-      <p class="print-signoff">Me</p>
+      <div class="print-signoff">
+        <div>Love,</div>
+        <div class="print-signoff-name">${escapeHtml(signoffName)}</div>
+      </div>
     </div>
   `;
 }
 
 function composedLetterText() {
   const greeting = (state.name || '').trim() || 'self';
+  const signoffName = (state.name || '').trim() || 'me';
   const f = state.fields || {};
   const fmt = (val) => (val && val.trim()) ? val.trim() : '(left blank)';
   const lines = [];
@@ -738,7 +754,8 @@ function composedLetterText() {
     lines.push(fmt(f[field.key]));
     lines.push('');
   });
-  lines.push('Me');
+  lines.push('Love,');
+  lines.push(signoffName);
   return lines.join('\n');
 }
 
@@ -900,7 +917,10 @@ function renderWrite() {
 
       ${blocksHtml}
 
-      <div class="letter-signoff">Me</div>
+      <div class="letter-signoff">
+        <div>Love,</div>
+        <div class="signoff-name" id="signoff-name">${escapeHtml((state.name || '').trim() || 'me')}</div>
+      </div>
     </div>
 
     <div class="save-status saved" id="save-status">Saved</div>
@@ -1025,6 +1045,8 @@ function onFieldInput(key, value) {
 
 function onNameInput(value) {
   state.name = value;
+  const signoff = document.getElementById('signoff-name');
+  if (signoff) signoff.textContent = (value || '').trim() || 'me';
   flagDirty();
 }
 
