@@ -220,6 +220,29 @@
   .companion-link a:hover { color: var(--ember-bright); border-color: var(--ember-bright); }
 
   /* Field-based form */
+  .name-block {
+    margin-bottom: 2.2rem;
+    padding-bottom: 1.6rem;
+    border-bottom: 1px solid var(--ink-line);
+  }
+  .name-input {
+    width: 100%;
+    background: var(--ink-deep);
+    border: 1px solid var(--ink-line);
+    color: var(--paper);
+    font-family: var(--serif-display);
+    font-size: 1.35rem;
+    padding: 0.85rem 1rem;
+    border-radius: 2px;
+    transition: border-color 0.2s ease, background 0.2s ease;
+  }
+  .name-input:focus {
+    outline: none;
+    border-color: var(--ember);
+    background: var(--ink-medium);
+  }
+  .name-input::placeholder { color: var(--paper-faded); font-style: italic; }
+
   .field-block {
     margin-bottom: 1.6rem;
   }
@@ -444,44 +467,47 @@
       text-transform: uppercase;
       margin-bottom: 0.05in;
     }
-    .print-letter h1 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 24pt;
-      color: black !important;
-      font-weight: 500;
-      margin-bottom: 0.08in;
-    }
     .print-letter .print-date {
       font-style: italic;
       color: #666 !important;
       font-size: 10pt;
     }
-    .print-letter h2 {
+    .print-letter .print-greeting {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 13pt;
-      color: #444 !important;
+      font-size: 18pt;
+      color: black !important;
       font-weight: 500;
-      margin-top: 0.3in;
-      margin-bottom: 0.08in;
-      page-break-after: avoid;
+      margin-top: 0.35in;
+      margin-bottom: 0.25in;
     }
-    .print-letter .print-section p {
+    .print-letter .print-intro {
       font-family: 'Lora', 'Garamond', serif;
       font-size: 11pt;
+      color: #555 !important;
+      margin-top: 0.2in;
+      margin-bottom: 0.06in;
+      page-break-after: avoid;
+    }
+    .print-letter .print-answer {
+      font-family: 'Lora', 'Garamond', serif;
+      font-size: 11.5pt;
       color: black !important;
-      margin-bottom: 0.1in;
+      margin-bottom: 0.06in;
+      margin-left: 0.32in;
       line-height: 1.65;
       white-space: pre-wrap;
     }
-    .print-letter .print-section { page-break-inside: avoid; margin-bottom: 0.18in; }
-    .print-letter .print-footer {
-      margin-top: 0.5in;
+    .print-letter .print-letter-body {
+      margin-top: 0.06in;
+      margin-bottom: 0.2in;
+    }
+    .print-letter .print-signoff {
+      font-family: 'Cormorant Garamond', serif;
       font-style: italic;
-      color: #777 !important;
-      font-size: 10pt;
-      text-align: center;
-      border-top: 1px solid #ccc;
-      padding-top: 0.18in;
+      font-size: 13pt;
+      color: black !important;
+      margin-top: 0.5in;
+      margin-left: 0in;
     }
   }
 </style>
@@ -574,6 +600,7 @@ function emptyFields() {
 
 const initialState = {
   view: 'welcome',
+  name: '',
   fields: emptyFields(),
   startedAt: null,
   completedAt: null,
@@ -631,45 +658,58 @@ function escapeHtml(s) {
   return String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' })[c]);
 }
 
+/* Compose the seven field answers into actual letter form, with a
+   greeting, prose lead-ins, the user's words verbatim, and a signoff. */
+const LETTER_INTROS = {
+  pattern:  'There is a pattern I am ready to put down. It is this:',
+  where:    'It shows up most:',
+  protects: 'What it has protected me from:',
+  costs:    'What it has cost me, and who else has paid the cost:',
+  learned:  'Where I think I picked it up:',
+  makeRoom: 'What I want to make room for when this pattern stops running:',
+  toSelf:   'And what I want to say to myself, the part no one else needs to hear:',
+};
+
 function composedLetterHtml() {
-  const sections = FIELDS.map(f => {
-    const val = (state.fields[f.key] || '').trim();
-    const escaped = val
-      ? escapeHtml(val).replace(/\n/g, '<br>')
-      : '<em style="color: #999;">(left blank)</em>';
-    return `
-      <div class="print-section">
-        <h2>${escapeHtml(f.label)}</h2>
-        <p>${escaped}</p>
-      </div>
-    `;
-  }).join('');
+  const greeting = (state.name || '').trim() || 'self';
+  const f = state.fields || {};
+  const fmt = (val) => {
+    if (!val || !val.trim()) return '<em style="color: #999;">(left blank)</em>';
+    return escapeHtml(val.trim()).replace(/\n/g, '<br>');
+  };
+  const blocks = FIELDS.map(field => `
+    <p class="print-intro">${escapeHtml(LETTER_INTROS[field.key] || field.label)}</p>
+    <p class="print-answer${field.key === 'toSelf' ? ' print-letter-body' : ''}">${fmt(f[field.key])}</p>
+  `).join('');
   return `
     <div class="print-letter">
       <div class="print-letter-header">
-        <p class="print-eyebrow">Tranquil Edge Retreat</p>
-        <h1>A Letter to Myself</h1>
+        <p class="print-eyebrow">Tranquil Edge Retreat &nbsp;·&nbsp; Letter to Self</p>
         <p class="print-date">${longDate(new Date())}</p>
       </div>
-      ${sections}
-      <p class="print-footer">Written before the retreat. For my own use.</p>
+      <p class="print-greeting">Dear ${escapeHtml(greeting)},</p>
+      ${blocks}
+      <p class="print-signoff">Me</p>
     </div>
   `;
 }
 
 function composedLetterText() {
+  const greeting = (state.name || '').trim() || 'self';
+  const f = state.fields || {};
+  const fmt = (val) => (val && val.trim()) ? val.trim() : '(left blank)';
   const lines = [];
-  lines.push('Tranquil Edge Retreat');
-  lines.push('A Letter to Myself');
+  lines.push('Tranquil Edge Retreat · Letter to Self');
   lines.push(longDate(new Date()));
   lines.push('');
-  FIELDS.forEach(f => {
-    const val = (state.fields[f.key] || '').trim();
-    lines.push(f.label);
-    lines.push(val || '(left blank)');
+  lines.push(`Dear ${greeting},`);
+  lines.push('');
+  FIELDS.forEach(field => {
+    lines.push(LETTER_INTROS[field.key] || field.label);
+    lines.push(fmt(f[field.key]));
     lines.push('');
   });
-  lines.push('Written before the retreat. For my own use.');
+  lines.push('Me');
   return lines.join('\n');
 }
 
@@ -817,6 +857,18 @@ function renderWrite() {
 
     <p style="text-align: center; color: var(--paper-dim);">Answer one prompt at a time. Skip any that do not fit. Each box saves as you type. Take as long as you want.</p>
 
+    <div class="name-block">
+      <div class="field-label">Your name (or what you call yourself)</div>
+      <div class="field-hint">This is how the letter greets you: &ldquo;Dear ___,&rdquo;</div>
+      <input
+        type="text"
+        class="name-input"
+        placeholder="Type your name"
+        value="${escapeHtml(state.name || '')}"
+        oninput="onNameInput(this.value)"
+      >
+    </div>
+
     ${fieldsHtml}
 
     <div class="save-status saved" id="save-status">Saved</div>
@@ -916,8 +968,7 @@ function markWritten() {
 }
 
 let saveTimer = null;
-function onFieldInput(key, value) {
-  state.fields[key] = value;
+function flagDirty() {
   const status = document.getElementById('save-status');
   if (status) {
     status.textContent = 'Saving...';
@@ -933,6 +984,16 @@ function onFieldInput(key, value) {
       status.classList.add('saved');
     }
   }, 400);
+}
+
+function onFieldInput(key, value) {
+  state.fields[key] = value;
+  flagDirty();
+}
+
+function onNameInput(value) {
+  state.name = value;
+  flagDirty();
 }
 
 function downloadLetter() {
@@ -1095,6 +1156,7 @@ window.goToWrite = goToWrite;
 window.goToDone = goToDone;
 window.markWritten = markWritten;
 window.onFieldInput = onFieldInput;
+window.onNameInput = onNameInput;
 window.downloadLetter = downloadLetter;
 window.printLetter = printLetter;
 window.toggleBreathing = toggleBreathing;
